@@ -43,7 +43,7 @@ sh tets status                 # read actual runner/activity/source snapshots
 sh tets self-test              # synthetic engine/receipt check; no network/model
 ```
 
-Use `TETS_PORT=8766 sh tets start` if 8765 is occupied; the runner never kills another process to take its port. A closed market or missing quote remains visible; neither is fabricated activity. Quitting paper mode stops new decisions; existing paper orders/positions remain at Alpaca.
+The same install command automatically chooses a free port if 8765 is occupied and prints/opens the actual URL. `TETS_PORT=8766 sh tets start` selects an explicit port; an occupied explicit port is refused. The runner never kills another process to take its port. A closed market or missing quote remains visible; neither is fabricated activity. Quitting paper mode stops new decisions; existing paper orders/positions remain at Alpaca.
 
 For unattended installation without starting services or opening account pages:
 

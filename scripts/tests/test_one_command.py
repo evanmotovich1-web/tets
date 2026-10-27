@@ -1,6 +1,7 @@
 """One entrypoint, automatic memory profile, and public settings privacy."""
 from pathlib import Path
 import os
+import socket
 import subprocess
 import sys
 import tempfile
@@ -40,6 +41,15 @@ class OneCommandTests(unittest.TestCase):
             self.assertIn('liquidity',data['settings']);self.assertIn('capital_usd',data['settings'])
             self.assertNotIn('endpoint',data['settings']['ai'])
             self.assertIsNone(data['activity'])
+
+    def test_default_launch_selects_a_free_port_without_disturbing_existing_listener(self):
+        with socket.socket() as occupied:
+            occupied.bind(('127.0.0.1',0));occupied.listen(1)
+            port=occupied.getsockname()[1]
+            server=runner.open_server(port,allow_fallback=True)
+            try:self.assertNotEqual(server.server_address[1],port)
+            finally:server.server_close()
+            with self.assertRaises(OSError):runner.open_server(port,allow_fallback=False)
 
 
 if __name__=='__main__': unittest.main()

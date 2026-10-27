@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Standalone foreground algo runner, source checks and read-only local status page."""
 import argparse
+import errno
 from datetime import datetime, timezone
 import fcntl
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -139,6 +140,14 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self,*_): pass
 
 
+def open_server(port, allow_fallback=False):
+    for candidate in range(port, min(port+32,65536)) if allow_fallback else [port]:
+        try: return ThreadingHTTPServer(('127.0.0.1',candidate),Handler)
+        except OSError as error:
+            if error.errno != errno.EADDRINUSE or not allow_fallback: raise
+    raise ValueError('No free local status port; set TETS_PORT to an available port')
+
+
 def start(seconds, open_browser=True):
     STATE.mkdir(parents=True,exist_ok=True,mode=0o700)
     with (STATE/'runner.lock').open('a') as lock:
@@ -148,7 +157,8 @@ def start(seconds, open_browser=True):
         if read(STATE/'runner.json') and ACTIVITY.exists(): ACTIVITY.unlink()
         port=int(os.environ.get('TETS_PORT','8765'))
         if not 1024<=port<=65535: raise ValueError('Choose a port from 1024 to 65535')
-        server=ThreadingHTTPServer(('127.0.0.1',port),Handler)
+        server=open_server(port, allow_fallback='TETS_PORT' not in os.environ)
+        port=server.server_address[1]
         server.daemon_threads=True
         web=threading.Thread(target=server.serve_forever,daemon=True);web.start()
         stop=threading.Event()
@@ -172,7 +182,7 @@ def start(seconds, open_browser=True):
             with (STATE/'algo.log').open('w') as log:
                 child=subprocess.Popen(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
                 shadow.save(STATE/'runner.json',dict(state='running',mode=mode,pid=os.getpid(),child_pid=child.pid,
-                            started_at=stamp(),run_dir=str(run_dir),live_orders=False))
+                            started_at=stamp(),run_dir=str(run_dir),url=f'http://127.0.0.1:{port}',live_orders=False))
                 url=f'http://127.0.0.1:{port}'
                 print(f'Tets {mode}: {url}\nLogs: {STATE}/algo.log\nCtrl-C stops this test run.',flush=True)
                 if open_browser: webbrowser.open(url)

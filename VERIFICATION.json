@@ -6,7 +6,7 @@
   "physical_2017_mac_verified": false,
   "broker_authenticated": false,
   "tests": {
-    "passed": 60,
+    "passed": 61,
     "failed": 0,
     "scope": "paper, onboarding, shadow and standalone runner tests"
   },
@@ -72,5 +72,6 @@
   },
   "intel_compatibility": "Same Node 22.23.2/uv 0.13.1 and research/paper/shadow locks as inspected Algo Intel Monterey build",
   "api_keys": "Operator-owned, hidden local prompts, gitignored private file; no shared keys bundled",
-  "automatic_8gb_profile_test_passed": true
+  "automatic_8gb_profile_test_passed": true,
+  "occupied_default_port_fallback_test_passed": true
 }
