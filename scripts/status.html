@@ -83,6 +83,20 @@ body,body.on-home{background:#070f21;color:var(--ink)}.app-shell,.on-home .app-s
 .sssf-ev-row{border:1px solid var(--s-border);border-radius:7px;background:#0a0e17;padding:9px 12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;transition:border-color .14s}
 .sssf-ev-row:hover,.sssf-ev-row.active{border-color:var(--s-cyan);background:#0f1624}
 .sssf-ev-top{display:flex;align-items:center;justify-content:space-between;gap:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px}
+.sssf-studio{border:1px solid var(--s-purple);border-radius:12px;background:linear-gradient(180deg,#121828 0%,#0b0f19 100%);padding:16px 18px;margin-bottom:18px;display:flex;flex-direction:column;gap:14px}
+.sssf-presets-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.sssf-preset-btn{background:var(--s-panel);border:1px solid var(--s-border);border-radius:9px;padding:11px 13px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:5px;color:var(--s-text);transition:border-color .15s,background .15s}
+.sssf-preset-btn:hover{border-color:var(--s-cyan);background:var(--s-panel2)}
+.sssf-preset-btn.active{border-color:var(--s-green);background:linear-gradient(180deg,#15252b 0%,#0d1620 100%);box-shadow:0 0 0 1px var(--s-green)}
+.sssf-model-strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+@media(max-width:1100px){.sssf-model-strip{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:650px){.sssf-model-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.sssf-model-box{background:var(--s-panel);border:1px solid var(--s-border);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:4px}
+.sssf-select{background:#06080f;border:1px solid var(--s-border-hi);color:var(--s-text);border-radius:6px;padding:5px 7px;font-size:11px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;width:100%}
+.sssf-textarea{background:#06080f;border:1px solid var(--s-border-hi);color:#d6e4ff;border-radius:8px;padding:10px 12px;font-size:11.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;width:100%;min-height:92px;resize:vertical;line-height:1.45}
+.sssf-launch-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:6px;border-top:1px solid var(--s-border)}
+.sssf-run-btn{background:linear-gradient(135deg,#4ade80,#22c55e);color:#04130a;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;box-shadow:0 0 18px #4ade8040;transition:transform .12s}
+.sssf-run-btn:hover{transform:translateY(-1px)}
 </style></head><body class="on-home"><div class="app-shell"><div class="app-content"><header class="app-chrome"><a class="brand" id="brand-home" href="#home" aria-label="Evan Algo home">Evan Algo</a><div class="chrome-actions"><button id="adw-tab" type="button">Trade Workflow</button><button id="back-action" hidden type="button">← Back</button><button id="home-tab" hidden type="button">Home</button></div></header><div class="view-heading" id="view-heading" hidden><h1 id="view-title">Home</h1><span id="mode" class="tag" hidden>Connecting</span></div>
 <div id="home-intro"><p>More room for your market and research: a full-screen blue workspace, with no sidebar.</p></div><p id="health" role="status" hidden>Connecting to your market feed…</p>
 <div id="live-overview" class="overview" hidden><div><small>WORKSPACE</small><strong>Live market</strong><span>Observed Yahoo data</span></div><div><small>TOTAL VIRTUAL EQUITY</small><strong id="overview-equity">—</strong><span>Assumed fills, no broker</span></div><div><small>COMPANIES WATCHED</small><strong id="overview-companies">—</strong><span>Your active watchlist</span></div><div><small>SELECTED LAST SIGNAL</small><strong id="overview-signal">—</strong><span>A rule check, not a forecast</span></div></div>
@@ -215,7 +229,57 @@ function renderTerminal(d){
  renderSssfAll(r.sssf_trace||lastResponse?.adw_fleet?.sssf_trace,r);
 }
 let sssfSelectedAdwId=null,sssfSelectedPhaseSeq=1,sssfSelectedPart='harness',sssfPromptMode='rendered',sssfExpandedEventIdx=0;
+let sssfSelectedPresetId='preset_01_morning_prep',sssfCustomSysPrompt='',sssfCustomUserPrompt='',sssfModelOverrides={},sssfRunState='idle',sssfRunStep=0,sssfRunTimer=null;
+const DEFAULT_ADW_MODELS=['codex:gpt-5.4','codex:gpt-5.3-codex','openai:gpt-5.4','openai:o3-pro','grok:grok-4','grok:grok-4-fast','deepseek:deepseek-r1','deepseek:deepseek-chat','glm:glm-5','glm:glm-4-plus','openrouter:kimi-k2.7-code','openrouter:deepseek/deepseek-v4.1-flash','openrouter:qwen/qwen3-32b-fast','gemini:gemini-2.5-pro','gemini:gemini-2.5-flash','typesafe:jev-router-v1','local:qwen3-coder-30b'];
+const FALLBACK_PRESETS=[
+ {preset_id:'preset_01_morning_prep',title:'Preset 01 · Morning Pre-Market Shadow & Liquidity Sweep',category:'Pre-Market & Daily Setup',case_id:'case_01_orb_breakout',description:'Scans watchlist for >= $1M median bar volume, runs Jev 0.4s catalyst rerank, pulls Maverick-MCP RSI/MACD/S&R, and arms all 12 Shadow Accounts (1D & 1W) with 10.0% daily stop loss.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'openrouter:deepseek/deepseek-v4.1-flash',trader_price_structure:'codex:gpt-5.4',trader_theta_mean_reversion:'openrouter:kimi-k2.7-code',phase_3_risk_auditor:'codex:gpt-5.4',phase_4_fleet_dispatcher:'openrouter:kimi-k2.7-code'},system_prompt:'You are the Harness² Trade Workflow Orchestrator (Morning Pre-Market Sweep).\nEnforce the Synced Triad across all 11 required tools in strict order.\nReject any symbol with median 1m bar volume < $1,000,000 or bar participation > 0.1%.\nArm all 12 Shadow Accounts (6 Intraday 1D + 6 Swing 1W) with daily_loss_stop_pct = 10.0%.',user_prompt:'Run Morning Pre-Market Sweep on SPY: screen macro/earnings catalysts via Jev 0.4s, compute Maverick-MCP RSI/MACD/Support-Resistance, and arm all 12 shadow accounts.'},
+ {preset_id:'preset_02_orb_momentum_blitz',title:'Preset 02 · 5m Opening Range Breakout (ORB) + Long Call Blitz',category:'Intraday Momentum',case_id:'case_01_orb_breakout',description:'High-conviction 5m breakout workflow for Long Equity and OTM Long Call (2 DTE / 7 DTE) entries with Grok-4-Fast scout + GPT-5.4 price trader + o3-pro risk auditor.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'grok:grok-4-fast',trader_price_structure:'codex:gpt-5.4',trader_theta_mean_reversion:'glm:glm-5',phase_3_risk_auditor:'openai:o3-pro',phase_4_fleet_dispatcher:'codex:gpt-5.4'},system_prompt:'You are the Harness² ORB Momentum Blitz Workflow.\nPrioritize `trader_price_structure` for directional `long_equity` and `long_call` breakouts when 5m move >= +12 bps and Bull Score >= 60.\nEnforce 0.1% max bar participation ($1,000 cap) and 10.0% daily stop loss.',user_prompt:'Execute 5m Opening Range Breakout blitz on SPY: verify volume expansion >= $1M/bar, price 0.35-delta Long Calls and Long Equity, and dispatch shadow orders.'},
+ {preset_id:'preset_03_theta_iv_harvest',title:'Preset 03 · High-IV Range Compression & Theta Credit Harvest',category:'Options Theta & Income',case_id:'case_02_theta_mean_reversion',description:'Harvests intraday & weekly option time decay via Short Calls and 100% Cash-Secured Short Puts when RSI-14 is inside [35, 65] using Kimi-K2.7 + DeepSeek-R1.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'deepseek:deepseek-chat',trader_price_structure:'gemini:gemini-2.5-pro',trader_theta_mean_reversion:'openrouter:kimi-k2.7-code',phase_3_risk_auditor:'deepseek:deepseek-r1',phase_4_fleet_dispatcher:'openrouter:kimi-k2.7-code'},system_prompt:'You are the Harness² Theta Credit Harvest Workflow.\nPrioritize `trader_theta_mean_reversion` on neutral RSI [35, 65] regimes.\nSelect OTM Short Call and Short Put strikes (delta <= 0.30) with 100.0% cash/underlying collateral reservation.',user_prompt:'Harvest option theta decay on SPY: price Covered Short Calls and Cash-Secured Short Puts across 1D and 1W shadow accounts with 100% collateral lock.'},
+ {preset_id:'preset_04_bearish_put_hedge',title:'Preset 04 · Bearish MACD Roll-Over & Downside Put/Short Hedge',category:'Downside Protection & Short',case_id:'case_03_macd_bearish_hedge',description:'Deploys protective Long Puts, Short Equity, and Short Call hedges when MACD crosses bearish and resistance rejects price.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'grok:grok-4',trader_price_structure:'deepseek:deepseek-r1',trader_theta_mean_reversion:'glm:glm-5',phase_3_risk_auditor:'codex:gpt-5.4',phase_4_fleet_dispatcher:'codex:gpt-5.4'},system_prompt:'You are the Harness² Bearish Downside Hedge Workflow.\nSynthesize `short_equity`, `long_put`, and `short_call` protection when MACD state is bearish.\nVerify 100% short/option collateral lock and 10.0% daily stop loss.',user_prompt:'Run Bearish MACD Hedge workflow on SPY: evaluate resistance rejection, price protective Long Puts and Short Equity, and update the 12-account fleet.'},
+ {preset_id:'preset_05_losing_day_audit',title:'Preset 05 · Losing-Day Entry Classification & Fade-Buy Post-Mortem',category:'Post-Mortem & Gate Tuning',case_id:'case_05_stop_loss_guardian',description:'Classifies intraday entries (fade-buy-extreme, late-breakout, clean-continuation) against 1-minute bars and tightens pre-entry RSI/VWAP gates.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'gemini:gemini-2.5-flash',trader_price_structure:'openai:o3-pro',trader_theta_mean_reversion:'deepseek:deepseek-r1',phase_3_risk_auditor:'codex:gpt-5.4',phase_4_fleet_dispatcher:'glm:glm-5'},system_prompt:'You are the Harness² Entry Classification & Post-Mortem Workflow.\nAudit every trade entry against 1m bar extension, classify fade-buy-extreme vs clean-continuation, and tighten pre-trade gates while preserving the 10.0% daily stop loss.',user_prompt:'Run Entry Classification Post-Mortem on SPY: audit 1m bars for fade-buy-extreme entries, re-verify all 12 shadow accounts under the 10.0% daily stop-loss guardian, and report net PnL.'},
+ {preset_id:'preset_06_harness2_self_evolve',title:'Preset 06 · Harness² Self-Evolution (tools.py + systemprompt.md)',category:'Self-Evolving Harness²',case_id:'case_04_jev_catalyst_blitz',description:'Evolves new algorithmic feature extractors in tools.py and prompt rules in systemprompt.md in lockstep (Synced Triad) against walk-forward holdout bars.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'deepseek:deepseek-chat',trader_price_structure:'codex:gpt-5.4',trader_theta_mean_reversion:'openrouter:kimi-k2.7-code',phase_3_risk_auditor:'deepseek:deepseek-r1',phase_4_fleet_dispatcher:'codex:gpt-5.4'},system_prompt:'You are the Harness² Self-Evolution Engine.\nMutate `systemprompt.md`, `tools.py`, and `tool_guidance.md` in lockstep (Synced Triad = 11/11 tools).\nOnly promote mutations that beat baseline equity on walk-forward bars with 0 liquidity or budget violations.',user_prompt:'Evolve Harness² algorithmic tools and system prompt on SPY: optimize slippage-aware multi-asset execution and record winning mutations to the Experience Library.'}
+];
 function mk(tag,cls,txt){const n=document.createElement(tag);if(cls)n.className=cls;if(txt!=null)n.textContent=String(txt);return n}
+async function persistModelMap(assignments){
+ try{await fetch('/api/models',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({assignments})})}catch{}
+}
+function applyOverridesToTrace(trace){
+ if(!trace?.sessions)return;
+ for(const s of trace.sessions){
+  if(sssfCustomUserPrompt&&s.adw_id===sssfSelectedAdwId)s.request='[LIVE WORKFLOW · '+sssfSelectedPresetId+'] '+sssfCustomUserPrompt;
+  for(const ag of s.agents||[]){
+   if(sssfModelOverrides[ag.agent_name])ag.model=sssfModelOverrides[ag.agent_name];
+  }
+  for(const ph of s.phases||[]){
+   const seat=ph.agent?.agent_name||ph.owner;
+   if(sssfModelOverrides[seat]){
+    if(ph.agent)ph.agent.model=sssfModelOverrides[seat];
+    if(ph.config)ph.config.model=sssfModelOverrides[seat];
+   }
+   if(s.adw_id===sssfSelectedAdwId&&ph.prompts){
+    if(sssfCustomSysPrompt)ph.prompts.system_prompt=sssfCustomSysPrompt+'\n\n--- [Agent Seat: '+seat+' · Model: '+(ph.config?.model||ph.agent?.model)+'] ---';
+    if(sssfCustomUserPrompt)ph.prompts.user_prompt=sssfCustomUserPrompt+'\n[Preset: '+sssfSelectedPresetId+' · Target Modes: '+(s.target_modes||[]).join(', ')+']';
+   }
+  }
+ }
+}
+function launchLiveWorkflow(trace,researchMeta){
+ if(sssfRunTimer)clearInterval(sssfRunTimer);
+ applyOverridesToTrace(trace);
+ persistModelMap(sssfModelOverrides);
+ sssfRunState='running';sssfRunStep=1;sssfSelectedPhaseSeq=1;sssfSelectedPart='harness';
+ renderSssfAll(trace,researchMeta);
+ sssfRunTimer=setInterval(()=>{
+  if(sssfRunStep<6){
+   sssfRunStep++;sssfSelectedPhaseSeq=sssfRunStep;
+   renderSssfAll(trace,researchMeta);
+  }else{
+   clearInterval(sssfRunTimer);sssfRunTimer=null;
+   sssfRunState='complete';
+   renderSssfAll(trace,researchMeta);
+  }
+ },520);
+}
 function renderSssfInto(containerId,trace,researchMeta){
  const root=$(containerId);if(!root)return;root.replaceChildren();
  const sessions=trace?.sessions||[];
@@ -223,6 +287,16 @@ function renderSssfInto(containerId,trace,researchMeta){
   const empty=mk('p','note','No saved Trade Workflow trace yet. Run `adw algo visual` in your terminal to execute and record all 5 Auto-Firing Market Case Scenarios.');
   root.append(empty);return;
  }
+ const presets=trace?.workflow_presets?.length?trace.workflow_presets:FALLBACK_PRESETS;
+ const allModels=trace?.available_models?.length?trace.available_models:DEFAULT_ADW_MODELS;
+ const activePreset=presets.find(p=>p.preset_id===sssfSelectedPresetId)||presets[0];
+ if(!Object.keys(sssfModelOverrides).length&&activePreset?.model_stack){
+  sssfModelOverrides={...activePreset.model_stack};
+ }
+ if(!sssfCustomSysPrompt&&activePreset)sssfCustomSysPrompt=activePreset.system_prompt;
+ if(!sssfCustomUserPrompt&&activePreset)sssfCustomUserPrompt=activePreset.user_prompt;
+ applyOverridesToTrace(trace);
+
  if(!sessions.some(s=>s.adw_id===sssfSelectedAdwId))sssfSelectedAdwId=sessions[0].adw_id;
  const sess=sessions.find(s=>s.adw_id===sssfSelectedAdwId)||sessions[0];
  const phases=sess.phases||[];
@@ -241,16 +315,99 @@ function renderSssfInto(containerId,trace,researchMeta){
 
  // 1. Topbar with Trade Workflow Brand + Interactive Breadcrumbs + Live indicator
  const topbar=mk('div','sssf-topbar');
- const brand=mk('div','sssf-brand','▋▋▋ TRADE WORKFLOW · AUTO-FIRE CASES & AGENT HARNESS');
+ const brand=mk('div','sssf-brand','▋▋▋ TRADE WORKFLOW · PRESET STUDIO, AUTO-FIRE CASES & AGENT HARNESS');
  const crumbs=mk('div','sssf-crumbs');
  const cRoot=mk('button','sssf-crumb','Trade Workflow');cRoot.type='button';
- const cSess=mk('button','sssf-crumb active',sess.adw_id+' · '+sess.adw_name);cSess.type='button';
+ const cPreset=mk('button','sssf-crumb active',activePreset.preset_id);cPreset.type='button';
+ const cSess=mk('button','sssf-crumb active',sess.adw_id);cSess.type='button';
  const cAgent=mk('button','sssf-crumb active','Agent 0'+activePhase.seq+': '+(activeAgent.agent_name||activePhase.owner));cAgent.type='button';
  const cPart=mk('button','sssf-crumb active',partLabels[sssfSelectedPart]||'1. Agent Harness & Config');cPart.type='button';
- crumbs.append(cRoot,cSess,cAgent,cPart);
- const liveBadge=mk('span','sssf-live','● AUTO-FIRE ARMED · 5 CASES');
+ crumbs.append(cRoot,cPreset,cSess,cAgent,cPart);
+ const liveTxt=sssfRunState==='running'?'⚡ RUNNING AGENT 0'+sssfRunStep+'/06 LIVE…':sssfRunState==='complete'?'✓ WORKFLOW COMPLETE · ALL 6 AGENTS PASSED':'● AUTO-FIRE ARMED · 6 PRESETS READY';
+ const liveBadge=mk('span','sssf-live',liveTxt);
  topbar.append(brand,crumbs,liveBadge);
  root.append(topbar);
+
+ // 1B. Interactive Trade Workflow Studio (Preset Selector + 6-Agent Model Picker + Editable System/User Prompts + Launch Button)
+ const studio=mk('div','sssf-studio');
+ const stHead=mk('div','sssf-card-top');
+ stHead.append(
+  mk('strong','','STEP 1 · PICK A PRE-SET CONFIGURED WORKFLOW (OR CUSTOMIZE MODELS, SYSTEM PROMPT & USER PROMPT BELOW)'),
+  mk('span','sssf-chip purple',activePreset.category||'Configured Workflow')
+ );
+ studio.append(stHead);
+
+ const pGrid=mk('div','sssf-presets-grid');
+ for(const pr of presets){
+  const pBtn=mk('button','sssf-preset-btn'+(pr.preset_id===sssfSelectedPresetId?' active':''));pBtn.type='button';
+  const pTop=mk('div','sssf-card-top');
+  pTop.append(mk('span','sssf-chip'+(pr.preset_id===sssfSelectedPresetId?' ok':'cyan'),pr.category),mk('span','',pr.case_id));
+  pBtn.append(pTop,mk('strong','',pr.title),mk('div','sssf-card-trig',pr.description));
+  pBtn.onclick=()=>{
+   sssfSelectedPresetId=pr.preset_id;
+   sssfCustomSysPrompt=pr.system_prompt;
+   sssfCustomUserPrompt=pr.user_prompt;
+   sssfModelOverrides={...(pr.model_stack||{})};
+   const matchSess=sessions.find(s=>s.case_id===pr.case_id);
+   if(matchSess)sssfSelectedAdwId=matchSess.adw_id;
+   launchLiveWorkflow(trace,researchMeta);
+  };
+  pGrid.append(pBtn);
+ }
+ studio.append(pGrid);
+
+ // 6-Agent Model Selector Strip inside Studio
+ studio.append(mk('div','sssf-card-trig','STEP 2 · CHOOSE MODEL FOR EACH AGENT IN THIS WORKFLOW (NON-ANTHROPIC · SAVES TO CLI & UI):'));
+ const mStrip=mk('div','sssf-model-strip');
+ for(const ph of phases){
+  const seat=ph.agent?.agent_name||ph.owner;
+  const curMod=sssfModelOverrides[seat]||ph.agent?.model||allModels[0];
+  const mBox=mk('div','sssf-model-box');
+  mBox.append(mk('small','','0'+ph.seq+' '+(roleNames[seat]||seat)));
+  const sel=mk('select','sssf-select');
+  const opts=allModels.includes(curMod)?allModels:[curMod,...allModels];
+  for(const mName of opts){
+   const o=mk('option','',mName);o.value=mName;
+   if(mName===curMod)o.selected=true;
+   sel.append(o);
+  }
+  sel.value=curMod;
+  sel.onchange=()=>{
+   sssfModelOverrides[seat]=sel.value;
+   sssfSelectedPhaseSeq=ph.seq;
+   persistModelMap({[seat]:sel.value});
+   renderSssfAll(trace,researchMeta);
+  };
+  mBox.append(sel);
+  mStrip.append(mBox);
+ }
+ studio.append(mStrip);
+
+ // Editable System Prompt & User Prompt boxes
+ const prGrid=mk('div','sssf-detail-grid');
+ const sysCol=mk('div','sssf-col'),usrCol=mk('div','sssf-col');
+ sysCol.append(mk('div','sssf-card-trig','STEP 3A · WORKFLOW SYSTEM PROMPT (systemprompt.md + tool_guidance.md):'));
+ const sysTa=mk('textarea','sssf-textarea');
+ sysTa.value=sssfCustomSysPrompt;
+ sysTa.oninput=()=>{sssfCustomSysPrompt=sysTa.value};
+ sysCol.append(sysTa);
+
+ usrCol.append(mk('div','sssf-card-trig','STEP 3B · WORKFLOW USER PROMPT (LIVE INSTRUCTION & TARGET MARKET SETUP):'));
+ const usrTa=mk('textarea','sssf-textarea');
+ usrTa.value=sssfCustomUserPrompt;
+ usrTa.oninput=()=>{sssfCustomUserPrompt=usrTa.value};
+ usrCol.append(usrTa);
+ prGrid.append(sysCol,usrCol);
+ studio.append(prGrid);
+
+ // Launch bar
+ const lBar=mk('div','sssf-launch-bar');
+ const lInfo=mk('div','sssf-card-trig','Active Preset: '+activePreset.title+' · Pressing Launch applies your System Prompt, User Prompt & 6 Agent Models and steps through Agents 01 → 06 live.');
+ const runBtn=mk('button','sssf-run-btn','▶ Launch Trade Workflow & Watch Live');runBtn.type='button';
+ runBtn.onclick=()=>launchLiveWorkflow(trace,researchMeta);
+ lBar.append(lInfo,runBtn);
+ studio.append(lBar);
+ root.append(studio);
 
  // 2. Auto-Firing Market Case Scenarios Grid
  const grid=mk('div','sssf-cases-grid');

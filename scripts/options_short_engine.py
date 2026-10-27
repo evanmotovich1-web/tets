@@ -3323,12 +3323,182 @@ def build_sssf_trace_and_db(
     except Exception:
         pass
 
+    available_models = [
+        'codex:gpt-5.4',
+        'codex:gpt-5.3-codex',
+        'openai:gpt-5.4',
+        'openai:o3-pro',
+        'grok:grok-4',
+        'grok:grok-4-fast',
+        'deepseek:deepseek-r1',
+        'deepseek:deepseek-chat',
+        'glm:glm-5',
+        'glm:glm-4-plus',
+        'openrouter:kimi-k2.7-code',
+        'openrouter:deepseek/deepseek-v4.1-flash',
+        'openrouter:qwen/qwen3-32b-fast',
+        'gemini:gemini-2.5-pro',
+        'gemini:gemini-2.5-flash',
+        'typesafe:jev-router-v1',
+        'local:qwen3-coder-30b',
+    ]
+
+    workflow_presets = [
+        {
+            'preset_id': 'preset_01_morning_prep',
+            'title': 'Preset 01 · Morning Pre-Market Shadow & Liquidity Sweep',
+            'category': 'Pre-Market & Daily Setup',
+            'case_id': 'case_01_orb_breakout',
+            'description': 'Scans watchlist for >= $1M median bar volume, runs Jev 0.4s catalyst rerank, pulls Maverick-MCP RSI/MACD/S&R, and arms all 12 Shadow Accounts (1D & 1W) with 10.0% daily stop loss.',
+            'model_stack': {
+                'stage_0_jev_router': 'typesafe:jev-router-v1',
+                'phase_1_scout_recon': 'openrouter:deepseek/deepseek-v4.1-flash',
+                'trader_price_structure': 'codex:gpt-5.4',
+                'trader_theta_mean_reversion': 'openrouter:kimi-k2.7-code',
+                'phase_3_risk_auditor': 'codex:gpt-5.4',
+                'phase_4_fleet_dispatcher': 'openrouter:kimi-k2.7-code',
+            },
+            'system_prompt': (
+                "You are the Harness² Trade Workflow Orchestrator (Morning Pre-Market Sweep).\n"
+                "Enforce the Synced Triad across all 11 required tools in strict order.\n"
+                "Reject any symbol with median 1m bar volume < $1,000,000 or bar participation > 0.1%.\n"
+                "Arm all 12 Shadow Accounts (6 Intraday 1D + 6 Swing 1W) with daily_loss_stop_pct = 10.0%."
+            ),
+            'user_prompt': (
+                f"Run Morning Pre-Market Sweep on {symbol} @ ${spot_now:.2f}: screen macro/earnings catalysts via Jev 0.4s, "
+                f"compute Maverick-MCP RSI/MACD/Support-Resistance, and arm all 12 shadow accounts."
+            ),
+        },
+        {
+            'preset_id': 'preset_02_orb_momentum_blitz',
+            'title': 'Preset 02 · 5m Opening Range Breakout (ORB) + Long Call Blitz',
+            'category': 'Intraday Momentum',
+            'case_id': 'case_01_orb_breakout',
+            'description': 'High-conviction 5m breakout workflow for Long Equity and OTM Long Call (2 DTE / 7 DTE) entries with Grok-4-Fast scout + GPT-5.4 price trader + o3-pro risk auditor.',
+            'model_stack': {
+                'stage_0_jev_router': 'typesafe:jev-router-v1',
+                'phase_1_scout_recon': 'grok:grok-4-fast',
+                'trader_price_structure': 'codex:gpt-5.4',
+                'trader_theta_mean_reversion': 'glm:glm-5',
+                'phase_3_risk_auditor': 'openai:o3-pro',
+                'phase_4_fleet_dispatcher': 'codex:gpt-5.4',
+            },
+            'system_prompt': (
+                "You are the Harness² ORB Momentum Blitz Workflow.\n"
+                "Prioritize `trader_price_structure` for directional `long_equity` and `long_call` breakouts when 5m move >= +12 bps and Bull Score >= 60.\n"
+                "Enforce 0.1% max bar participation ($1,000 cap) and 10.0% daily stop loss."
+            ),
+            'user_prompt': (
+                f"Execute 5m Opening Range Breakout blitz on {symbol} @ ${spot_now:.2f}: verify volume expansion >= $1M/bar, "
+                f"price 0.35-delta Long Calls and Long Equity, and dispatch shadow orders."
+            ),
+        },
+        {
+            'preset_id': 'preset_03_theta_iv_harvest',
+            'title': 'Preset 03 · High-IV Range Compression & Theta Credit Harvest',
+            'category': 'Options Theta & Income',
+            'case_id': 'case_02_theta_mean_reversion',
+            'description': 'Harvests intraday & weekly option time decay via Short Calls and 100% Cash-Secured Short Puts when RSI-14 is inside [35, 65] using Kimi-K2.7 + DeepSeek-R1.',
+            'model_stack': {
+                'stage_0_jev_router': 'typesafe:jev-router-v1',
+                'phase_1_scout_recon': 'deepseek:deepseek-chat',
+                'trader_price_structure': 'gemini:gemini-2.5-pro',
+                'trader_theta_mean_reversion': 'openrouter:kimi-k2.7-code',
+                'phase_3_risk_auditor': 'deepseek:deepseek-r1',
+                'phase_4_fleet_dispatcher': 'openrouter:kimi-k2.7-code',
+            },
+            'system_prompt': (
+                "You are the Harness² Theta Credit Harvest Workflow.\n"
+                "Prioritize `trader_theta_mean_reversion` on neutral RSI [35, 65] regimes.\n"
+                "Select OTM Short Call and Short Put strikes (delta <= 0.30) with 100.0% cash/underlying collateral reservation."
+            ),
+            'user_prompt': (
+                f"Harvest option theta decay on {symbol} @ ${spot_now:.2f} (IV={iv_val}, RSI={rsi_val:.1f}): "
+                f"price Covered Short Calls and Cash-Secured Short Puts across 1D and 1W shadow accounts."
+            ),
+        },
+        {
+            'preset_id': 'preset_04_bearish_put_hedge',
+            'title': 'Preset 04 · Bearish MACD Roll-Over & Downside Put/Short Hedge',
+            'category': 'Downside Protection & Short',
+            'case_id': 'case_03_macd_bearish_hedge',
+            'description': 'Deploys protective Long Puts, Short Equity, and Short Call hedges when MACD crosses bearish and resistance rejects price.',
+            'model_stack': {
+                'stage_0_jev_router': 'typesafe:jev-router-v1',
+                'phase_1_scout_recon': 'grok:grok-4',
+                'trader_price_structure': 'deepseek:deepseek-r1',
+                'trader_theta_mean_reversion': 'glm:glm-5',
+                'phase_3_risk_auditor': 'codex:gpt-5.4',
+                'phase_4_fleet_dispatcher': 'codex:gpt-5.4',
+            },
+            'system_prompt': (
+                "You are the Harness² Bearish Downside Hedge Workflow.\n"
+                "Synthesize `short_equity`, `long_put`, and `short_call` protection when MACD state is bearish.\n"
+                "Verify 100% short/option collateral lock and 10.0% daily stop loss."
+            ),
+            'user_prompt': (
+                f"Run Bearish MACD Hedge workflow on {symbol} @ ${spot_now:.2f}: evaluate resistance rejection, "
+                f"price protective Long Puts and Short Equity, and update the 12-account fleet."
+            ),
+        },
+        {
+            'preset_id': 'preset_05_losing_day_audit',
+            'title': 'Preset 05 · Losing-Day Entry Classification & Fade-Buy Post-Mortem',
+            'category': 'Post-Mortem & Gate Tuning',
+            'case_id': 'case_05_stop_loss_guardian',
+            'description': 'Classifies intraday entries (fade-buy-extreme, late-breakout, clean-continuation) against 1-minute bars and tightens pre-entry RSI/VWAP gates.',
+            'model_stack': {
+                'stage_0_jev_router': 'typesafe:jev-router-v1',
+                'phase_1_scout_recon': 'gemini:gemini-2.5-flash',
+                'trader_price_structure': 'openai:o3-pro',
+                'trader_theta_mean_reversion': 'deepseek:deepseek-r1',
+                'phase_3_risk_auditor': 'codex:gpt-5.4',
+                'phase_4_fleet_dispatcher': 'glm:glm-5',
+            },
+            'system_prompt': (
+                "You are the Harness² Entry Classification & Post-Mortem Workflow.\n"
+                "Audit every trade entry against 1m bar extension, classify fade-buy-extreme vs clean-continuation, "
+                "and tighten pre-trade gates while preserving the 10.0% daily stop loss."
+            ),
+            'user_prompt': (
+                f"Run Entry Classification Post-Mortem on {symbol}: audit 1m bars for fade-buy-extreme entries, "
+                f"re-verify all 12 shadow accounts under the 10.0% daily stop-loss guardian, and report net PnL."
+            ),
+        },
+        {
+            'preset_id': 'preset_06_harness2_self_evolve',
+            'title': 'Preset 06 · Harness² Self-Evolution (tools.py + systemprompt.md)',
+            'category': 'Self-Evolving Harness²',
+            'case_id': 'case_04_jev_catalyst_blitz',
+            'description': 'Evolves new algorithmic feature extractors in tools.py and prompt rules in systemprompt.md in lockstep (Synced Triad) against walk-forward holdout bars.',
+            'model_stack': {
+                'stage_0_jev_router': 'typesafe:jev-router-v1',
+                'phase_1_scout_recon': 'deepseek:deepseek-chat',
+                'trader_price_structure': 'codex:gpt-5.4',
+                'trader_theta_mean_reversion': 'openrouter:kimi-k2.7-code',
+                'phase_3_risk_auditor': 'deepseek:deepseek-r1',
+                'phase_4_fleet_dispatcher': 'codex:gpt-5.4',
+            },
+            'system_prompt': (
+                "You are the Harness² Self-Evolution Engine.\n"
+                "Mutate `systemprompt.md`, `tools.py`, and `tool_guidance.md` in lockstep (Synced Triad = 11/11 tools).\n"
+                "Only promote mutations that beat baseline equity on walk-forward bars with 0 liquidity or budget violations."
+            ),
+            'user_prompt': (
+                f"Evolve Harness² algorithmic tools and system prompt on {symbol} @ ${spot_now:.2f}: "
+                f"optimize slippage-aware multi-asset execution and record winning mutations to the Experience Library."
+            ),
+        },
+    ]
+
     return {
         'schema_version': 1,
         'sssf_compatible': True,
         'db_path': str(db_path),
         'active_adw_id': sessions_payload[0]['adw_id'],
         'auto_fire_cases': auto_fire_cases,
+        'workflow_presets': workflow_presets,
+        'available_models': available_models,
         'sessions': sessions_payload,
     }
 
