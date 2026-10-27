@@ -205,6 +205,22 @@ class Harness2EvolveTests(unittest.TestCase):
         self.assertEqual(adw_run['shadow_fleet']['daily_loss_stop_pct'], '10.0')
         self.assertFalse(adw_run['live_orders'])
 
+        # Verify SSSF trace & 5 Auto-Firing Market Case Scenarios
+        sssf = adw_run['sssf_trace']
+        self.assertTrue(sssf['sssf_compatible'])
+        self.assertEqual(len(sssf['auto_fire_cases']), 5)
+        self.assertEqual(len(sssf['sessions']), 5)
+        first_sess = sssf['sessions'][0]
+        self.assertEqual(len(first_sess['phases']), 6)
+        self.assertEqual(len(first_sess['agents']), 6)
+        for ph in first_sess['phases']:
+            self.assertIn('system_prompt', ph['prompts'])
+            self.assertIn('user_prompt', ph['prompts'])
+            self.assertTrue(any(ev['kind'] == 'tool_call' for ev in ph['events']))
+            self.assertGreater(ph['agent']['total_tokens'], 0)
+            self.assertGreater(ph['agent']['cost_usd'], 0.0)
+        self.assertTrue(Path(sssf['db_path']).is_file())
+
         cli_text = ose.render_adw_visual_cli(adw_run)
         self.assertIn('SYNCED TRIAD: VERIFIED (11/11 TOOLS)', cli_text.upper())
         self.assertIn('codex:gpt-5.4', cli_text)

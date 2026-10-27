@@ -29,6 +29,7 @@ def models():
     return dict(state='saved' if saved else 'defaults', updated_at=(saved or {}).get('updated_at'),
                 roster=engine.load_sticky_model_roster(path), providers=list(engine.SUPPORTED_PROVIDERS),
                 defaults=engine.DEFAULT_PROVIDER_MODELS,
+                provider_connections=engine.load_provider_connections(),
                 note='Assignments are configuration, not evidence that these models have run.')
 
 
@@ -79,7 +80,12 @@ def research():
                 final_equity=fleet.get('total_final_equity'), net_pnl=fleet.get('total_fleet_net_pnl'),
                 daily_loss_stop_pct=fleet.get('daily_loss_stop_pct'),
                 all_phases_passed=run.get('all_phases_passed'),
-                jev_screening=(run.get('jev_decision_filter') or {}).get('screening'))
+                jev_screening=(run.get('jev_decision_filter') or {}).get('screening'),
+                sssf_trace=run.get('sssf_trace'),
+                synced_triad_contract=run.get('synced_triad_contract'),
+                maverick_mcp_telemetry=run.get('maverick_mcp_telemetry'),
+                jev_decision_filter=run.get('jev_decision_filter'),
+                paper_account_orders=run.get('paper_account_orders'))
 
 
 def library():
