@@ -1985,6 +1985,227 @@ def run_adw_cli(
     return adw_run
 
 
+def _sync_adw_state_quietly(output_dir: Path = HARNESS2_STATE, symbol: str = 'SPY') -> dict[str, Any]:
+    """Re-compute and save `adw_latest_run.json` and `connections.json` whenever sticky models or keys change."""
+    import options_short_engine
+    output_dir = Path(output_dir).resolve()
+    output_dir.mkdir(parents=True, exist_ok=True, mode=0o700)
+    roster_path = output_dir / 'model_roster.json'
+    profile = load_operator_profile()
+    profile['symbol'] = symbol
+    _, rows = load_real_or_fallback_intraday_dataset(symbol=symbol)
+    h_dict = build_harness_dict(COMPOSED_POLICY, stage_note='composed_evolved_v2')
+    adw_run = options_short_engine.run_adw_pipeline(
+        rows,
+        profile,
+        gate_policy=COMPOSED_POLICY['shadow_gate_policy'],
+        system_prompt_text=h_dict['systemprompt.md'],
+        tool_guidance_text=h_dict['tool_descriptions/tool_guidance.md'],
+        roster_state_path=roster_path,
+    )
+    adw_run['created_at'] = now_iso()
+    save_json(output_dir / 'adw_latest_run.json', adw_run)
+    for repo_candidate in (Path('/Users/davidmotovich/code/algo'), Path('/Users/davidmotovich/code/tets')):
+        for rel_dir in ('desk/runtime/.state/harness2', 'desk/runtime/.state/tets'):
+            tdir = repo_candidate / rel_dir
+            if repo_candidate.is_dir():
+                tdir.mkdir(parents=True, exist_ok=True, mode=0o700)
+                save_json(tdir / 'adw_latest_run.json', adw_run)
+                conn_path = tdir / 'connections.json'
+                if conn_path.is_file():
+                    try:
+                        conn_data = json.loads(conn_path.read_text(encoding='utf-8'))
+                        if isinstance(conn_data, dict):
+                            conn_data['adw_fleet'] = adw_run
+                            save_json(conn_path, conn_data)
+                    except Exception:
+                        pass
+    return adw_run
+
+
+def run_model_cli(
+    *,
+    positional: list[str] | None = None,
+    output_dir: Path = HARNESS2_STATE,
+    provider: str | None = None,
+    model: str | None = None,
+    agent_id: str = 'traders',
+    assignments: list[str] | None = None,
+    reset: bool = False,
+    as_json: bool = False,
+) -> dict[str, Any]:
+    """Run the `algo model` terminal selector: view/pick each Agentic Trader's model and connect Subscriptions/API keys."""
+    import options_short_engine
+    output_dir = Path(output_dir).resolve()
+    output_dir.mkdir(parents=True, exist_ok=True, mode=0o700)
+    roster_path = output_dir / 'model_roster.json'
+    keys_path = output_dir / 'provider_keys.json'
+    pos = [str(x).strip() for x in (positional or []) if str(x).strip()]
+
+    # Handle positional shortcuts:
+    # - `algo model reset`
+    # - `algo model key <provider> <api_key_or_subscription>`
+    # - `algo model <agent_num_or_name> <provider> [model]`
+    # - `algo model <provider> [model]`
+    if pos:
+        first = pos[0].lower()
+        if first == 'reset':
+            reset = True
+        elif first in ('key', 'keys', 'connect', 'api'):
+            if len(pos) >= 3:
+                options_short_engine.save_provider_connection(pos[1], pos[2], keys_path=keys_path)
+            elif len(pos) == 2 and '=' in pos[1]:
+                k_prov, k_val = pos[1].split('=', 1)
+                options_short_engine.save_provider_connection(k_prov, k_val, keys_path=keys_path)
+        else:
+            known_providers = set(options_short_engine.SUPPORTED_PROVIDERS) | {'zhipu', 'or', 'google', 'ollama'}
+            if first in known_providers or ':' in first:
+                provider = pos[0]
+                if len(pos) >= 2:
+                    model = pos[1]
+            else:
+                agent_id = pos[0]
+                if len(pos) >= 2:
+                    provider = pos[1]
+                if len(pos) >= 3:
+                    model = pos[2]
+
+    if provider or model or assignments or reset:
+        options_short_engine.configure_sticky_models(
+            state_path=roster_path,
+            provider=provider,
+            model=model,
+            agent_id=agent_id,
+            assignments=assignments,
+            reset=reset,
+        )
+        _sync_adw_state_quietly(output_dir=output_dir)
+
+    roster = options_short_engine.load_sticky_model_roster(roster_path)
+    conns = options_short_engine.load_provider_connections(keys_path)
+    if as_json:
+        out = {'roster': roster, 'provider_connections': conns}
+        print(json.dumps(out, indent=2, sort_keys=True))
+        return out
+
+    print(options_short_engine.render_model_and_keys_cli(roster, conns))
+
+    # Interactive menu when invoked directly as `algo model` in a terminal without one-shot arguments
+    if not pos and not provider and not model and not assignments and not reset and sys.stdin.isatty():
+        try:
+            choice = input(
+                "\nSelect [1-6] Choose Agent | [A] All Trading Agents | [K] Connect API Key/Subscription | [R] Reset | [Enter] Done: "
+            ).strip()
+        except EOFError:
+            choice = ''
+        if choice.lower() == 'r':
+            options_short_engine.configure_sticky_models(state_path=roster_path, reset=True)
+            _sync_adw_state_quietly(output_dir=output_dir)
+            print("\n[OK] Reset all Agentic Traders to default non-Anthropic models:\n")
+            print(options_short_engine.render_model_and_keys_cli())
+        elif choice.lower() == 'k':
+            try:
+                p_choice = input(
+                    "Choose Provider to Connect [1=OpenAI/Codex, 2=Grok/xAI, 3=DeepSeek, 4=GLM, 5=OpenRouter, 6=Gemini]: "
+                ).strip()
+                if p_choice:
+                    k_val = input(
+                        "Paste API Key (or type 'subscription' for signed-in subscription, or 'clear' to remove): "
+                    ).strip()
+                    if k_val:
+                        saved = options_short_engine.save_provider_connection(p_choice, k_val, keys_path=keys_path)
+                        _sync_adw_state_quietly(output_dir=output_dir)
+                        print(f"\n[OK] Connected {saved['provider']} -> {saved['masked_status']}\n")
+                        print(options_short_engine.render_model_and_keys_cli())
+            except EOFError:
+                pass
+        elif choice.lower() in ('1', '2', '3', '4', '5', '6', 'a', 'all', 'traders'):
+            try:
+                p_choice = input(
+                    "Choose Provider [1=OpenAI/Codex, 2=Grok/xAI, 3=DeepSeek, 4=GLM, 5=OpenRouter, 6=Gemini, 7=Local]: "
+                ).strip()
+                if p_choice:
+                    cat_map = {str(p['num']): p for p in options_short_engine.PROVIDER_CATALOG}
+                    for p in options_short_engine.PROVIDER_CATALOG:
+                        cat_map[p['provider']] = p
+                        for al in p['aliases']:
+                            cat_map[al] = p
+                    cat_entry = cat_map.get(p_choice.lower())
+                    if cat_entry:
+                        preset_models = cat_entry['models']
+                        preset_str = "  ".join(f"[{i}] {m}" for i, m in enumerate(preset_models, start=1))
+                        print(f"Available {cat_entry['provider']} models: {preset_str}")
+                        m_choice = input(
+                            f"Choose Model [1-{len(preset_models)} or type model name, Enter for {preset_models[0]}]: "
+                        ).strip()
+                        if not m_choice:
+                            chosen_model = preset_models[0]
+                        elif m_choice.isdigit() and 1 <= int(m_choice) <= len(preset_models):
+                            chosen_model = preset_models[int(m_choice) - 1]
+                        else:
+                            chosen_model = m_choice
+                        chosen_prov = cat_entry['provider']
+                    else:
+                        chosen_prov = p_choice
+                        chosen_model = input("Enter Model ID: ").strip() or None
+
+                    options_short_engine.configure_sticky_models(
+                        state_path=roster_path,
+                        provider=chosen_prov,
+                        model=chosen_model,
+                        agent_id=choice,
+                    )
+                    _sync_adw_state_quietly(output_dir=output_dir)
+                    print(f"\n[OK] Saved sticky model {chosen_prov}:{chosen_model} for agent '{choice}':\n")
+                    print(options_short_engine.render_model_and_keys_cli())
+            except EOFError:
+                pass
+
+    return {'roster': options_short_engine.load_sticky_model_roster(roster_path), 'provider_connections': options_short_engine.load_provider_connections(keys_path)}
+
+
+def run_tests_cli(*, full: bool = False) -> int:
+    """Run the `algo tests` verification suite and render a clean pass/fail summary box."""
+    import options_short_engine
+    import time as _time
+    import unittest as _unittest
+
+    W = 114
+    t0 = _time.monotonic()
+    loader = _unittest.TestLoader()
+    suite = _unittest.TestSuite()
+    tests_dir = ROOT / 'scripts/tests'
+    if full:
+        suite.addTests(loader.discover(start_dir=str(tests_dir), pattern='test_*.py'))
+    else:
+        from tests import test_harness2_evolve
+        for method_name in (
+            'test_harness_tree_validates_all_eight_components_and_codex_projection',
+            'test_options_and_short_engine_supports_all_six_instrument_modes',
+            'test_agentic_adw_pipeline_synced_triad_and_visual_cli',
+        ):
+            suite.addTests(loader.loadTestsFromName(method_name, test_harness2_evolve.Harness2EvolveTests))
+        for fname in ('test_shadow.py', 'test_paper.py'):
+            if (tests_dir / fname).is_file():
+                suite.addTests(loader.discover(start_dir=str(tests_dir), pattern=fname))
+
+    runner = _unittest.TextTestRunner(verbosity=2)
+    result = runner.run(suite)
+    elapsed = _time.monotonic() - t0
+    passed = result.testsRun - len(result.failures) - len(result.errors)
+    status_str = 'ALL PASSED' if result.wasSuccessful() else 'FAILED'
+    box = [
+        "╔" + ("═" * W) + "╗",
+        options_short_engine._box_line(
+            f"  ALGO TESTS SUMMARY · {status_str} ({passed}/{result.testsRun} tests passed in {elapsed:.2f}s)",
+            W,
+        ),
+        "╚" + ("═" * W) + "╝",
+    ]
+    print("\n" + "\n".join(box))
+    return 0 if result.wasSuccessful() else 1
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='action', required=True)
@@ -2009,17 +2230,37 @@ def main(argv: list[str] | None = None) -> int:
 
     for sub_name, sub_help in [
         ('adw', 'Run the 5-Phase Back-to-Back Agentic ADW Pipeline and render the Visual Command Line'),
-        ('models', 'Configure sticky provider & model assignments (non-Anthropic) and render the ADW fleet'),
+        ('visual', 'Render the 5-Phase Back-to-Back Agentic ADW Visual Command Line (`adw algo visual`)'),
     ]:
         p_cmd = sub.add_parser(sub_name, help=sub_help)
+        p_cmd.add_argument('extra', nargs='*', help='Optional positional args (e.g. `algo visual`)')
         p_cmd.add_argument('--symbol', default='SPY')
         p_cmd.add_argument('--state-dir', type=Path, default=HARNESS2_STATE)
-        p_cmd.add_argument('--provider', help='Provider (codex, openrouter, gemini, deepseek, local, typesafe; anthropic/claude blocked)')
-        p_cmd.add_argument('--model', help='Model ID for the chosen provider (e.g. gpt-5.4, kimi-k2.7-code, deepseek/deepseek-v4.1-flash)')
-        p_cmd.add_argument('--agent', default='traders', help='Target agent ID or "traders" / "all"')
-        p_cmd.add_argument('--set', dest='assignments', action='append', help='Set <agent_id>=<provider>:<model> (repeatable)')
+        p_cmd.add_argument('--provider', help='Provider (codex, openai, grok, deepseek, glm, openrouter, gemini, local)')
+        p_cmd.add_argument('--model', help='Model ID for the chosen provider')
+        p_cmd.add_argument('--agent', default='traders', help='Target agent ID or number (1-6) or "all"')
+        p_cmd.add_argument('--set', dest='assignments', action='append', help='Set <agent_id>=<provider>:<model>')
         p_cmd.add_argument('--reset', action='store_true', help='Reset sticky model roster to non-Anthropic defaults')
         p_cmd.add_argument('--json', action='store_true')
+
+    for m_name, m_help in [
+        ('model', 'Interactive Agentic Trader Model & API Key/Subscription Selector (`algo model`)'),
+        ('models', 'Interactive Agentic Trader Model & API Key/Subscription Selector (`algo models`)'),
+        ('keys', 'Connect API keys & subscriptions (OpenAI/Codex, Grok, DeepSeek, GLM, OpenRouter, Gemini)'),
+    ]:
+        p_mod = sub.add_parser(m_name, help=m_help)
+        p_mod.add_argument('positional', nargs='*', help='Optional: [agent#] [provider] [model] or `key <provider> <key>`')
+        p_mod.add_argument('--state-dir', type=Path, default=HARNESS2_STATE)
+        p_mod.add_argument('--provider', help='Provider (codex, openai, grok, deepseek, glm, openrouter, gemini, local)')
+        p_mod.add_argument('--model', help='Model ID')
+        p_mod.add_argument('--agent', default='traders', help='Target agent number (1-6) or ID or "all"')
+        p_mod.add_argument('--set', dest='assignments', action='append', help='Set <agent_id>=<provider>:<model>')
+        p_mod.add_argument('--reset', action='store_true', help='Reset sticky models to defaults')
+        p_mod.add_argument('--json', action='store_true')
+
+    for t_name in ('tests', 'test'):
+        p_test = sub.add_parser(t_name, help='Run the Algo ADW, Options/Short Engine & Shadow Fleet test suite (`algo tests`)')
+        p_test.add_argument('--full', action='store_true', help='Run full discovery test suite')
 
     args = parser.parse_args(argv)
     if args.action == 'install':
@@ -2057,7 +2298,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.action == 'shadow-watch':
         print(json.dumps(shadow_watch(seconds=args.seconds, output_dir=args.state_dir, symbol=args.symbol), indent=2, sort_keys=True))
         return 0
-    if args.action in ('adw', 'models'):
+    if args.action in ('adw', 'visual'):
         run_adw_cli(
             symbol=args.symbol,
             output_dir=args.state_dir,
@@ -2069,6 +2310,20 @@ def main(argv: list[str] | None = None) -> int:
             reset=args.reset,
         )
         return 0
+    if args.action in ('model', 'models', 'keys'):
+        run_model_cli(
+            positional=args.positional,
+            output_dir=args.state_dir,
+            provider=args.provider,
+            model=args.model,
+            agent_id=args.agent,
+            assignments=args.assignments,
+            reset=args.reset,
+            as_json=args.json,
+        )
+        return 0
+    if args.action in ('tests', 'test'):
+        return run_tests_cli(full=args.full)
     return 1
 
 

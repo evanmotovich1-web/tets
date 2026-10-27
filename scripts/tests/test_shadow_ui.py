@@ -14,12 +14,14 @@ function element(tag='div'){return {tag,textContent:'',children:[],attributes:{}
  setAttribute(key,value){this.attributes[key]=value}}}
 const get=id=>{if(!elements.has(id))elements.set(id,element());return elements.get(id)};
 get('chart-mode').value='candles';get('chart-window').value='60';get('follow-scanner').checked=true;
-const context={document:{getElementById:get,createElement:element,createElementNS:(_,tag)=>element(tag)},
+const context={document:{body:{},getElementById:get,createElement:element,createElementNS:(_,tag)=>element(tag)},
  fetch:async url=>({ok:true,json:async()=>url==='/api/replay'?{state:'available',message:'Historical fixture replay'}:{runner:{state:'not_started',mode:'shadow'},settings:{},activity:null}}),
  AbortController,AbortSignal:undefined,setTimeout(){return 1},clearTimeout(){},URL};
 vm.createContext(context);
 vm.runInContext(fs.readFileSync(process.argv[1],'utf8').split('<script>')[1].split('</script>')[0],context);
 await new Promise(resolve=>setImmediate(resolve));
+const home={initialVisible:!get('home-panel').hidden,marketInitiallyHidden:get('live-layout').hidden,title:get('view-title').textContent};
+get('home-live').onclick();home.marketOpened=!get('live-layout').hidden&&get('home-panel').hidden;
 const at=new Date().toISOString();
 const company=symbol=>({symbol,timeframe:'1m',family:'sma_cross_long',state:'shadow_watching',feed_status:'fresh_indicative',
  observed_at:at,last_bar_at:at,last_checked_at:at,quote:{price:'101',quote_at:at},
@@ -45,10 +47,18 @@ const quotes={title:get('chart-title').textContent,nodes:get('stock-chart').chil
 payload.activity.companies[0].quote_history=[];vm.runInContext('render(payload)',context);
 const empty={text:get('chart-empty').textContent,nodes:get('stock-chart').children.length};
 payload.runner.mode='paper';vm.runInContext('render(payload)',context);
-get('replay-tab').onclick();await new Promise(resolve=>setImmediate(resolve));
+get('home-replay').onclick();await new Promise(resolve=>setImmediate(resolve));
 const replay={src:get('replay-frame').src,hidden:get('replay-frame').hidden,liveHidden:get('live-layout').hidden,state:get('replay-state').textContent};
-get('live-tab').onclick();replay.returnedToLive=!get('live-layout').hidden;
-console.log(JSON.stringify({initial,selected,quotes,empty,market,replay,paperHidden:get('shadow-scan').hidden}));
+get('home-live').onclick();replay.returnedToLive=!get('live-layout').hidden;
+context.terminalFixture={research:{state:'saved_simulation',net_pnl:'-12.34',accounts:[{instrument_mode:'long_call',net_pnl:'-12.34',completed_trades:1}],phases:[{gate_passed:false,gate_check:'fixture failed gate'}]},library:{state:'unavailable',message:'No catalog'},models:{state:'saved',providers:['codex'],defaults:{codex:'test'},roster:[{agent_id:'trader_price_structure',primary_model:'codex:test'}]}};
+vm.runInContext('renderTerminal(terminalFixture)',context);
+const research={pnl:get('research-pnl').textContent,className:get('research-pnl').className,accounts:get('research-accounts').textContent,steps:get('research-phases').children.length,roles:get('model-roster').children.length,model:get('model-id').value};
+vm.runInContext("renderTerminal({research:{state:'unavailable',message:'No saved run'},models:{},library:{}})",context);
+research.emptyPnl=get('research-pnl').textContent;research.emptySteps=get('research-phases').children.length;
+get('home-models').onclick();research.modelsVisible=!get('models-panel').hidden&&get('live-layout').hidden&&get('replay-panel').hidden;
+home.destinations={};for(const view of ['research','models','replay']){get('brand-home').onclick();get('home-'+view).onclick();await new Promise(resolve=>setImmediate(resolve));home.destinations[view]=!get(view+'-panel').hidden&&get('home-panel').hidden}
+get('back-action').onclick();home.backWorks=!get('home-panel').hidden;get('home-tab').onclick();home.returned=!get('home-panel').hidden&&get('live-layout').hidden&&get('replay-panel').hidden&&get('models-panel').hidden&&get('research-panel').hidden;
+console.log(JSON.stringify({initial,selected,quotes,empty,market,replay,research,home,paperHidden:get('shadow-scan').hidden}));
 '''
 
 
@@ -72,6 +82,16 @@ class ShadowUITests(unittest.TestCase):
         self.assertEqual(data['replay']['src'],'/replay');self.assertFalse(data['replay']['hidden'])
         self.assertTrue(data['replay']['liveHidden']);self.assertTrue(data['replay']['returnedToLive'])
         self.assertIn('Historical',data['replay']['state'])
+        self.assertEqual(data['research']['pnl'],'-$12.34');self.assertEqual(data['research']['className'],'negative')
+        self.assertEqual(data['research']['accounts'],'1');self.assertEqual(data['research']['steps'],1)
+        self.assertEqual(data['research']['roles'],1);self.assertEqual(data['research']['model'],'test')
+        self.assertEqual(data['research']['emptyPnl'],'—');self.assertEqual(data['research']['emptySteps'],0)
+        self.assertTrue(data['research']['modelsVisible'])
+        self.assertTrue(data['home']['initialVisible']);self.assertTrue(data['home']['marketInitiallyHidden'])
+        self.assertEqual(data['home']['title'],'Home');self.assertTrue(data['home']['marketOpened'])
+        self.assertEqual(data['home']['destinations'],dict(research=True,models=True,replay=True))
+        self.assertTrue(data['home']['returned']);self.assertTrue(data['home']['backWorks'])
+        page=(ROOT/'scripts/status.html').read_text();self.assertNotIn('<aside',page);self.assertNotIn('app-nav',page)
 
 
 if __name__=='__main__':unittest.main()

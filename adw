@@ -1,0 +1,40 @@
+#!/bin/sh
+set -eu
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+if [ -f "$SCRIPT_DIR/scripts/harness2_evolve.py" ]; then
+  ALGO_ROOT="$SCRIPT_DIR"
+elif [ -d "/Users/davidmotovich/code/algo" ]; then
+  ALGO_ROOT="/Users/davidmotovich/code/algo"
+else
+  ALGO_ROOT="/Users/davidmotovich/code/tets"
+fi
+
+if [ -x "$ALGO_ROOT/desk/backtest/.venv/bin/python" ]; then
+  PY_BIN="$ALGO_ROOT/desk/backtest/.venv/bin/python"
+elif [ -x "$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python" ]; then
+  PY_BIN="$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python"
+else
+  PY_BIN="python3"
+fi
+
+export PYTHONPATH="/Users/davidmotovich/code/harness2:${PYTHONPATH:-}"
+
+if [ $# -eq 0 ]; then
+  exec "$PY_BIN" "$ALGO_ROOT/scripts/harness2_evolve.py" visual
+fi
+
+FIRST="$1"
+shift
+case "$FIRST" in
+  algo)
+    SUB="${1:-visual}"
+    if [ $# -gt 0 ]; then shift; fi
+    exec "$PY_BIN" "$ALGO_ROOT/scripts/harness2_evolve.py" "$SUB" "$@"
+    ;;
+  visual|adw|model|models|keys|tests|test|status|run|shadow-watch)
+    exec "$PY_BIN" "$ALGO_ROOT/scripts/harness2_evolve.py" "$FIRST" "$@"
+    ;;
+  *)
+    exec "$PY_BIN" "$ALGO_ROOT/scripts/harness2_evolve.py" visual "$FIRST" "$@"
+    ;;
+esac

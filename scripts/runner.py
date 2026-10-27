@@ -24,6 +24,7 @@ import shadow
 import news
 import company_data
 import replay_bridge
+import terminal_state
 
 ROOT = Path(__file__).resolve().parents[1]
 STATE = ROOT / 'desk/runtime/.state/tets'
@@ -51,7 +52,13 @@ def status():
     if runner.get('state') == 'running':
         try: os.kill(runner['pid'], 0)
         except (ProcessLookupError, PermissionError): runner = {**runner,'state':'stopped'}
-    return dict(observed_at=stamp(), runner=runner, activity=read(ACTIVITY), settings=public_profile(),
+    observer='not_running'
+    lock=ACTIVITY.with_name(ACTIVITY.name+'.lock')
+    if lock.is_file() and not lock.is_symlink():
+        with lock.open('r') as handle:
+            try: fcntl.flock(handle,fcntl.LOCK_EX|fcntl.LOCK_NB);fcntl.flock(handle,fcntl.LOCK_UN)
+            except BlockingIOError: observer='active_writer'
+    return dict(observed_at=stamp(), runner=runner, observer=observer, activity=read(ACTIVITY), settings=public_profile(),
                 news=read(STATE/'news.json'), market=read(STATE/'market.json'), connections=read(STATE/'connections.json'),
                 adw_fleet=read(STATE/'adw_latest_run.json') or read(ROOT/'desk/runtime/.state/harness2/adw_latest_run.json'))
 
@@ -150,6 +157,7 @@ class Handler(BaseHTTPRequestHandler):
         if self.path == '/': body=(ROOT/'scripts/status.html').read_bytes(); content='text/html; charset=utf-8'
         elif self.path == '/api/status': body=json.dumps(status()).encode(); content='application/json'
         elif self.path == '/api/replay': body=json.dumps(replay_bridge.status()).encode(); content='application/json'
+        elif self.path == '/api/terminal': body=json.dumps(terminal_state.snapshot()).encode(); content='application/json'
         elif self.path == '/replay':
             replay=replay_bridge.read()
             if not replay:self.send_error(404,'No verified historical replay on this Mac');return
@@ -160,6 +168,23 @@ class Handler(BaseHTTPRequestHandler):
         if self.path=='/replay':
             self.send_header('Content-Security-Policy',"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'self'")
         self.end_headers(); self.wfile.write(body)
+    def do_POST(self):
+        if self.path != '/api/models': self.send_error(404); return
+        # Same-origin JSON only: no cross-site form submissions or arbitrary command execution.
+        expected=f'http://127.0.0.1:{self.server.server_port}'
+        if self.headers.get('Origin') != expected or self.headers.get('Host') != expected.removeprefix('http://'):
+            self.send_error(403); return
+        if self.headers.get('Content-Type','').split(';')[0] != 'application/json':
+            self.send_error(415); return
+        try:
+            length=int(self.headers.get('Content-Length','0'))
+            if not 0 < length <= 4096: raise ValueError('Invalid request size')
+            result=terminal_state.save_models(json.loads(self.rfile.read(length)))
+        except (ValueError,TypeError):
+            self.send_error(400,'Invalid model assignment'); return
+        body=json.dumps(result).encode()
+        self.send_response(200); self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store')
+        self.send_header('Content-Length',str(len(body))); self.end_headers();self.wfile.write(body)
     def log_message(self,*_): pass
 
 
@@ -169,6 +194,41 @@ def open_server(port, allow_fallback=False):
         except OSError as error:
             if error.errno != errno.EADDRINUSE or not allow_fallback: raise
     raise ValueError('No free local status port; set TETS_PORT to an available port')
+
+
+def refresh_sources(stop, profile):
+    def headlines():
+        while not stop.is_set():
+            try: collect_news()
+            except Exception: pass
+            stop.wait(60)
+    def companies():
+        symbols=watch_symbols(profile)
+        while not stop.is_set():
+            values=[]
+            for symbol in symbols:
+                if stop.is_set():return
+                values.append(company_data.collect(symbol))
+                shadow.save(STATE/'market.json',dict(observed_at=stamp(),companies=values,refresh_seconds=3600))
+            stop.wait(3600)
+    for target in (headlines,companies): threading.Thread(target=target,daemon=True).start()
+
+
+def dashboard(seconds, open_browser=True):
+    """Reopen the UI over saved or running observations without starting another trader."""
+    port=int(os.environ.get('TETS_PORT','8765'))
+    if not 1024<=port<=65535: raise ValueError('Choose a port from 1024 to 65535')
+    server=open_server(port,allow_fallback='TETS_PORT' not in os.environ)
+    server.daemon_threads=True
+    stop=threading.Event()
+    refresh_sources(stop,onboarding.load_profile() or onboarding.defaults())
+    thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+    url=f'http://127.0.0.1:{server.server_port}'
+    print(f'Tets dashboard: {url}\nViewing existing observations; no additional trading worker started.',flush=True)
+    if open_browser:webbrowser.open(url)
+    try:stop.wait(seconds)
+    except KeyboardInterrupt:pass
+    finally:stop.set();server.shutdown();server.server_close()
 
 
 def start(seconds, open_browser=True):
@@ -185,22 +245,7 @@ def start(seconds, open_browser=True):
         server.daemon_threads=True
         web=threading.Thread(target=server.serve_forever,daemon=True);web.start()
         stop=threading.Event()
-        def refresh_news():
-            while not stop.is_set():
-                try: collect_news()
-                except Exception: pass
-                stop.wait(60)
-        worker=threading.Thread(target=refresh_news,daemon=True);worker.start()
-        def refresh_companies():
-            symbols=watch_symbols(profile)
-            while not stop.is_set():
-                values=[]
-                for symbol in symbols:
-                    if stop.is_set():return
-                    values.append(company_data.collect(symbol))
-                    shadow.save(STATE/'market.json',dict(observed_at=stamp(),companies=values,refresh_seconds=3600))
-                stop.wait(3600)
-        metadata=threading.Thread(target=refresh_companies,daemon=True);metadata.start()
+        refresh_sources(stop,profile)
         activity=str(ACTIVITY); run_dir=STATE/'runs'/uuid.uuid4().hex
         if mode=='shadow':
             symbols = shadow.watchlist(os.environ.get('TETS_SYMBOLS',config().get('watchlist',[profile['symbol']])),profile['symbol'])
@@ -253,7 +298,8 @@ def self_test():
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('action',choices=['setup','connect','doctor','news','start','status','self-test','verify-hardware','evolve','adw','models'])
+    p.add_argument('action',choices=['setup','connect','doctor','news','start','dashboard','status','self-test','verify-hardware','evolve','adw','visual','model','models','keys','tests','test'])
+    p.add_argument('positional',nargs='*')
     p.add_argument('--seconds',type=int,default=28800)
     p.add_argument('--no-open',action='store_true')
     p.add_argument('--offline',action='store_true')
@@ -263,6 +309,7 @@ def main():
     p.add_argument('--set',dest='assignments',action='append')
     p.add_argument('--reset',action='store_true')
     p.add_argument('--json',action='store_true')
+    p.add_argument('--full',action='store_true')
     args=p.parse_args()
     if not 1<=args.seconds<=28800: p.error('seconds must be between 1 and 28800')
     if args.action=='setup':setup()
@@ -270,6 +317,7 @@ def main():
     elif args.action=='doctor':doctor(not args.offline)
     elif args.action=='news':print(json.dumps(collect_news(),indent=2))
     elif args.action=='start':start(args.seconds,not args.no_open and os.environ.get('TETS_NO_OPEN')!='1')
+    elif args.action=='dashboard':dashboard(args.seconds,not args.no_open and os.environ.get('TETS_NO_OPEN')!='1')
     elif args.action=='status':print(json.dumps(status(),indent=2))
     elif args.action=='verify-hardware':
         import hardware
@@ -277,14 +325,19 @@ def main():
     elif args.action=='evolve':
         import harness2_evolve
         harness2_evolve.main(['run','--k','2','--mode','parallel'])
-    elif args.action in ('adw','models'):
+    elif args.action in ('adw','visual','model','models','keys'):
         import harness2_evolve
-        fwd=[args.action,'--agent',args.agent]
+        fwd=[args.action,*list(args.positional or []),'--agent',args.agent]
         if args.provider: fwd.extend(['--provider',args.provider])
         if args.model: fwd.extend(['--model',args.model])
         for item in args.assignments or []: fwd.extend(['--set',item])
         if args.reset: fwd.append('--reset')
         if args.json: fwd.append('--json')
+        harness2_evolve.main(fwd)
+    elif args.action in ('tests','test'):
+        import harness2_evolve
+        fwd=['tests']
+        if args.full: fwd.append('--full')
         harness2_evolve.main(fwd)
     else:self_test()
 

@@ -1,6 +1,8 @@
-# tets
+# Evan Algo
 
 Private standalone algo test runner. Uses the reviewed Algo strategy/backtest engine with Yahoo live-data shadow observation, optional Alpaca paper execution and timestamped news. It does not install OpenTerminal, Next.js, Docker or Hermes.
+
+Evan Algo uses the Tunza design system: a full-brand home, one main **Open the market** action, quieter research/replay choices and paper-colored working screens. Back and Home replace the sidebar. Market companies sit above the chart; news, virtual account details and observations follow in reading order. The Inter variable font is bundled locally under its SIL Open Font License, with system fallbacks and no external font request. The same status, research, model-configuration and replay backends remain authoritative.
 
 ## Install
 
@@ -10,7 +12,7 @@ From this repo's folder, run one command:
 sh install.sh
 ```
 
-It installs the dependencies, runs the model/strategy/capital/goal/liquidity wizard, checks the sources, and opens the running terminal with its settings side panel. On Macs with 8 GB RAM or less it automatically selects the low-memory profile. `TETS_PROFILE=normal sh install.sh` forces the normal profile; `sh install-2017-mac.sh` remains available for an explicit low-memory install.
+It installs the dependencies, runs the model/strategy/capital/goal/liquidity wizard, checks the sources, and opens the running terminal with its settings view. On Macs with 8 GB RAM or less it automatically selects the low-memory profile. `TETS_PROFILE=normal sh install.sh` forces the normal profile; `sh install-2017-mac.sh` remains available for an explicit low-memory install.
 
 On Mac use Monterey 12 or newer. Allow internet access and about 3 GB free disk. The scripts install Node/npm, uv, managed Python, locked Python/npm dependencies, Yahoo/yfinance and the pinned Alpaca paper helpers. They then run setup, a synthetic accounting self-test, source connection checks and the algo, opening a lightweight status page at **http://127.0.0.1:8765**. Ctrl-C stops the foreground run. The default run lasts at most eight hours; no background service is installed.
 
@@ -22,7 +24,7 @@ No system Python or Homebrew is required. If Git is missing, complete Apple's Co
 2. Choose strategy, symbol, timeframe, allocated capital, entry budget, profit goal, loss stop, liquidity and optional AI connection. The lightest setup is rule-based. Goals are not forecasts. Shadow mode uses intraday rules, capital and entry budget; AI review, liquidity gating and loss-stop controls are paper-mode features.
 3. For paper mode, setup opens [Alpaca](https://app.alpaca.markets/) so you can create a Paper Only account and generate **paper** keys. Enter both keys at hidden local prompts. Tets saves them in a private, gitignored file and checks the paper account endpoint. You can press Enter to connect later with `sh tets connect`.
 
-API keys belong to your account: this repo cannot create an account or issue keys for you, and includes no shared credentials. Yahoo market data, Yahoo company headlines/RSS and BBC business RSS are configured automatically and need no keys. RSS keeps headlines, links and publication times, without downloading article bodies. Optional Alpaca stock/crypto news reuses your Alpaca keys; actual news access and delay depend on your entitlement. The terminal side panel shows the selected model, algorithm, capital, entry budget, profit goal, liquidity and actual AI state. Its main view shows observed prices, decisions, orders/fills and P&L, with broker paper results distinguished from assumed virtual fills. It distinguishes connected, empty, unavailable and credentials-required states. Keys never appear in the status API or Git history.
+API keys belong to your account: this repo cannot create an account or issue keys for you, and includes no shared credentials. Yahoo market data, Yahoo company headlines/RSS and BBC business RSS are configured automatically and need no keys. RSS keeps headlines, links and publication times, without downloading article bodies. Optional Alpaca stock/crypto news reuses your Alpaca keys; actual news access and delay depend on your entitlement. The settings view shows the selected model, algorithm, capital, entry budget, profit goal, liquidity and actual AI state. Its main view shows observed prices, decisions, orders/fills and P&L, with broker paper results distinguished from assumed virtual fills. It distinguishes connected, empty, unavailable and credentials-required states. Keys never appear in the status API or Git history.
 
 Optional AI reviews use an existing signed-in Codex/Claude CLI or a separately installed local OpenAI-compatible model. Rule-based mode is fully included. No paid account, model credentials or model weights are bundled. Unavailable AI blocks an AI-reviewed paper entry; it never overrides risk controls. Headlines are recorded/displayed for context and never generate orders.
 
@@ -65,6 +67,12 @@ The primary setup symbol is always included, and the total is capped at five. Th
 Every install also runs the installed regression suite, including chart rendering logic without newer Safari abort helpers, signal timing, symbol routing and capital accounting. Intel installs explicitly select Monterey-compatible wheels, repair incompatible wheels from earlier installs and audit native dependencies' minimum macOS versions. Hardware evidence distinguishes native Intel from Rosetta. Intel execution on Apple Silicon does not establish physical 2017 or Monterey execution.
 
 ## Combined market terminal and Algo Lab replay
+
+The workspace now separates **Market**, **Research runs**, **Models & setup** and **Algo Lab replay**. Market keeps the chart, watchlist, headlines and current virtual decisions together. Research runs reads the saved CLI fleet report and, when present, the adjacent Algo experiment catalog in read-only mode. Missing reports stay empty; simulated P&L keeps its actual sign. A saved fleet is a historical calculation, not twelve running broker accounts. Older reports without dataset provenance are labeled accordingly. The merged ADW Python workflow's model names are assignments, not inference receipts; its technical indicators are local calculations, and option prices can be theoretical.
+
+Models & setup edits the canonical sticky roster used by `sh tets adw` and `sh tets models`. Saving an assignment starts no model, inference or trade. Existing provider restrictions remain enforced. The local save endpoint accepts only same-origin JSON and known role assignments. Paper entry-review settings remain separate from research role assignments.
+
+`sh tets dashboard` reopens the UI and source refreshers over existing observations without starting another trading worker. This is useful if the browser/server has closed while an observation worker still owns its activity lock. The UI distinguishes an active observation writer from a stopped foreground runner. The usual one-command installer and both Mac profiles remain available; this UI adds no dependency.
 
 The opening screen uses the earlier dark-blue Algo Lab design and starts with the observed live-quote chart. Company selection changes the price chart, company snapshot and company-specific headlines together. Quote times and stale states remain visible. Fundamentals refresh hourly; headlines refresh every minute and retain publisher timestamps. The feed is unofficial Yahoo indicative data, and provider delay is not guaranteed.
 

@@ -1175,9 +1175,13 @@ def build_fleet_account_specs(symbol: str = 'SPY', notional_usd: str = '1000') -
 
 SUPPORTED_PROVIDERS: tuple[str, ...] = (
     'codex',
+    'openai',
+    'grok',
+    'xai',
+    'deepseek',
+    'glm',
     'openrouter',
     'gemini',
-    'deepseek',
     'local',
     'typesafe',
 )
@@ -1189,12 +1193,96 @@ BLOCKED_PROVIDERS: tuple[str, ...] = (
 
 DEFAULT_PROVIDER_MODELS: dict[str, str] = {
     'codex': 'gpt-5.4',
+    'openai': 'gpt-5.4',
+    'grok': 'grok-4',
+    'xai': 'grok-4',
+    'deepseek': 'deepseek-v4.1-flash',
+    'glm': 'glm-5',
     'openrouter': 'kimi-k2.7-code',
     'gemini': 'gemini-2.5-pro',
-    'deepseek': 'deepseek-v4.1-flash',
     'local': 'qwen2.5-coder:32b',
     'typesafe': 'jev-router-v1',
 }
+
+PROVIDER_CATALOG: list[dict[str, Any]] = [
+    {
+        'num': 1,
+        'provider': 'codex',
+        'aliases': ['openai', 'codex'],
+        'label': 'OpenAI / Codex Subscription & API',
+        'auth_modes': ['subscription_cli', 'api_key'],
+        'env_vars': ['OPENAI_API_KEY'],
+        'cli_login_cmd': 'codex login',
+        'endpoint': 'https://api.openai.com/v1',
+        'models': ['gpt-5.4', 'gpt-5.3-codex', 'o3', 'o4-mini'],
+    },
+    {
+        'num': 2,
+        'provider': 'grok',
+        'aliases': ['grok', 'xai'],
+        'label': 'Grok (xAI) Subscription & API',
+        'auth_modes': ['subscription_cli', 'api_key'],
+        'env_vars': ['XAI_API_KEY', 'GROK_API_KEY'],
+        'cli_login_cmd': 'algo model key grok <XAI_API_KEY_OR_SUBSCRIPTION>',
+        'endpoint': 'https://api.x.ai/v1',
+        'models': ['grok-4', 'grok-3', 'grok-3-mini', 'grok-code-fast-1'],
+    },
+    {
+        'num': 3,
+        'provider': 'deepseek',
+        'aliases': ['deepseek'],
+        'label': 'DeepSeek API',
+        'auth_modes': ['api_key'],
+        'env_vars': ['DEEPSEEK_API_KEY'],
+        'cli_login_cmd': 'algo model key deepseek <DEEPSEEK_API_KEY>',
+        'endpoint': 'https://api.deepseek.com/v1',
+        'models': ['deepseek-v4.1-flash', 'deepseek-r1', 'deepseek-chat', 'deepseek-reasoner'],
+    },
+    {
+        'num': 4,
+        'provider': 'glm',
+        'aliases': ['glm', 'zhipu'],
+        'label': 'GLM (Zhipu AI) API',
+        'auth_modes': ['api_key'],
+        'env_vars': ['GLM_API_KEY', 'ZHIPUAI_API_KEY'],
+        'cli_login_cmd': 'algo model key glm <GLM_API_KEY>',
+        'endpoint': 'https://open.bigmodel.cn/api/paas/v4',
+        'models': ['glm-5', 'glm-4.5', 'glm-4-plus', 'glm-4-air'],
+    },
+    {
+        'num': 5,
+        'provider': 'openrouter',
+        'aliases': ['openrouter', 'or'],
+        'label': 'OpenRouter API (Kimi, DeepSeek, Qwen, Grok, GLM)',
+        'auth_modes': ['api_key'],
+        'env_vars': ['OPENROUTER_API_KEY'],
+        'cli_login_cmd': 'algo model key openrouter <OPENROUTER_API_KEY>',
+        'endpoint': 'https://openrouter.ai/api/v1',
+        'models': ['kimi-k2.7-code', 'deepseek/deepseek-v4.1-flash', 'qwen/qwen3-coder', 'x-ai/grok-4', 'z-ai/glm-5'],
+    },
+    {
+        'num': 6,
+        'provider': 'gemini',
+        'aliases': ['gemini', 'google'],
+        'label': 'Google Gemini API',
+        'auth_modes': ['api_key'],
+        'env_vars': ['GEMINI_API_KEY'],
+        'cli_login_cmd': 'algo model key gemini <GEMINI_API_KEY>',
+        'endpoint': 'https://generativelanguage.googleapis.com/v1beta/openai',
+        'models': ['gemini-2.5-pro', 'gemini-2.5-flash'],
+    },
+    {
+        'num': 7,
+        'provider': 'local',
+        'aliases': ['local', 'ollama'],
+        'label': 'Local Model (Ollama / LM Studio)',
+        'auth_modes': ['local_http'],
+        'env_vars': [],
+        'cli_login_cmd': 'ollama serve',
+        'endpoint': 'http://127.0.0.1:11434/v1',
+        'models': ['qwen2.5-coder:32b', 'deepseek-r1:32b', 'llama3.3:70b'],
+    },
+]
 
 
 def resolve_provider_model(provider_or_spec: str, model: str | None = None) -> str:
@@ -1202,23 +1290,29 @@ def resolve_provider_model(provider_or_spec: str, model: str | None = None) -> s
     raw = str(provider_or_spec or '').strip()
     if not raw:
         raise ValueError('provider_or_model_required')
+    alias_norm = {'zhipu': 'glm', 'or': 'openrouter', 'google': 'gemini', 'ollama': 'local'}
     if model:
-        provider = raw.lower()
+        provider = alias_norm.get(raw.lower(), raw.lower())
         model_id = str(model).strip()
     elif ':' in raw:
         provider, model_id = raw.split(':', 1)
-        provider = provider.strip().lower()
+        provider = alias_norm.get(provider.strip().lower(), provider.strip().lower())
         model_id = model_id.strip()
     elif '/' in raw and raw.split('/', 1)[0].lower() in ('typesafe',):
         provider, model_id = raw.split('/', 1)
         provider = provider.strip().lower()
         model_id = model_id.strip()
     else:
-        provider = raw.lower()
+        provider = alias_norm.get(raw.lower(), raw.lower())
         if provider not in DEFAULT_PROVIDER_MODELS and provider not in BLOCKED_PROVIDERS:
-            # Treat bare model name as codex or openrouter depending on prefix
             if provider.startswith(('gpt-', 'o1', 'o3', 'o4', 'codex')):
                 return f'codex:{raw}'
+            if provider.startswith('grok'):
+                return f'grok:{raw}'
+            if provider.startswith('glm'):
+                return f'glm:{raw}'
+            if provider.startswith('deepseek'):
+                return f'deepseek:{raw}'
             if provider.startswith('gemini'):
                 return f'gemini:{raw}'
             return f'openrouter:{raw}'
@@ -1401,20 +1495,33 @@ def configure_sticky_models(
 
     valid_ids = {item['agent_id'] for item in DEFAULT_AGENTIC_TRADER_ROSTER}
     alias_map = {
+        '1': 'stage_0_jev_router',
+        '2': 'phase_1_scout_recon',
+        '3': 'trader_price_structure',
+        '4': 'trader_theta_mean_reversion',
+        '5': 'phase_3_risk_auditor',
+        '6': 'phase_4_fleet_dispatcher',
+        'a': 'traders',
+        '0': 'traders',
         'scout': 'phase_1_scout_recon',
+        'price': 'trader_price_structure',
         'price_structure': 'trader_price_structure',
         'trader_codex_price_structure': 'trader_price_structure',
         'theta': 'trader_theta_mean_reversion',
+        'options': 'trader_theta_mean_reversion',
         'mean_reversion': 'trader_theta_mean_reversion',
         'trader_claude_theta_mean_reversion': 'trader_theta_mean_reversion',
         'risk': 'phase_3_risk_auditor',
         'dispatcher': 'phase_4_fleet_dispatcher',
+        'fleet': 'phase_4_fleet_dispatcher',
         'jev': 'stage_0_jev_router',
     }
+    provider_num_map = {str(p['num']): p['provider'] for p in PROVIDER_CATALOG}
 
     if provider or model:
-        resolved = resolve_provider_model(provider or 'codex', model)
-        target_id = alias_map.get(agent_id, agent_id)
+        prov_norm = provider_num_map.get(str(provider or '').strip(), provider or 'codex')
+        resolved = resolve_provider_model(prov_norm, model)
+        target_id = alias_map.get(str(agent_id).strip().lower(), str(agent_id).strip())
         if target_id in ('all', 'traders'):
             targets = (
                 valid_ids
@@ -1434,7 +1541,7 @@ def configure_sticky_models(
         if '=' not in assign:
             raise ValueError(f'invalid_assignment:{assign}. Expected <agent_id>=<provider>:<model>')
         k, v = assign.split('=', 1)
-        k = alias_map.get(k.strip(), k.strip())
+        k = alias_map.get(k.strip().lower(), k.strip())
         resolved = resolve_provider_model(v.strip())
         if k in ('all', 'traders'):
             for tid in valid_ids:
@@ -1457,12 +1564,14 @@ def configure_sticky_models(
     data = (json.dumps(payload, indent=2, sort_keys=True) + '\n').encode('utf-8')
     path.write_bytes(data)
 
-    # Also mirror to tets state when using the default state path so both CLIs and UI stay in sync
+    # Also mirror to both algo and tets state when using the default state path so both CLIs and UI stay in sync
     if state_path is None:
-        root = Path(__file__).resolve().parents[1]
-        tets_state = root / 'desk/runtime/.state/tets'
-        if tets_state.is_dir():
-            (tets_state / 'model_roster.json').write_bytes(data)
+        for repo_candidate in (Path('/Users/davidmotovich/code/algo'), Path('/Users/davidmotovich/code/tets')):
+            for rel_dir in ('desk/runtime/.state/harness2', 'desk/runtime/.state/tets'):
+                target_dir = repo_candidate / rel_dir
+                if repo_candidate.is_dir():
+                    target_dir.mkdir(parents=True, exist_ok=True, mode=0o700)
+                    (target_dir / 'model_roster.json').write_bytes(data)
 
     roster = load_sticky_model_roster(path)
     if state_path is None:
@@ -1475,6 +1584,225 @@ def configure_sticky_models(
         'overrides': existing_overrides,
         'roster': roster,
     }
+
+
+def _default_provider_keys_path() -> Path:
+    root = Path(__file__).resolve().parents[1]
+    return root / 'desk/runtime/.state/harness2/provider_keys.json'
+
+
+def _mask_secret(raw: str) -> str:
+    val = str(raw or '').strip()
+    if not val:
+        return 'NOT SET'
+    if val.lower() in ('subscription', 'cli', 'signed-in', 'oauth'):
+        return 'CONNECTED (Subscription / CLI)'
+    if len(val) <= 8:
+        return '••••' + val[-2:]
+    return f'{val[:4]}••••{val[-4:]}'
+
+
+def load_provider_connections(keys_path: Path | None = None) -> list[dict[str, Any]]:
+    """Inspect all connectable AI subscriptions & API keys (OpenAI/Codex, Grok/xAI, DeepSeek, GLM, OpenRouter, Gemini, Local)."""
+    import os as _os
+    import shutil as _shutil
+
+    path = Path(keys_path) if keys_path else _default_provider_keys_path()
+    saved_keys: dict[str, dict[str, str]] = {}
+    if path.is_file() and not path.is_symlink():
+        try:
+            data = json.loads(path.read_text(encoding='utf-8'))
+            if isinstance(data, dict) and isinstance(data.get('providers'), dict):
+                saved_keys = data['providers']
+        except Exception:
+            saved_keys = {}
+
+    connections: list[dict[str, Any]] = []
+    for entry in PROVIDER_CATALOG:
+        prov = entry['provider']
+        saved = saved_keys.get(prov, {})
+        saved_token = str(saved.get('token', '')).strip()
+        saved_mode = str(saved.get('mode', '')).strip()
+
+        env_token = ''
+        env_source = ''
+        for ev in entry.get('env_vars', []):
+            val = _os.environ.get(ev, '').strip()
+            if val:
+                env_token = val
+                env_source = ev
+                break
+
+        status = 'NOT SET'
+        connected = False
+        auth_detail = 'Run `algo model` -> [K] to connect'
+        if saved_token:
+            connected = True
+            if saved_mode == 'subscription' or saved_token.lower() in ('subscription', 'cli', 'signed-in'):
+                status = 'CONNECTED (Subscription)'
+                auth_detail = f'{entry["label"]} active via Subscription'
+            else:
+                status = f'CONNECTED ({_mask_secret(saved_token)})'
+                auth_detail = f'Saved in sticky state ({_mask_secret(saved_token)})'
+        elif env_token:
+            connected = True
+            status = f'CONNECTED ({env_source}: {_mask_secret(env_token)})'
+            auth_detail = f'Loaded from env ${env_source}'
+        elif prov == 'codex' and _shutil.which('codex'):
+            connected = True
+            status = 'CONNECTED (Codex CLI Subscription)'
+            auth_detail = 'Signed-in Codex CLI on PATH'
+        elif prov == 'local':
+            connected = True
+            status = 'READY (Local HTTP :11434)'
+            auth_detail = entry['endpoint']
+
+        connections.append({
+            'num': entry['num'],
+            'provider': prov,
+            'aliases': entry['aliases'],
+            'label': entry['label'],
+            'connected': connected,
+            'status': status,
+            'auth_detail': auth_detail,
+            'env_vars': entry['env_vars'],
+            'endpoint': entry['endpoint'],
+            'models': entry['models'],
+        })
+    return connections
+
+
+def save_provider_connection(
+    provider: str,
+    key_or_mode: str,
+    *,
+    keys_path: Path | None = None,
+) -> dict[str, Any]:
+    """Save an API key or subscription connection mode (`subscription` or API key) with 0600 permissions."""
+    import os as _os
+
+    raw_prov = str(provider or '').strip().lower()
+    if raw_prov in BLOCKED_PROVIDERS or 'claude' in raw_prov or 'anthropic' in raw_prov:
+        raise ValueError('anthropic_models_disabled: Anthropic/Claude keys and models are blocked.')
+
+    prov_map = {str(p['num']): p['provider'] for p in PROVIDER_CATALOG}
+    for p in PROVIDER_CATALOG:
+        prov_map[p['provider']] = p['provider']
+        for al in p['aliases']:
+            prov_map[al] = p['provider']
+
+    if raw_prov not in prov_map:
+        raise ValueError(
+            f'unknown_provider:{provider}. Choose from: {", ".join(p["provider"] for p in PROVIDER_CATALOG)}'
+        )
+    canon_prov = prov_map[raw_prov]
+    token = str(key_or_mode or '').strip()
+    if not token:
+        raise ValueError('api_key_or_subscription_required')
+
+    path = Path(keys_path) if keys_path else _default_provider_keys_path()
+    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+    existing: dict[str, Any] = {'schema_version': 1, 'providers': {}}
+    if path.is_file() and not path.is_symlink():
+        try:
+            loaded = json.loads(path.read_text(encoding='utf-8'))
+            if isinstance(loaded, dict):
+                existing = loaded
+                existing.setdefault('providers', {})
+        except Exception:
+            existing = {'schema_version': 1, 'providers': {}}
+
+    if token.lower() in ('clear', 'remove', 'delete', 'off', 'none'):
+        existing['providers'].pop(canon_prov, None)
+    else:
+        mode = 'subscription' if token.lower() in ('subscription', 'sub', 'cli', 'signed-in', 'oauth') else 'api_key'
+        existing['providers'][canon_prov] = {
+            'mode': mode,
+            'token': token,
+            'updated_at': datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z'),
+        }
+
+    encoded = (json.dumps(existing, indent=2, sort_keys=True) + '\n').encode('utf-8')
+    path.write_bytes(encoded)
+    try:
+        _os.chmod(path, 0o600)
+    except OSError:
+        pass
+
+    if keys_path is None:
+        for repo_candidate in (Path('/Users/davidmotovich/code/algo'), Path('/Users/davidmotovich/code/tets')):
+            for rel_dir in ('desk/runtime/.state/harness2', 'desk/runtime/.state/tets'):
+                if repo_candidate.is_dir():
+                    tdir = repo_candidate / rel_dir
+                    tdir.mkdir(parents=True, exist_ok=True, mode=0o700)
+                    kfile = tdir / 'provider_keys.json'
+                    kfile.write_bytes(encoded)
+                    try:
+                        _os.chmod(kfile, 0o600)
+                    except OSError:
+                        pass
+
+    return {
+        'persisted': True,
+        'provider': canon_prov,
+        'masked_status': _mask_secret(token) if token.lower() not in ('clear', 'remove', 'delete', 'off', 'none') else 'NOT SET',
+        'connections': load_provider_connections(path),
+    }
+
+
+def render_model_and_keys_cli(
+    roster: list[dict[str, Any]] | None = None,
+    connections: list[dict[str, Any]] | None = None,
+) -> str:
+    """Render the interactive `algo model` terminal view for choosing each Agent's model and connecting API keys/subscriptions."""
+    W = 114
+    active_roster = roster or load_sticky_model_roster()
+    active_conns = connections or load_provider_connections()
+    lines = [
+        "╔" + ("═" * W) + "╗",
+        _box_line("  ALGO MODEL & API SUBSCRIPTION SELECTOR · STICKY AGENTIC TRADER CONFIGURATOR (NO ANTHROPIC/CLAUDE)", W),
+        "╠" + ("═" * W) + "╣",
+        _box_line("  PART 1 · CHOOSE AN AGENTIC TRADER TO CONFIGURE (STICKY ACROSS CLI & WEB UI)", W),
+        "╟" + ("─" * W) + "╢",
+        _box_line(f"  {'#':<3} │ {'Agent ID':<27} │ {'Sticky Primary Model':<34} │ {'Fallback Model':<26} │ {'Accounts'}", W),
+        "╟" + ("─" * W) + "╢",
+    ]
+    for idx, agent in enumerate(active_roster, start=1):
+        accts = ','.join(agent.get('assigned_accounts', []))
+        if len(accts) > 12:
+            accts = f"{len(agent.get('assigned_accounts', []))} accts"
+        lines.append(
+            _box_line(
+                f"  [{idx}] │ {agent['agent_id']:<27} │ {agent['primary_model']:<34} │ {agent['fallback_model']:<26} │ {accts}",
+                W,
+            )
+        )
+    lines.extend([
+        _box_line("  [A] │ ALL TRADING AGENTS (3,4,5,6)│ Set one Provider + Model across all 4 core trading & risk agents at once", W),
+        "╠" + ("═" * W) + "╣",
+        _box_line("  PART 2 · CONNECTABLE SUBSCRIPTIONS & API KEYS (OPENAI / GROK / DEEPSEEK / GLM / OPENROUTER / GEMINI)", W),
+        "╟" + ("─" * W) + "╢",
+        _box_line(f"  {'#':<3} │ {'Provider / Subscription':<36} │ {'Connection Status':<32} │ {'Available Models'}", W),
+        "╟" + ("─" * W) + "╢",
+    ])
+    for conn in active_conns:
+        models_str = ', '.join(conn.get('models', [])[:3])
+        lines.append(
+            _box_line(
+                f"  [{conn['num']}] │ {conn['label'][:36]:<36} │ {conn['status'][:32]:<32} │ {models_str}",
+                W,
+            )
+        )
+    lines.extend([
+        "╠" + ("═" * W) + "╣",
+        _box_line("  QUICK TERMINAL COMMANDS (OR USE THE INTERACTIVE PROMPT BELOW):", W),
+        _box_line("  • Interactive Menu : algo model", W),
+        _box_line("  • Set Agent Model  : algo model <agent# or all> <provider> <model>   (e.g. algo model 4 grok grok-4)", W),
+        _box_line("  • Connect API/Sub  : algo model key <openai|grok|deepseek|glm|openrouter|gemini> <API_KEY_OR_subscription>", W),
+        _box_line("  • Visual ADW CLI   : adw algo visual                                 │ Run Tests: algo tests", W),
+        "╚" + ("═" * W) + "╝",
+    ])
+    return "\n".join(lines)
 
 
 def simulate_shadow_fleet(
@@ -1756,6 +2084,7 @@ def run_adw_pipeline(
         'synced_triad_contract': contract_audit,
         'supported_providers': list(SUPPORTED_PROVIDERS),
         'blocked_providers': list(BLOCKED_PROVIDERS),
+        'provider_connections': load_provider_connections(),
         'sticky_model_config_path': str(roster_state_path or _default_roster_state_path()),
         'agentic_trader_roster': active_roster,
         'phases': phases,
@@ -1794,7 +2123,7 @@ def render_adw_visual_cli(adw_run: dict[str, Any]) -> str:
             W,
         ),
         _box_line(
-            "  Sticky Model Config: sh scripts/evolve models --provider <codex|openrouter|gemini|local> --model <id>",
+            "  Commands: adw algo visual  │  algo model (Pick Agent, Model & Connect API Keys)  │  algo tests",
             W,
         ),
         "╠" + ("═" * W) + "╣",

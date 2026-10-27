@@ -13,10 +13,10 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 const source=fs.readFileSync(process.argv[1],'utf8').split('<script>')[1].split('</script>')[0];
 const elements=new Map();
-const element=()=>({textContent:'',append(){},replaceChildren(){}});
+const element=()=>({textContent:'',append(){},replaceChildren(){},setAttribute(){}});
 let calls=0;
 const context={
- document:{getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id)},createElement:element},
+ document:{body:{},getElementById(id){if(!elements.has(id))elements.set(id,element());return elements.get(id)},createElement:element},
  fetch:async()=>{calls++;return {ok:true,json:async()=>({runner:{state:'running',mode:'shadow'},settings:{ai:{provider:'none'}},observed_at:new Date().toISOString(),activity:null})}},
  AbortController,AbortSignal:undefined,setTimeout(){return 1},clearTimeout(){},URL,
 };
@@ -27,7 +27,7 @@ console.log(JSON.stringify({calls,health:elements.get('health').textContent}));
         result=subprocess.run(['node','--input-type=module','-e',harness,str(page)],capture_output=True,text=True,timeout=30,check=True)
         data=json.loads(result.stdout)
         self.assertEqual(data['calls'],1)
-        self.assertIn('RUNNING',data['health'])
+        self.assertIn('Running',data['health'])
         self.assertNotIn('UNAVAILABLE',data['health'])
 
 

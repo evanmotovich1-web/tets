@@ -82,7 +82,7 @@ sys.exit(0 if result.wasSuccessful() else 1)
     finally:server.shutdown();server.server_close();thread.join(timeout=5)
     locks=['desk/requirements.lock','desk/package-lock.json','scripts/paper-requirements.lock','scripts/shadow-requirements.lock']
     sources=['scripts/hardware.py','scripts/runner.py','scripts/bootstrap','scripts/env','scripts/install','scripts/shadow.py','scripts/paper.py',
-             'scripts/status.html','scripts/company_data.py','scripts/replay_bridge.py','scripts/news.py',
+             'scripts/status.html','scripts/company_data.py','scripts/replay_bridge.py','scripts/news.py','scripts/terminal_state.py',
              'scripts/mac_compat.py','install.sh','install-2017-mac.sh','tets']
     peak=resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss
     report=dict(kind='tets_hardware_verification',checked_at=datetime.now(timezone.utc).isoformat(),

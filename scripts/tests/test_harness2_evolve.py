@@ -253,6 +253,33 @@ class Harness2EvolveTests(unittest.TestCase):
             )
             self.assertEqual(theta_agent['primary_model'], 'gemini:gemini-2.5-pro')
 
+            # Verify numbered agent selection (e.g. agent '4') + Grok / DeepSeek / GLM / OpenAI providers
+            self.assertEqual(ose.resolve_provider_model('grok', 'grok-4'), 'grok:grok-4')
+            self.assertEqual(ose.resolve_provider_model('deepseek', 'deepseek-r1'), 'deepseek:deepseek-r1')
+            self.assertEqual(ose.resolve_provider_model('glm', 'glm-5'), 'glm:glm-5')
+            self.assertEqual(ose.resolve_provider_model('openai', 'gpt-5.4'), 'openai:gpt-5.4')
+
+            ose.configure_sticky_models(
+                state_path=roster_file,
+                provider='grok',
+                model='grok-4',
+                agent_id='4',
+            )
+            reloaded = ose.load_sticky_model_roster(roster_file)
+            self.assertEqual(reloaded[3]['primary_model'], 'grok:grok-4')
+
+            keys_file = Path(tmp_roster_dir) / 'provider_keys.json'
+            key_res = ose.save_provider_connection('grok', 'xai-demo-token-9876', keys_path=keys_file)
+            self.assertTrue(key_res['persisted'])
+            self.assertEqual(key_res['masked_status'], 'xai-••••9876')
+            menu_text = ose.render_model_and_keys_cli(reloaded, key_res['connections'])
+            self.assertIn('Grok (xAI) Subscription & API', menu_text)
+            self.assertIn('DeepSeek API', menu_text)
+            self.assertIn('GLM (Zhipu AI) API', menu_text)
+            self.assertIn('OpenRouter API', menu_text)
+            for mline in menu_text.splitlines():
+                self.assertEqual(len(mline), 116)
+
 
 if __name__ == '__main__':
     unittest.main()
