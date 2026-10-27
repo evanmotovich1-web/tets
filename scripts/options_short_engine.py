@@ -2380,13 +2380,39 @@ def build_sssf_trace_and_db(
                 'duration_ms': 420,
                 'agent': session_agents[0],
                 'config': {
-                    'coding_agent': 'pi / harness2',
+                    'coding_agent': 'Harness² Trade Workflow Runtime',
                     'model': m_jev,
+                    'fallback_model': by_agent.get('stage_0_jev_router', {}).get('fallback_model', 'openrouter:qwen/qwen3-32b-fast'),
                     'thinking': 'low (0.4s budget)',
+                    'temperature': '0.0 (deterministic rerank)',
+                    'max_output_tokens': 1024,
+                    'timeout_ms': 450,
                     'tools': ['options_short_engine.jev_decision_filter'],
                     'harness': ['jev-memory', 'jev-search', 'jev-model-routing'],
                     'purpose': 'Filter noisy news feeds and block adversarial prompt injections before waking frontier seats.',
                     'session_id': session_agents[0]['session_id'],
+                    'harness_components': {
+                        'systemprompt_md': 'harness2/systemprompt.md#stage_0_jev_router',
+                        'tools_py': 'scripts/options_short_engine.py::jev_decision_filter',
+                        'tool_guidance_md': 'harness2/tool_descriptions/tool_guidance.md#jev_router',
+                        'subagent_spec': 'harness2/agents/stage_0_jev_router.md',
+                        'pre_tool_hook': 'hooks/pre_tool_use_gate.py (injection & latency guard <= 450ms)',
+                        'settings_json': 'live_orders=false, max_select=3, drop_injections=true',
+                    },
+                    'tool_Schemata': [
+                        {
+                            'tool': 'options_short_engine.jev_decision_filter',
+                            'signature': 'jev_decision_filter(symbol: str, rows: list[dict], passages: list[dict] | None = None) -> dict',
+                            'guardrail': 'Blocks prompt-injection tokens ("ignore previous", "market order all") and caps latency at 450ms.',
+                            'returns': 'JevCatalystEnvelope {selected_ids, dropped_injection_ids, complexity_lane, screening}',
+                        }
+                    ],
+                    'risk_limits': {
+                        'daily_loss_stop_pct': '10.0%',
+                        'max_bar_participation': '0.1% of median bar dollar volume',
+                        'prompt_injection_policy': 'Hard drop + alert before any trader seat runs',
+                        'blocked_providers': 'anthropic, claude',
+                    },
                 },
                 'prompts': {
                     'system_prompt': (
@@ -2455,9 +2481,13 @@ def build_sssf_trace_and_db(
                 'duration_ms': 780,
                 'agent': session_agents[1],
                 'config': {
-                    'coding_agent': 'pi / harness2',
+                    'coding_agent': 'Harness² Trade Workflow Runtime',
                     'model': m_scout,
-                    'thinking': 'medium',
+                    'fallback_model': by_agent.get('phase_1_scout_recon', {}).get('fallback_model', 'gemini:gemini-2.5-flash'),
+                    'thinking': 'medium (1,024 thinking tokens)',
+                    'temperature': '0.0 (deterministic telemetry)',
+                    'max_output_tokens': 2048,
+                    'timeout_ms': 1500,
                     'tools': [
                         'algo_tools.inspect_regime',
                         'algo_tools.audit_liquidity',
@@ -2466,6 +2496,40 @@ def build_sssf_trace_and_db(
                     'harness': ['measurement-integrity', 'bot-discipline'],
                     'purpose': 'Compute volatility regime, enforce $1M median bar volume & 0.1% participation cap, and pull Maverick-MCP technicals.',
                     'session_id': session_agents[1]['session_id'],
+                    'harness_components': {
+                        'systemprompt_md': 'harness2/systemprompt.md#phase_1_scout_recon',
+                        'tools_py': 'scripts/algo_tools.py + scripts/options_short_engine.py::maverick_mcp_context',
+                        'tool_guidance_md': 'harness2/tool_descriptions/tool_guidance.md#scout_recon',
+                        'subagent_spec': 'harness2/agents/phase_1_scout_recon.md',
+                        'pre_tool_hook': 'hooks/pre_tool_use_gate.py (enforces median_bar_dollars >= $1,000,000)',
+                        'settings_json': 'max_bar_volume_share=0.001, min_median_bar_usd=1000000',
+                    },
+                    'tool_Schemata': [
+                        {
+                            'tool': 'algo_tools.inspect_regime',
+                            'signature': 'inspect_regime(rows: list[dict], lookback: int = 20) -> dict',
+                            'guardrail': 'Requires completed regular-session 1m OHLCV bars; no lookahead.',
+                            'returns': 'Regime classification (move_bps, realized_vol, trend_strength)',
+                        },
+                        {
+                            'tool': 'algo_tools.audit_liquidity',
+                            'signature': 'audit_liquidity(rows: list[dict], max_bar_volume_share: float = 0.001) -> dict',
+                            'guardrail': 'Hard gate: median bar dollar volume >= $1,000,000 and order <= 0.1% of bar volume.',
+                            'returns': 'Liquidity certificate (median_bar_dollars, cap_usd, passed)',
+                        },
+                        {
+                            'tool': 'options_short_engine.maverick_mcp_context',
+                            'signature': 'maverick_mcp_context(symbol: str, rows: list[dict]) -> dict',
+                            'guardrail': 'Computes RSI-14, MACD (12,26,9), 30-bar Support/Resistance, and Bull/Bear scores.',
+                            'returns': 'MaverickLiquidityReconEnvelope',
+                        },
+                    ],
+                    'risk_limits': {
+                        'daily_loss_stop_pct': '10.0%',
+                        'max_bar_participation': '0.1% ($1,000 max order budget)',
+                        'min_median_bar_dollars': '$1,000,000',
+                        'blocked_providers': 'anthropic, claude',
+                    },
                 },
                 'prompts': {
                     'system_prompt': (
@@ -2561,9 +2625,13 @@ def build_sssf_trace_and_db(
                 'duration_ms': 920,
                 'agent': session_agents[2],
                 'config': {
-                    'coding_agent': 'pi / harness2',
+                    'coding_agent': 'Harness² Trade Workflow Runtime',
                     'model': m_price,
-                    'thinking': 'high',
+                    'fallback_model': by_agent.get('trader_price_structure', {}).get('fallback_model', 'openrouter:deepseek/deepseek-r1'),
+                    'thinking': 'high (4,096 thinking tokens)',
+                    'temperature': '0.1 (structured synthesis)',
+                    'max_output_tokens': 4096,
+                    'timeout_ms': 3000,
                     'tools': [
                         'algo_tools.evaluate_strategy_candidate',
                         'options_short_engine.fetch_live_or_theoretical_options_chain',
@@ -2572,6 +2640,40 @@ def build_sssf_trace_and_db(
                     'harness': ['entry-classification', 'measurement-integrity'],
                     'purpose': 'Price directional Long/Short Equity and Long Call/Put OTM breakout contracts with realistic spread + slippage.',
                     'session_id': session_agents[2]['session_id'],
+                    'harness_components': {
+                        'systemprompt_md': 'harness2/systemprompt.md#trader_price_structure',
+                        'tools_py': 'scripts/options_short_engine.py::simulate_multi_asset',
+                        'tool_guidance_md': 'harness2/tool_descriptions/tool_guidance.md#price_structure',
+                        'subagent_spec': 'harness2/agents/trader_price_structure.md',
+                        'pre_tool_hook': 'hooks/pre_tool_use_gate.py (enforces 10.0% daily stop & directional slippage)',
+                        'settings_json': 'modes=[long_equity,short_equity,long_call,long_put], horizons=[1d,1w]',
+                    },
+                    'tool_Schemata': [
+                        {
+                            'tool': 'algo_tools.evaluate_strategy_candidate',
+                            'signature': 'evaluate_strategy_candidate(spec: dict, rows: list[dict]) -> dict',
+                            'guardrail': 'Evaluates candidate only on warmup window before prospective shadow start.',
+                            'returns': 'Candidate edge score, win rate, and drawdown profile',
+                        },
+                        {
+                            'tool': 'options_short_engine.fetch_live_or_theoretical_options_chain',
+                            'signature': 'fetch_live_or_theoretical_options_chain(symbol: str, spot: Decimal, rows: list[dict]) -> dict',
+                            'guardrail': 'Prices OCC Call/Put strikes with Black-Scholes Greeks & bid/ask spread.',
+                            'returns': 'OCC Options Chain Snapshot (calls, puts, estimated_intraday_iv)',
+                        },
+                        {
+                            'tool': 'options_short_engine.simulate_multi_asset',
+                            'signature': 'simulate_multi_asset(spec: dict, rows: list[dict], profile: dict) -> dict',
+                            'guardrail': 'Enforces 10.0% daily loss stop and 0.1% max bar participation.',
+                            'returns': 'PriceStructureSynthesisEnvelope',
+                        },
+                    ],
+                    'risk_limits': {
+                        'daily_loss_stop_pct': '10.0% ($1,000/day max loss on $10,000 account)',
+                        'max_bar_participation': '0.1% of bar volume',
+                        'horizons_managed': 'Intraday 1D (4 accounts) + Weekly Swing 1W (4 accounts)',
+                        'blocked_providers': 'anthropic, claude',
+                    },
                 },
                 'prompts': {
                     'system_prompt': (
@@ -2670,9 +2772,13 @@ def build_sssf_trace_and_db(
                 'duration_ms': 880,
                 'agent': session_agents[3],
                 'config': {
-                    'coding_agent': 'pi / harness2',
+                    'coding_agent': 'Harness² Trade Workflow Runtime',
                     'model': m_theta,
-                    'thinking': 'high',
+                    'fallback_model': by_agent.get('trader_theta_mean_reversion', {}).get('fallback_model', 'gemini:gemini-2.5-pro'),
+                    'thinking': 'high (4,096 thinking tokens)',
+                    'temperature': '0.1 (Greeks & collateral optimization)',
+                    'max_output_tokens': 4096,
+                    'timeout_ms': 3000,
                     'tools': [
                         'options_short_engine.fetch_live_or_theoretical_options_chain',
                         'options_short_engine.simulate_multi_asset',
@@ -2680,6 +2786,34 @@ def build_sssf_trace_and_db(
                     'harness': ['measurement-integrity', 'bot-discipline'],
                     'purpose': 'Harvest intraday & weekly theta decay via Short Calls and Cash-Secured Short Puts under 100% collateral lock.',
                     'session_id': session_agents[3]['session_id'],
+                    'harness_components': {
+                        'systemprompt_md': 'harness2/systemprompt.md#trader_theta_mean_reversion',
+                        'tools_py': 'scripts/options_short_engine.py::fetch_live_or_theoretical_options_chain',
+                        'tool_guidance_md': 'harness2/tool_descriptions/tool_guidance.md#theta_mean_reversion',
+                        'subagent_spec': 'harness2/agents/trader_theta_mean_reversion.md',
+                        'pre_tool_hook': 'hooks/pre_tool_use_gate.py (enforces 100% cash/underlying collateral lock)',
+                        'settings_json': 'modes=[short_call,short_put], collateral_lock_pct=100.0',
+                    },
+                    'tool_Schemata': [
+                        {
+                            'tool': 'options_short_engine.fetch_live_or_theoretical_options_chain',
+                            'signature': 'fetch_live_or_theoretical_options_chain(symbol: str, spot: Decimal, rows: list[dict]) -> dict',
+                            'guardrail': 'Selects OTM delta <= 0.30 strikes with positive net theta decay.',
+                            'returns': 'OCC Short Call & Short Put candidates with Greeks',
+                        },
+                        {
+                            'tool': 'options_short_engine.simulate_multi_asset',
+                            'signature': 'simulate_multi_asset(spec: dict, rows: list[dict], profile: dict) -> dict',
+                            'guardrail': 'Reserves 100% strike*100 cash collateral; zero naked short options allowed.',
+                            'returns': 'ThetaOptionsSynthesisEnvelope',
+                        },
+                    ],
+                    'risk_limits': {
+                        'daily_loss_stop_pct': '10.0% ($1,000/day max loss on $10,000 account)',
+                        'collateral_requirement': '100.0% Cash-Secured / Covered Collateral Lock',
+                        'horizons_managed': 'Intraday 1D (2 accounts) + Weekly Swing 1W (2 accounts)',
+                        'blocked_providers': 'anthropic, claude',
+                    },
                 },
                 'prompts': {
                     'system_prompt': (
@@ -2763,9 +2897,13 @@ def build_sssf_trace_and_db(
                 'duration_ms': 700,
                 'agent': session_agents[4],
                 'config': {
-                    'coding_agent': 'pi / harness2',
+                    'coding_agent': 'Harness² Trade Workflow Runtime',
                     'model': m_risk,
-                    'thinking': 'high',
+                    'fallback_model': by_agent.get('phase_3_risk_auditor', {}).get('fallback_model', 'openrouter:deepseek/deepseek-r1'),
+                    'thinking': 'high (deterministic policy verification)',
+                    'temperature': '0.0 (strict zero-tolerance gate)',
+                    'max_output_tokens': 2048,
+                    'timeout_ms': 1500,
                     'tools': [
                         'options_short_engine.validate_multi_asset_spec',
                         'plugin/execution_gate.ts:checkShadowIntent',
@@ -2773,6 +2911,34 @@ def build_sssf_trace_and_db(
                     'harness': ['irreversible-gate-authorization', 'bot-discipline'],
                     'purpose': 'Verify 10.0% daily stop loss ($1,000/day on $10k), 0.1% liquidity cap, and block any live/broker execution flags.',
                     'session_id': session_agents[4]['session_id'],
+                    'harness_components': {
+                        'systemprompt_md': 'harness2/systemprompt.md#phase_3_risk_auditor',
+                        'tools_py': 'scripts/options_short_engine.py::validate_multi_asset_spec + plugin/execution_gate.ts',
+                        'tool_guidance_md': 'harness2/tool_descriptions/tool_guidance.md#risk_auditor',
+                        'subagent_spec': 'harness2/agents/phase_3_risk_auditor.md',
+                        'pre_tool_hook': 'plugin/execution_gate.ts:checkShadowIntent (blocks live/broker orders)',
+                        'settings_json': 'daily_loss_stop_pct=10.0, live_orders=false, broker_orders=false',
+                    },
+                    'tool_Schemata': [
+                        {
+                            'tool': 'options_short_engine.validate_multi_asset_spec',
+                            'signature': 'validate_multi_asset_spec(spec: dict) -> dict',
+                            'guardrail': 'Asserts daily_loss_stop_pct == 10.0%, notional <= $1,000, and 100% collateral.',
+                            'returns': 'Validated 12-Account Multi-Asset Spec',
+                        },
+                        {
+                            'tool': 'plugin/execution_gate.ts:checkShadowIntent',
+                            'signature': 'checkShadowIntent(intent: ShadowIntent) -> GateVerdict',
+                            'guardrail': 'Hard boundary: rejects any intent with live=true, broker=true, or promoting=true.',
+                            'returns': 'RiskStopAuditEnvelope',
+                        },
+                    ],
+                    'risk_limits': {
+                        'daily_loss_stop_pct': '10.0% across all 12 accounts',
+                        'execution_boundary': 'Shadow & Paper Preview only (live_orders=False)',
+                        'max_order_notional': '$1,000.00 per trade',
+                        'blocked_providers': 'anthropic, claude',
+                    },
                 },
                 'prompts': {
                     'system_prompt': (
@@ -2856,9 +3022,13 @@ def build_sssf_trace_and_db(
                 'duration_ms': 680,
                 'agent': session_agents[5],
                 'config': {
-                    'coding_agent': 'pi / harness2',
+                    'coding_agent': 'Harness² Trade Workflow Runtime',
                     'model': m_disp,
-                    'thinking': 'medium',
+                    'fallback_model': by_agent.get('phase_4_fleet_dispatcher', {}).get('fallback_model', 'codex:gpt-5.4'),
+                    'thinking': 'medium (fleet orchestration)',
+                    'temperature': '0.0 (deterministic dispatch)',
+                    'max_output_tokens': 2048,
+                    'timeout_ms': 2000,
                     'tools': [
                         'options_short_engine.simulate_shadow_fleet',
                         'options_short_engine.build_paper_order_preview',
@@ -2866,6 +3036,34 @@ def build_sssf_trace_and_db(
                     'harness': ['proof-before-complete', 'capability-truth'],
                     'purpose': 'Execute 12-account parallel shadow simulation and emit paper-account order tickets.',
                     'session_id': session_agents[5]['session_id'],
+                    'harness_components': {
+                        'systemprompt_md': 'harness2/systemprompt.md#phase_4_fleet_dispatcher',
+                        'tools_py': 'scripts/options_short_engine.py::simulate_shadow_fleet',
+                        'tool_guidance_md': 'harness2/tool_descriptions/tool_guidance.md#fleet_dispatcher',
+                        'subagent_spec': 'harness2/agents/phase_4_fleet_dispatcher.md',
+                        'pre_tool_hook': 'hooks/pre_tool_use_gate.py (verifies 11/11 Synced Triad tool sequence)',
+                        'settings_json': 'fleet_size=12, paper_preview_modes=6, persist_sqlite=sssf.db',
+                    },
+                    'tool_Schemata': [
+                        {
+                            'tool': 'options_short_engine.simulate_shadow_fleet',
+                            'signature': 'simulate_shadow_fleet(rows: list[dict], profile: dict, roster: list[dict]) -> dict',
+                            'guardrail': 'Runs 6 Intraday 1D + 6 Weekly Swing 1W shadow accounts in parallel ($120k total equity).',
+                            'returns': '12-Account Shadow Fleet ledger & Net PnL summary',
+                        },
+                        {
+                            'tool': 'options_short_engine.build_paper_order_preview',
+                            'signature': 'build_paper_order_preview(spec: dict, spot: Decimal, profile: dict, rows: list[dict]) -> dict',
+                            'guardrail': 'Builds Alpaca Paper order previews for all 6 instrument modes with live_orders=False.',
+                            'returns': 'ShadowFleetDispatchEnvelope',
+                        },
+                    ],
+                    'risk_limits': {
+                        'daily_loss_stop_pct': '10.0% ($1,000/day per $10k shadow account)',
+                        'fleet_allocation': '12 Shadow Accounts ($10,000 each = $120,000 total virtual equity)',
+                        'synced_triad_gate': 'Requires 11/11 tools bound in prompt and executed in sequence',
+                        'blocked_providers': 'anthropic, claude',
+                    },
                 },
                 'prompts': {
                     'system_prompt': (
@@ -3152,8 +3350,8 @@ def render_adw_visual_cli(adw_run: dict[str, Any]) -> str:
     active_sess = sessions[0] if sessions else None
     triad_str = 'VERIFIED (11/11 TOOLS)' if triad.get('synced_triad_verified') else 'FAILED'
     lines = [
-        "╔" + ("═" * W) + "╝"[:0] + "╗",
-        _box_line("  HARNESS² AGENTIC ADW VISUAL COMMAND LINE · SSSF CONSOLE TRACE & AUTO-FIRE CASE SCENARIOS", W),
+        "╔" + ("═" * W) + "╗",
+        _box_line("  HARNESS² TRADE WORKFLOW VISUAL COMMAND LINE · LIVE AGENT TRACE & AUTO-FIRE CASE SCENARIOS", W),
         "╠" + ("═" * W) + "╣",
         _box_line(
             f"  Symbol: {adw_run.get('symbol', 'SPY'):<5} │ Spot: ${adw_run.get('spot_reference', '0'):<8} │ Daily Stop Loss: {fleet.get('daily_loss_stop_pct', '10.0')}% │ Synced Triad: {triad_str}",
@@ -3172,7 +3370,7 @@ def render_adw_visual_cli(adw_run: dict[str, Any]) -> str:
     if active_sess:
         lines.extend([
             "╠" + ("═" * W) + "╣",
-            _box_line("  SSSF AUTO-FIRING MARKET CASE SCENARIOS (TRIGGERED AUTOMATICALLY BY MARKET TELEMETRY)", W),
+            _box_line("  TRADE WORKFLOW AUTO-FIRING MARKET CASE SCENARIOS (TRIGGERED BY LIVE MARKET TELEMETRY)", W),
             "╟" + ("─" * W) + "╢",
         ])
         for c in sssf.get('auto_fire_cases', []):
@@ -3187,7 +3385,7 @@ def render_adw_visual_cli(adw_run: dict[str, Any]) -> str:
         lines.extend([
             "╠" + ("═" * W) + "╣",
             _box_line(
-                f"  SSSF LIVE SESSION TRACE · adw_id: {active_sess['adw_id']} · engineer: {active_sess['engineer']}",
+                f"  TRADE WORKFLOW LIVE SESSION TRACE · workflow_id: {active_sess['adw_id']} · trigger: {active_sess['engineer']}",
                 W,
             ),
             _box_line(f"  Request: {active_sess['request']}", W),

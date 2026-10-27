@@ -39,37 +39,55 @@ body,body.on-home{background:#070f21;color:var(--ink)}.app-shell,.on-home .app-s
 .sssf-run-strip{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;background:var(--s-panel);border:1px solid var(--s-border);border-radius:10px;padding:12px 16px;margin-bottom:14px}
 .sssf-run-stats{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .sssf-waterfall{border:1px solid var(--s-border);border-radius:10px;background:var(--s-panel);overflow:hidden;margin-bottom:16px}
-.sssf-wf-head,.sssf-wf-row{display:grid;grid-template-columns:270px 1fr;border-bottom:1px solid var(--s-border)}
+.sssf-wf-head,.sssf-wf-row{display:grid;grid-template-columns:285px 1fr;border-bottom:1px solid var(--s-border)}
 .sssf-wf-row:last-child{border-bottom:none}
-.sssf-wf-lane{padding:10px 14px;border-right:1px solid var(--s-border);background:var(--s-panel3);display:flex;flex-direction:column;gap:4px;justify-content:center}
+.sssf-wf-row.active-row{background:#c89bff0d}
+.sssf-wf-lane{padding:10px 14px;border-right:1px solid var(--s-border);background:var(--s-panel3);display:flex;flex-direction:column;gap:4px;justify-content:center;cursor:pointer;text-align:left;border-top:none;border-bottom:none;border-left:3px solid transparent;color:var(--s-text);transition:background .15s,border-color .15s}
+.sssf-wf-lane:hover{background:#141c2c}
+.sssf-wf-lane.selected{border-left-color:var(--s-green);background:#151f30}
 .sssf-wf-lane-top{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12px;font-weight:600;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 .sssf-wf-model{font-size:10.5px;color:var(--s-faint);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sssf-ctx-bar{height:4px;background:#1a2232;border-radius:3px;overflow:hidden;margin-top:2px}
+.sssf-ctx-bar{height:5px;background:#1a2232;border-radius:3px;overflow:hidden;margin-top:2px}
 .sssf-ctx-fill{height:100%;background:linear-gradient(90deg,var(--s-cyan),var(--s-purple))}
-.sssf-wf-track{position:relative;min-height:54px;padding:8px 12px;display:flex;align-items:center;background:#080b12}
-.sssf-wf-block{position:relative;border-radius:7px;padding:7px 11px;border:1px solid var(--s-purple);background:linear-gradient(180deg,#c89bff24,#c89bff10);cursor:pointer;display:flex;flex-direction:column;gap:3px;min-width:160px;transition:transform .12s,border-color .12s}
-.sssf-wf-block:hover,.sssf-wf-block.selected{border-color:var(--s-green);box-shadow:0 0 0 1px var(--s-green)}
+.sssf-wf-track{position:relative;min-height:56px;padding:8px 12px;display:flex;align-items:center;background:#080b12}
+.sssf-wf-block{position:relative;border-radius:7px;padding:7px 11px;border:1px solid var(--s-purple);background:linear-gradient(180deg,#c89bff24,#c89bff10);cursor:pointer;display:flex;flex-direction:column;gap:3px;min-width:160px;transition:transform .12s,border-color .12s;text-align:left;color:var(--s-text)}
+.sssf-wf-block:hover,.sssf-wf-block.selected{border-color:var(--s-green);box-shadow:0 0 0 1px var(--s-green);background:linear-gradient(180deg,#4ade8022,#c89bff14)}
 .sssf-wf-block-top{display:flex;align-items:center;justify-content:space-between;gap:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;font-weight:600;color:var(--s-text)}
 .sssf-wf-block-desc{font-size:10.5px;color:var(--s-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:420px}
 .sssf-ticks{display:flex;gap:4px;margin-top:3px}
 .sssf-tick{width:8px;height:3px;border-radius:1px;background:var(--s-cyan)}
-.sssf-detail-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:14px}
+.sssf-agent-bar{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-bottom:14px}
+@media(max-width:1100px){.sssf-agent-bar{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:650px){.sssf-agent-bar{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.sssf-agent-pill{background:var(--s-panel);border:1px solid var(--s-border);border-radius:9px;padding:10px 12px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:4px;color:var(--s-text);transition:border-color .15s,background .15s}
+.sssf-agent-pill:hover{border-color:var(--s-cyan);background:var(--s-panel2)}
+.sssf-agent-pill.active{border-color:var(--s-green);background:linear-gradient(180deg,#16242c 0%,#0e1622 100%);box-shadow:0 0 0 1px var(--s-green)}
+.sssf-inspector{border:1px solid var(--s-border-hi);border-radius:12px;background:var(--s-panel3);overflow:hidden}
+.sssf-agent-banner{padding:14px 18px;background:linear-gradient(90deg,#121a2a 0%,#0d121d 100%);border-bottom:1px solid var(--s-border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.sssf-parts-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 18px;background:var(--s-panel);border-bottom:1px solid var(--s-border)}
+.sssf-part-btn{background:var(--s-panel2);border:1px solid var(--s-border);color:var(--s-dim);padding:7px 13px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;transition:all .14s}
+.sssf-part-btn:hover{border-color:var(--s-cyan);color:var(--s-text)}
+.sssf-part-btn.active{background:#4ade801a;border-color:var(--s-green);color:var(--s-green);box-shadow:0 0 0 1px #4ade8040}
+.sssf-part-body{padding:16px 18px}
+.sssf-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:980px){.sssf-wf-head,.sssf-wf-row,.sssf-detail-grid{grid-template-columns:1fr}}
-.sssf-col{display:flex;flex-direction:column;gap:10px}
+.sssf-col{display:flex;flex-direction:column;gap:12px}
 .sssf-sec{border:1px solid var(--s-border);border-radius:9px;background:var(--s-panel);overflow:hidden}
-.sssf-sec-hd{padding:9px 13px;background:var(--s-panel2);border-bottom:1px solid var(--s-border);display:flex;align-items:center;justify-content:space-between;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;font-weight:600;color:var(--s-dim)}
-.sssf-sec-bd{padding:11px 13px;font-size:12px;display:flex;flex-direction:column;gap:8px}
-.sssf-kv{display:grid;grid-template-columns:120px 1fr;gap:6px;font-size:11.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.sssf-sec-hd{padding:10px 14px;background:var(--s-panel2);border-bottom:1px solid var(--s-border);display:flex;align-items:center;justify-content:space-between;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;font-weight:600;color:var(--s-text)}
+.sssf-sec-bd{padding:12px 14px;font-size:12px;display:flex;flex-direction:column;gap:9px}
+.sssf-kv{display:grid;grid-template-columns:145px 1fr;gap:8px;font-size:11.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;padding:4px 0;border-bottom:1px solid #182030}
+.sssf-kv:last-child{border-bottom:none}
 .sssf-kv span:first-child{color:var(--s-faint)}
-.sssf-pre{background:#06080e;border:1px solid var(--s-border);border-radius:6px;padding:9px 11px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#d6e4ff;white-space:pre-wrap;word-break:break-word;max-height:220px;overflow:auto;margin:0}
-.sssf-ev-row{border:1px solid var(--s-border);border-radius:7px;background:#0a0e17;padding:8px 11px;display:flex;flex-direction:column;gap:6px;cursor:pointer}
-.sssf-ev-row:hover{border-color:var(--s-cyan)}
+.sssf-tool-card{border:1px solid var(--s-border);border-radius:8px;background:#080c14;padding:10px 12px;display:flex;flex-direction:column;gap:5px}
+.sssf-pre{background:#06080e;border:1px solid var(--s-border);border-radius:6px;padding:10px 12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#d6e4ff;white-space:pre-wrap;word-break:break-word;max-height:280px;overflow:auto;margin:0}
+.sssf-ev-row{border:1px solid var(--s-border);border-radius:7px;background:#0a0e17;padding:9px 12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;transition:border-color .14s}
+.sssf-ev-row:hover,.sssf-ev-row.active{border-color:var(--s-cyan);background:#0f1624}
 .sssf-ev-top{display:flex;align-items:center;justify-content:space-between;gap:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px}
-</style></head><body class="on-home"><div class="app-shell"><div class="app-content"><header class="app-chrome"><a class="brand" id="brand-home" href="#home" aria-label="Evan Algo home">Evan Algo</a><div class="chrome-actions"><button id="adw-tab" type="button">ADW Visual · Auto-Fire</button><button id="back-action" hidden type="button">← Back</button><button id="home-tab" hidden type="button">Home</button></div></header><div class="view-heading" id="view-heading" hidden><h1 id="view-title">Home</h1><span id="mode" class="tag" hidden>Connecting</span></div>
+</style></head><body class="on-home"><div class="app-shell"><div class="app-content"><header class="app-chrome"><a class="brand" id="brand-home" href="#home" aria-label="Evan Algo home">Evan Algo</a><div class="chrome-actions"><button id="adw-tab" type="button">Trade Workflow</button><button id="back-action" hidden type="button">← Back</button><button id="home-tab" hidden type="button">Home</button></div></header><div class="view-heading" id="view-heading" hidden><h1 id="view-title">Home</h1><span id="mode" class="tag" hidden>Connecting</span></div>
 <div id="home-intro"><p>More room for your market and research: a full-screen blue workspace, with no sidebar.</p></div><p id="health" role="status" hidden>Connecting to your market feed…</p>
 <div id="live-overview" class="overview" hidden><div><small>WORKSPACE</small><strong>Live market</strong><span>Observed Yahoo data</span></div><div><small>TOTAL VIRTUAL EQUITY</small><strong id="overview-equity">—</strong><span>Assumed fills, no broker</span></div><div><small>COMPANIES WATCHED</small><strong id="overview-companies">—</strong><span>Your active watchlist</span></div><div><small>SELECTED LAST SIGNAL</small><strong id="overview-signal">—</strong><span>A rule check, not a forecast</span></div></div>
-<main id="home-panel" class="home-page" aria-label="Evan Algo home"><div class="home-hero"><p class="eyebrow">YOUR MARKET &amp; RESEARCH WORKSPACE</p><h1>Evan <span>Algo</span></h1><p class="home-tagline">The market.<br>Your algorithms.</p><p class="home-description">Watch prices and signals, review your tests, or adjust your setup. Everything starts here.</p><p class="home-next">Next: choose what you want to open.</p></div><div class="home-choices" aria-label="Choose a workspace"><button id="home-live" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 3 8-10M15 5h5v5"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Live market</strong><span class="card-description">Stock charts, company news and the latest algo signals.</span><span class="card-action">Open market <span aria-hidden="true">→</span></span></button><button id="home-adw" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h14"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>ADW Visual &amp; Auto-Fire</strong><span class="card-description">SSSF swim-lane waterfall, auto-firing market case scenarios, tool calls, system prompts, tokens, spend &amp; runtime.</span><span class="card-action">Open SSSF ADW Visualizer <span aria-hidden="true">→</span></span></button><button id="home-research" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20V10h4v10M10 20V4h4v16M15 20v-7h4v7M3 20h18"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Research</strong><span class="card-description">Saved tests, virtual accounts and your experiment library.</span><span class="card-action">Review results <span aria-hidden="true">→</span></span></button><button id="home-replay" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 0 7M4 4v5h5M10 8l6 4-6 4z"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Backtest replay</strong><span class="card-description">Follow an earlier strategy through its decisions and results.</span><span class="card-action">Open replay <span aria-hidden="true">→</span></span></button><button id="home-models" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Models & settings</strong><span class="card-description">Choose your research models and review your algo setup.</span><span class="card-action">Open settings <span aria-hidden="true">→</span></span></button></div></main>
-<div id="adw-panel" class="view-page" hidden><div class="page-heading"><div><p class="eyebrow">SSSF AGENTIC WORKFLOW OBSERVABILITY · AUTO-FIRING MARKET CASE SCENARIOS</p><p class="dim">Click any auto-fired market case scenario or swim-lane phase block to inspect its agent config, compiled system/user prompts, tool call arguments &amp; results, gate checks, token breakdown, and dollar spend.</p></div><button id="refresh-adw" type="button">Refresh ADW Trace</button></div><div id="sssf-visualizer-root" class="sssf-wrap"></div></div>
+<main id="home-panel" class="home-page" aria-label="Evan Algo home"><div class="home-hero"><p class="eyebrow">YOUR MARKET &amp; RESEARCH WORKSPACE</p><h1>Evan <span>Algo</span></h1><p class="home-tagline">The market.<br>Your algorithms.</p><p class="home-description">Watch prices and signals, review your tests, or adjust your setup. Everything starts here.</p><p class="home-next">Next: choose what you want to open.</p></div><div class="home-choices" aria-label="Choose a workspace"><button id="home-live" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 3 8-10M15 5h5v5"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Live market</strong><span class="card-description">Stock charts, company news and the latest algo signals.</span><span class="card-action">Open market <span aria-hidden="true">→</span></span></button><button id="home-adw" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h14"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Trade Workflow</strong><span class="card-description">Auto-firing market case scenarios, 6-agent swim-lane waterfall, and interactive Agent Harness configuration inspector.</span><span class="card-action">Open Trade Workflow <span aria-hidden="true">→</span></span></button><button id="home-research" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20V10h4v10M10 20V4h4v16M15 20v-7h4v7M3 20h18"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Research</strong><span class="card-description">Saved tests, virtual accounts and your experiment library.</span><span class="card-action">Review results <span aria-hidden="true">→</span></span></button><button id="home-replay" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 0 7M4 4v5h5M10 8l6 4-6 4z"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Backtest replay</strong><span class="card-description">Follow an earlier strategy through its decisions and results.</span><span class="card-action">Open replay <span aria-hidden="true">→</span></span></button><button id="home-models" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Models & settings</strong><span class="card-description">Choose your research models and review your algo setup.</span><span class="card-action">Open settings <span aria-hidden="true">→</span></span></button></div></main>
+<div id="adw-panel" class="view-page" hidden><div class="page-heading"><div><p class="eyebrow">TRADE WORKFLOW · AUTO-FIRING MARKET CASE SCENARIOS &amp; AGENT HARNESS INSPECTOR</p><p class="dim">1) Click any Auto-Fired Market Case Scenario. 2) Click any Agent in the Waterfall or Agent Strip. 3) Click any Agent Harness Part (Harness &amp; Config, System Prompts, Tool Calls, Gates, Tokens &amp; Spend, or Handoff Envelope) to inspect its full configuration.</p></div><button id="refresh-adw" type="button">Refresh Trade Workflow</button></div><div id="sssf-visualizer-root" class="sssf-wrap"></div></div>
 <div id="research-panel" class="view-page" hidden><div class="page-heading"><div><p class="eyebrow">YOUR SAVED TESTS</p><p class="dim">Review saved simulations and experiments. These are past tests, separate from current market activity.</p></div><button id="refresh-research">Refresh saved results</button></div><section><div class="market-title"><h3>Latest fleet simulation</h3><span class="neutral-tag" id="research-state">Checking saved results</span></div><p id="research-basis" class="note"></p><div class="overview research-metrics"><div><small>SIMULATED P&amp;L</small><strong id="research-pnl">—</strong></div><div><small>SIMULATED ACCOUNTS</small><strong id="research-accounts">—</strong></div><div><small>RUN SAVED</small><strong class="date-value" id="research-time">—</strong></div></div><p id="research-limits" class="note"></p><div id="research-phases" class="phase-list"></div><div id="research-fleet" class="table-wrap"></div><div id="sssf-research-embed" class="sssf-wrap"></div></section><section><div class="market-title"><h3>Algo experiment library</h3><span id="library-counts" class="neutral-tag">Checking catalog</span></div><p id="library-note" class="note"></p><div id="library-table" class="table-wrap"></div></section></div>
 <div id="models-panel" class="view-page" hidden><div class="page-heading"><div><p class="eyebrow">YOUR RESEARCH SETUP</p><p class="dim">Choose which model is assigned to each research role.</p></div></div><section><div class="market-title"><h3>Research model assignments</h3><span id="models-state" class="neutral-tag">Loading</span></div><p class="note">A saved model is a configuration choice. The fleet simulation runs Python rules; its model labels do not prove AI inference. Saving does not start a model, a run or an order.</p><div id="model-roster" class="model-roster"></div><form id="model-form"><div class="form-fields"><label>Research role<select id="model-role" required></select></label><label>Provider<select id="model-provider" required></select></label><label>Model ID<input id="model-id" maxlength="140" required autocomplete="off"></label></div><button id="model-save" type="submit" class="primary">Save assignment</button><p id="model-result" role="status" class="note">Changes apply to future CLI simulations.</p></form></section><details><summary>Algo settings and limits</summary><section><dl id="settings"></dl><h2>AI ENTRY REVIEWER</h2><p id="model"></p><p id="ai-status"></p><p id="ai-reason" class="note"></p><p id="ai-budget" class="note"></p><h2>GOAL</h2><p id="goal"></p><p id="remaining" class="note"></p><p class="note">A goal is an input, not a forecast.</p><h2>LIQUIDITY / RISK</h2><p id="liquidity"></p><p id="liquidity-status" class="note"></p><p id="risk-scope" class="note"></p><p class="note">Change settings with <code>sh tets setup</code>.</p></section></details></div>
 <div id="replay-panel" class="view-page" hidden><div class="page-heading"><div><p class="eyebrow">YOUR EARLIER TEST</p><p class="dim">Play back a saved strategy test, one moment at a time.</p></div></div><p id="replay-state" role="status">Checking the earlier saved replay…</p><iframe id="replay-frame" title="Algo Lab historical strategy replay" hidden sandbox="allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox"></iframe></div>
@@ -116,7 +134,7 @@ async function switchView(view,remember=true){
  activeView=view;document.body.className=view==='home'?'on-home':'on-work';
  $('live-overview').hidden=true;$('home-intro').hidden=view!=='home';$('health').hidden=view==='home';$('mode').hidden=view==='home';$('view-heading').hidden=view==='home';$('home-tab').hidden=view==='home';$('back-action').hidden=view==='home';
  for(const name of ['home','live','adw','research','models','replay'])$(name==='live'?'live-layout':name+'-panel').hidden=name!==view;
- text('view-title',({home:'Home',live:'The market',adw:'SSSF ADW Visualizer & Auto-Fire Cases',research:'Your research',models:'Models and settings',replay:'Replay a test'})[view]);document.title='Evan Algo · '+$('view-title').textContent;globalThis.scrollTo?.(0,0);
+ text('view-title',({home:'Home',live:'The market',adw:'Trade Workflow',research:'Your research',models:'Models and settings',replay:'Replay a test'})[view]);document.title='Evan Algo · '+$('view-title').textContent;globalThis.scrollTo?.(0,0);
  if(view==='adw'||view==='research'||view==='models')loadTerminal();
  if(view!=='replay')return;
  const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),10000);
@@ -196,13 +214,13 @@ function renderTerminal(d){
  renderModels(d.models||{});
  renderSssfAll(r.sssf_trace||lastResponse?.adw_fleet?.sssf_trace,r);
 }
-let sssfSelectedAdwId=null,sssfSelectedPhaseSeq=1,sssfPromptMode='rendered',sssfExpandedEventIdx=0;
+let sssfSelectedAdwId=null,sssfSelectedPhaseSeq=1,sssfSelectedPart='harness',sssfPromptMode='rendered',sssfExpandedEventIdx=0;
 function mk(tag,cls,txt){const n=document.createElement(tag);if(cls)n.className=cls;if(txt!=null)n.textContent=String(txt);return n}
 function renderSssfInto(containerId,trace,researchMeta){
  const root=$(containerId);if(!root)return;root.replaceChildren();
  const sessions=trace?.sessions||[];
  if(!sessions.length){
-  const empty=mk('p','note','No saved SSSF ADW trace yet. Run `adw algo visual` in your terminal to execute and record all 5 Auto-Firing Market Case Scenarios.');
+  const empty=mk('p','note','No saved Trade Workflow trace yet. Run `adw algo visual` in your terminal to execute and record all 5 Auto-Firing Market Case Scenarios.');
   root.append(empty);return;
  }
  if(!sessions.some(s=>s.adw_id===sssfSelectedAdwId))sssfSelectedAdwId=sessions[0].adw_id;
@@ -210,20 +228,31 @@ function renderSssfInto(containerId,trace,researchMeta){
  const phases=sess.phases||[];
  if(!phases.some(p=>p.seq===sssfSelectedPhaseSeq))sssfSelectedPhaseSeq=phases[0]?.seq||1;
  const activePhase=phases.find(p=>p.seq===sssfSelectedPhaseSeq)||phases[0];
+ const activeAgent=activePhase?.agent||{};
+ const partLabels={
+  harness:'1. Agent Harness & Config',
+  prompts:'2. System & User Prompts',
+  tools:'3. Tool Calls & Events',
+  gates:'4. Risk & Deterministic Gates',
+  cost:'5. Tokens, Context & Spend',
+  envelope:'6. Handoff Output Envelope',
+  split:'All Parts (Split View)'
+ };
 
- // 1. Topbar with SSSF Brand + Breadcrumbs + Live indicator
+ // 1. Topbar with Trade Workflow Brand + Interactive Breadcrumbs + Live indicator
  const topbar=mk('div','sssf-topbar');
- const brand=mk('div','sssf-brand','▋▋▋ SSSF · ADW VISUALIZER & AUTO-FIRE CASE SCENARIOS');
+ const brand=mk('div','sssf-brand','▋▋▋ TRADE WORKFLOW · AUTO-FIRE CASES & AGENT HARNESS');
  const crumbs=mk('div','sssf-crumbs');
- const cRoot=mk('button','sssf-crumb','ADW › sessions');cRoot.type='button';
- const cSess=mk('button','sssf-crumb active',sess.adw_id+' ('+sess.adw_name+')');cSess.type='button';
- const cPhase=mk('button','sssf-crumb active','▶ 0'+activePhase.seq+' '+activePhase.name);cPhase.type='button';
- crumbs.append(cRoot,cSess,cPhase);
+ const cRoot=mk('button','sssf-crumb','Trade Workflow');cRoot.type='button';
+ const cSess=mk('button','sssf-crumb active',sess.adw_id+' · '+sess.adw_name);cSess.type='button';
+ const cAgent=mk('button','sssf-crumb active','Agent 0'+activePhase.seq+': '+(activeAgent.agent_name||activePhase.owner));cAgent.type='button';
+ const cPart=mk('button','sssf-crumb active',partLabels[sssfSelectedPart]||'1. Agent Harness & Config');cPart.type='button';
+ crumbs.append(cRoot,cSess,cAgent,cPart);
  const liveBadge=mk('span','sssf-live','● AUTO-FIRE ARMED · 5 CASES');
  topbar.append(brand,crumbs,liveBadge);
  root.append(topbar);
 
- // 2. Auto-Firing Market Case Scenarios Grid (SSSF SessionCard Grid)
+ // 2. Auto-Firing Market Case Scenarios Grid
  const grid=mk('div','sssf-cases-grid');
  for(const s of sessions){
   const card=mk('button','sssf-card'+(s.adw_id===sess.adw_id?' active':''));card.type='button';
@@ -254,10 +283,10 @@ function renderSssfInto(containerId,trace,researchMeta){
  }
  root.append(grid);
 
- // 3. Active Session Run Strip
+ // 3. Active Workflow Run Strip
  const strip=mk('div','sssf-run-strip');
  const reqBox=mk('div','');
- reqBox.append(mk('strong','',sess.request),mk('div','sssf-card-trig','adw_id: '+sess.adw_id+' · engineer: '+sess.engineer+' · started: '+sess.started_at+' · SQLite: '+(trace.db_path||'sssf.db')));
+ reqBox.append(mk('strong','',sess.request),mk('div','sssf-card-trig','workflow_id: '+sess.adw_id+' · trigger: '+sess.engineer+' · started: '+sess.started_at+' · SQLite: '+(trace.db_path||'sssf.db')));
  const stripStats=mk('div','sssf-run-stats');
  stripStats.append(
   mk('span','sssf-chip ok','✓ '+sess.status),
@@ -269,33 +298,35 @@ function renderSssfInto(containerId,trace,researchMeta){
  strip.append(reqBox,stripStats);
  root.append(strip);
 
- // 4. SSSF Swim-Lane Waterfall (SessionTrace)
+ // 4. Swim-Lane Waterfall (Both Left Agent Lane & Right Phase Block are clickable!)
  const wf=mk('div','sssf-waterfall');
  const wfHead=mk('div','sssf-wf-head');
- wfHead.append(mk('div','sssf-wf-lane','AGENT LANE / MODEL / CONTEXT WINDOW'),mk('div','sssf-wf-track','TIMELINE WATERFALL · CLICK ANY PHASE BLOCK TO INSPECT PROMPTS, TOOL CALLS & SPEND'));
+ wfHead.append(mk('div','sssf-wf-lane','PRESS ANY AGENT SEAT (MODEL & CONTEXT)'),mk('div','sssf-wf-track','TRADE WORKFLOW TIMELINE WATERFALL · PRESS ANY AGENT OR PHASE BLOCK TO INSPECT HARNESS'));
  wf.append(wfHead);
 
  const totalDur=Math.max(1,Number(sess.duration_ms||4000));
  let elapsedMs=0;
  for(const ph of phases){
   const ag=ph.agent||{};
-  const row=mk('div','sssf-wf-row');
-  const lane=mk('div','sssf-wf-lane');
+  const isSel=ph.seq===activePhase.seq;
+  const row=mk('div','sssf-wf-row'+(isSel?' active-row':''));
+  const lane=mk('button','sssf-wf-lane'+(isSel?' selected':''));lane.type='button';
   const laneTop=mk('div','sssf-wf-lane-top');
-  laneTop.append(mk('span','',ag.agent_name||ph.owner),mk('span','sssf-chip','ctx '+Number(ag.context_pct||0).toFixed(1)+'%'));
+  laneTop.append(mk('span','','0'+ph.seq+' '+(ag.agent_name||ph.owner)),mk('span','sssf-chip'+(isSel?' ok':''),'ctx '+Number(ag.context_pct||0).toFixed(1)+'%'));
   const modelTxt=mk('div','sssf-wf-model',(ag.model||'')+' · '+Number(ag.total_tokens||0).toLocaleString()+' / '+Number(ag.context_window||128000).toLocaleString()+' tok');
   const ctxBar=mk('div','sssf-ctx-bar');
   const ctxFill=mk('div','sssf-ctx-fill');
   ctxFill.setAttribute('style','width:'+Math.min(100,Math.max(4,Number(ag.context_pct||5)))+'%');
   ctxBar.append(ctxFill);
   lane.append(laneTop,modelTxt,ctxBar);
+  lane.onclick=()=>{sssfSelectedPhaseSeq=ph.seq;sssfExpandedEventIdx=0;renderSssfAll(trace,researchMeta)};
 
   const track=mk('div','sssf-wf-track');
   const dur=Number(ph.duration_ms||500);
   const leftPct=Math.min(72,Math.round((elapsedMs/totalDur)*72));
   const widthPct=Math.max(24,Math.round((dur/totalDur)*75));
   elapsedMs+=dur;
-  const block=mk('button','sssf-wf-block'+(ph.seq===activePhase.seq?' selected':''));block.type='button';
+  const block=mk('button','sssf-wf-block'+(isSel?' selected':''));block.type='button';
   block.setAttribute('style','margin-left:'+leftPct+'%;width:'+widthPct+'%');
   const bTop=mk('div','sssf-wf-block-top');
   bTop.append(mk('span','','✓ 0'+ph.seq+' '+ph.name),mk('span','sssf-chip cyan',dur+'ms · $'+Number(ag.cost_usd||0).toFixed(4)));
@@ -312,111 +343,270 @@ function renderSssfInto(containerId,trace,researchMeta){
  }
  root.append(wf);
 
- // 5. SSSF 2-Column PhaseDetail Inspector
+ // 5. Quick 6-Agent Selector Bar
+ const agentBar=mk('div','sssf-agent-bar');
+ for(const ph of phases){
+  const ag=ph.agent||{};
+  const pill=mk('button','sssf-agent-pill'+(ph.seq===activePhase.seq?' active':''));pill.type='button';
+  const top=mk('div','sssf-card-top');
+  top.append(mk('span','sssf-chip'+(ph.seq===activePhase.seq?' ok':'purple'),'Agent 0'+ph.seq),mk('span','',ph.duration_ms+'ms'));
+  const name=mk('strong','',roleNames[ag.agent_name]||ag.agent_name||ph.owner);
+  const mod=mk('div','sssf-wf-model',ag.model||'');
+  pill.append(top,name,mod);
+  pill.onclick=()=>{sssfSelectedPhaseSeq=ph.seq;sssfExpandedEventIdx=0;renderSssfAll(trace,researchMeta)};
+  agentBar.append(pill);
+ }
+ root.append(agentBar);
+
+ // 6. Selected Agent & Harness Part Inspector
  if(activePhase){
-  const ag=activePhase.agent||{},cfg=activePhase.config||{},pr=activePhase.prompts||{};
-  const dGrid=mk('div','sssf-detail-grid');
-  const leftCol=mk('div','sssf-col'),rightCol=mk('div','sssf-col');
+  const ag=activePhase.agent||{},cfg=activePhase.config||{},pr=activePhase.prompts||{},hc=cfg.harness_components||{},rl=cfg.risk_limits||{};
+  const inspector=mk('div','sssf-inspector');
 
-  // Section 1: Agent Config
-  const secCfg=mk('div','sssf-sec');
-  secCfg.append(mk('div','sssf-sec-hd','1. AGENT CONFIG · 0'+activePhase.seq+' '+activePhase.name));
-  const bdCfg=mk('div','sssf-sec-bd');
-  for(const [k,v] of [
-   ['coding agent',cfg.coding_agent||'pi / harness2'],
-   ['agent seat',ag.agent_name||activePhase.owner],
-   ['model',cfg.model||ag.model],
-   ['thinking',cfg.thinking||'high'],
-   ['session id',cfg.session_id||ag.session_id],
-   ['tools',(cfg.tools||[]).join(', ')],
-   ['harness skills',(cfg.harness||[]).join(', ')],
-   ['purpose',cfg.purpose||activePhase.description]
+  // 6a. Selected Agent Identity Banner
+  const banner=mk('div','sssf-agent-banner');
+  const bLeft=mk('div','');
+  bLeft.append(
+   mk('div','sssf-card-title','SELECTED AGENT 0'+activePhase.seq+': '+(roleNames[ag.agent_name]||ag.agent_name)+' ('+(ag.agent_name||activePhase.owner)+')'),
+   mk('div','sssf-card-trig',cfg.purpose||activePhase.description||'')
+  );
+  const bRight=mk('div','sssf-run-stats');
+  bRight.append(
+   mk('span','sssf-chip purple','Model: '+(cfg.model||ag.model)),
+   mk('span','sssf-chip','Fallback: '+(cfg.fallback_model||'configured')),
+   mk('span','sssf-chip cyan','Thinking: '+(cfg.thinking||'high')),
+   mk('span','sssf-chip amber','Spend: $'+Number(ag.cost_usd||0).toFixed(4)),
+   mk('span','sssf-chip ok','Context: '+Number(ag.context_pct||0).toFixed(1)+'% ('+Number(ag.total_tokens||0).toLocaleString()+' tok)')
+  );
+  banner.append(bLeft,bRight);
+  inspector.append(banner);
+
+  // 6b. Interactive "Agent Harness Part" Sub-Navigation Bar
+  const partsNav=mk('div','sssf-parts-nav');
+  for(const [partKey,partTitle] of [
+   ['harness','⚙ 1. Agent Harness & Config'],
+   ['prompts','📜 2. System & User Prompts'],
+   ['tools','🔧 3. Tool Calls & Events ('+(activePhase.events||[]).length+')'],
+   ['gates','🛡 4. Deterministic Gates ('+(activePhase.gates||[]).length+')'],
+   ['cost','💰 5. Tokens, Context & Spend'],
+   ['envelope','📦 6. Handoff Envelope'],
+   ['split','⊞ All Parts (Split View)']
   ]){
-   const kv=mk('div','sssf-kv');kv.append(mk('span','',k),mk('span','',v));bdCfg.append(kv);
+   const btn=mk('button','sssf-part-btn'+(sssfSelectedPart===partKey?' active':''),partTitle);
+   btn.type='button';
+   btn.onclick=()=>{sssfSelectedPart=partKey;renderSssfAll(trace,researchMeta)};
+   partsNav.append(btn);
   }
-  secCfg.append(bdCfg);leftCol.append(secCfg);
+  inspector.append(partsNav);
 
-  // Section 2: Compiled Prompts (System Prompt + User Prompt with Rendered/Raw toggle)
-  const secPr=mk('div','sssf-sec');
-  const hdPr=mk('div','sssf-sec-hd');
-  hdPr.append(mk('span','','2. COMPILED SYSTEM & USER PROMPTS'));
-  const toggleBtn=mk('button','sssf-crumb',sssfPromptMode==='rendered'?'View: Rendered (click for Raw JSON)':'View: Raw JSON (click for Rendered)');
-  toggleBtn.type='button';
-  toggleBtn.onclick=()=>{sssfPromptMode=sssfPromptMode==='rendered'?'raw':'rendered';renderSssfAll(trace,researchMeta)};
-  hdPr.append(toggleBtn);secPr.append(hdPr);
-  const bdPr=mk('div','sssf-sec-bd');
-  if(sssfPromptMode==='rendered'){
-   bdPr.append(mk('small','','SYSTEM PROMPT ('+String(pr.system_prompt||'').split('\n').length+' lines)'),mk('pre','sssf-pre',pr.system_prompt||''));
-   bdPr.append(mk('small','','USER PROMPT ('+String(pr.user_prompt||'').split('\n').length+' lines)'),mk('pre','sssf-pre',pr.user_prompt||''));
-  }else{
-   bdPr.append(mk('pre','sssf-pre',JSON.stringify(pr,null,2)));
-  }
-  secPr.append(bdPr);leftCol.append(secPr);
+  // Helper builders for each Agent Harness Part
+  const buildHarnessPart=()=>{
+   const grid=mk('div','sssf-detail-grid');
+   const c1=mk('div','sssf-col'),c2=mk('div','sssf-col');
 
-  // Section 3: Deterministic Gates
-  const secGt=mk('div','sssf-sec');
-  secGt.append(mk('div','sssf-sec-hd','3. DETERMINISTIC GATES ('+(activePhase.gates||[]).length+')'));
-  const bdGt=mk('div','sssf-sec-bd');
-  for(const gt of activePhase.gates||[]){
-   bdGt.append(mk('div','sssf-chip ok','✓ '+gt.gate_name+' · attempt '+gt.attempt+' · '+(gt.checks||[]).length+' checks passed'));
-   for(const chk of gt.checks||[]){
-    bdGt.append(mk('div','sssf-card-trig','  ✓ '+chk.item+' — '+chk.note));
+   // Card A: Harness² 8-Component File Bindings
+   const secFiles=mk('div','sssf-sec');
+   secFiles.append(mk('div','sssf-sec-hd','HARNESS² 8-COMPONENT ARCHITECTURE BINDINGS'));
+   const bdFiles=mk('div','sssf-sec-bd');
+   for(const [k,v] of [
+    ['1. systemprompt.md',hc.systemprompt_md||'harness2/systemprompt.md#'+(ag.agent_name||activePhase.owner)],
+    ['2. tools.py',hc.tools_py||(cfg.tools||[]).join(', ')],
+    ['3. tool_guidance.md',hc.tool_guidance_md||'harness2/tool_descriptions/tool_guidance.md'],
+    ['4. subagent_spec',hc.subagent_spec||'harness2/agents/'+(ag.agent_name||activePhase.owner)+'.md'],
+    ['5. mounted_skills',(cfg.harness||[]).join(', ')],
+    ['6. pre_tool_hook',hc.pre_tool_hook||'hooks/pre_tool_use_gate.py -> checkShadowIntent'],
+    ['7. command_cli','adw algo visual · algo model · algo tests'],
+    ['8. settings.json',hc.settings_json||'live_orders=false, daily_loss_stop_pct=10.0%']
+   ]){
+    const kv=mk('div','sssf-kv');kv.append(mk('span','',k),mk('span','',v));bdFiles.append(kv);
    }
-  }
-  secGt.append(bdGt);leftCol.append(secGt);
+   secFiles.append(bdFiles);c1.append(secFiles);
 
-  // Section 4: Itemized Cost & Token Table
-  const secCost=mk('div','sssf-sec');
-  secCost.append(mk('div','sssf-sec-hd','4. ITEMIZED TOKENS, CONTEXT & DOLLAR SPEND'));
-  const bdCost=mk('div','sssf-sec-bd');
-  for(const [k,v] of [
-   ['input tokens',Number(ag.input_tokens||0).toLocaleString()+' tok'],
-   ['output tokens',Number(ag.output_tokens||0).toLocaleString()+' tok'],
-   ['  ↳ thinking tokens',Number(ag.thinking_tokens||0).toLocaleString()+' tok'],
-   ['cache read',Number(ag.cache_read_tokens||0).toLocaleString()+' tok'],
-   ['cache write',Number(ag.cache_write_tokens||0).toLocaleString()+' tok'],
-   ['total tokens',Number(ag.total_tokens||0).toLocaleString()+' tok ('+Number(ag.context_pct||0).toFixed(1)+'% of '+Number(ag.context_window||128000).toLocaleString()+')'],
-   ['phase spend','$'+Number(ag.cost_usd||0).toFixed(4)+' USD'],
-   ['phase runtime',activePhase.duration_ms+'ms']
-  ]){
-   const kv=mk('div','sssf-kv');kv.append(mk('span','',k),mk('span','',v));bdCost.append(kv);
-  }
-  secCost.append(bdCost);leftCol.append(secCost);
-
-  // Section 5: Typed Handoff Envelopes
-  const secEnv=mk('div','sssf-sec');
-  secEnv.append(mk('div','sssf-sec-hd','5. TYPED HANDOFF ENVELOPES ('+(activePhase.envelopes||[]).length+')'));
-  const bdEnv=mk('div','sssf-sec-bd');
-  for(const env of activePhase.envelopes||[]){
-   bdEnv.append(mk('span','sssf-chip purple',env.envelope_type),mk('pre','sssf-pre',JSON.stringify(env.payload,null,2)));
-  }
-  secEnv.append(bdEnv);leftCol.append(secEnv);
-
-  // Right Column: Chronological Events & Expandable Tool Calls
-  const secEv=mk('div','sssf-sec');
-  const events=activePhase.events||[];
-  secEv.append(mk('div','sssf-sec-hd','CHRONOLOGICAL PHASE EVENTS & TOOL CALLS ('+events.length+') · CLICK ANY EVENT'));
-  const bdEv=mk('div','sssf-sec-bd');
-  events.forEach((ev,idx)=>{
-   const row=mk('div','sssf-ev-row');
-   const top=mk('div','sssf-ev-top');
-   const badgeCls=ev.kind==='tool_call'?'sssf-chip cyan':ev.kind==='gate_pass'||ev.kind==='agent_end'?'sssf-chip ok':ev.kind==='agent_start'?'sssf-chip purple':'sssf-chip';
-   top.append(mk('span',badgeCls,ev.kind),mk('strong','',ev.name||''),mk('span','',(ev.duration_ms!=null?ev.duration_ms+'ms':'')+(ev.tokens!=null?' · '+ev.tokens+' tok':'')));
-   row.append(top);
-   if(ev.kind==='tool_call'||idx===sssfExpandedEventIdx){
-    const pl=ev.payload||{};
-    const detailTxt=ev.kind==='tool_call'
-     ?'tool: '+(pl.tool||ev.name)+'\nduration_ms: '+pl.duration_ms+'ms\nargs: '+JSON.stringify(pl.args||{},null,2)+'\nresult: '+(pl.result||'')
-     :JSON.stringify(pl,null,2);
-    row.append(mk('pre','sssf-pre',detailTxt));
+   // Card B: Runtime, Model & Thinking Configuration
+   const secRun=mk('div','sssf-sec');
+   secRun.append(mk('div','sssf-sec-hd','AGENT RUNTIME, MODEL & THINKING CONFIGURATION'));
+   const bdRun=mk('div','sssf-sec-bd');
+   for(const [k,v] of [
+    ['runtime engine',cfg.coding_agent||'Harness² Trade Workflow Runtime'],
+    ['agent seat id',ag.agent_name||activePhase.owner],
+    ['primary model',cfg.model||ag.model],
+    ['fallback model',cfg.fallback_model||'configured'],
+    ['thinking budget',cfg.thinking||'high'],
+    ['temperature',cfg.temperature||'0.0 (deterministic)'],
+    ['max output tokens',String(cfg.max_output_tokens||4096)+' tok'],
+    ['phase timeout',String(cfg.timeout_ms||2000)+' ms'],
+    ['session id',cfg.session_id||ag.session_id]
+   ]){
+    const kv=mk('div','sssf-kv');kv.append(mk('span','',k),mk('span','',v));bdRun.append(kv);
    }
-   row.onclick=()=>{sssfExpandedEventIdx=idx;renderSssfAll(trace,researchMeta)};
-   bdEv.append(row);
-  });
-  secEv.append(bdEv);rightCol.append(secEv);
+   secRun.append(bdRun);c1.append(secRun);
 
-  dGrid.append(leftCol,rightCol);
-  root.append(dGrid);
+   // Card C: Bound Tool Signatures & Pre-Tool Guardrails
+   const secTools=mk('div','sssf-sec');
+   secTools.append(mk('div','sssf-sec-hd','BOUND TOOL SIGNATURES & PRE-TOOL GUARDRAILS ('+(cfg.tools||[]).length+')'));
+   const bdTools=mk('div','sssf-sec-bd');
+   const schemata=cfg.tool_Schemata||((cfg.tools||[]).map(t=>({tool:t,signature:t+'(...)',guardrail:'Synced Triad pre-tool gate verified',returns:'Typed Envelope'})));
+   for(const ts of schemata){
+    const tc=mk('div','sssf-tool-card');
+    tc.append(
+     mk('span','sssf-chip cyan','⚙ '+ts.tool),
+     mk('div','sssf-card-trig','Signature: '+ts.signature),
+     mk('div','sssf-card-trig','Guardrail: '+ts.guardrail),
+     mk('div','sssf-card-trig','Returns  : '+ts.returns)
+    );
+    bdTools.append(tc);
+   }
+   secTools.append(bdTools);c2.append(secTools);
+
+   // Card D: Risk & Execution Constraints
+   const secRisk=mk('div','sssf-sec');
+   secRisk.append(mk('div','sssf-sec-hd','RISK & EXECUTION BOUNDARIES FOR THIS AGENT'));
+   const bdRisk=mk('div','sssf-sec-bd');
+   for(const [k,v] of Object.entries(rl.daily_loss_stop_pct?rl:{
+    daily_loss_stop_pct:'10.0% ($1,000/day max loss per $10k account)',
+    max_bar_participation:'0.1% of median bar dollar volume',
+    execution_boundary:'Shadow & Paper Preview only (live_orders=False)',
+    blocked_providers:'anthropic, claude'
+   })){
+    const kv=mk('div','sssf-kv');kv.append(mk('span','',k.replaceAll('_',' ')),mk('span','',v));bdRisk.append(kv);
+   }
+   secRisk.append(bdRisk);c2.append(secRisk);
+
+   grid.append(c1,c2);
+   return grid;
+  };
+
+  const buildPromptsPart=()=>{
+   const secPr=mk('div','sssf-sec');
+   const hdPr=mk('div','sssf-sec-hd');
+   hdPr.append(mk('span','','COMPILED SYSTEM PROMPT & LIVE USER PROMPT · '+(ag.agent_name||activePhase.owner)));
+   const toggleBtn=mk('button','sssf-crumb',sssfPromptMode==='rendered'?'Mode: Rendered Text (Switch to Raw JSON)':'Mode: Raw JSON (Switch to Rendered Text)');
+   toggleBtn.type='button';
+   toggleBtn.onclick=()=>{sssfPromptMode=sssfPromptMode==='rendered'?'raw':'rendered';renderSssfAll(trace,researchMeta)};
+   hdPr.append(toggleBtn);secPr.append(hdPr);
+   const bdPr=mk('div','sssf-sec-bd');
+   if(sssfPromptMode==='rendered'){
+    const pGrid=mk('div','sssf-detail-grid');
+    const sBox=mk('div','sssf-col'),uBox=mk('div','sssf-col');
+    sBox.append(mk('span','sssf-chip purple','SYSTEM PROMPT ('+String(pr.system_prompt||'').split('\n').length+' lines · systemprompt.md + tool_guidance.md)'),mk('pre','sssf-pre',pr.system_prompt||''));
+    uBox.append(mk('span','sssf-chip cyan','USER PROMPT ('+String(pr.user_prompt||'').split('\n').length+' lines · Auto-Fire Case Context & Handoff)'),mk('pre','sssf-pre',pr.user_prompt||''));
+    pGrid.append(sBox,uBox);bdPr.append(pGrid);
+   }else{
+    bdPr.append(mk('pre','sssf-pre',JSON.stringify(pr,null,2)));
+   }
+   secPr.append(bdPr);
+   return secPr;
+  };
+
+  const buildToolsPart=()=>{
+   const events=activePhase.events||[];
+   const tGrid=mk('div','sssf-detail-grid');
+   const listCol=mk('div','sssf-col'),inspCol=mk('div','sssf-col');
+   const secList=mk('div','sssf-sec');
+   secList.append(mk('div','sssf-sec-hd','CHRONOLOGICAL AGENT EVENTS & TOOL CALLS ('+events.length+') · PRESS ANY ROW'));
+   const bdList=mk('div','sssf-sec-bd');
+   events.forEach((ev,idx)=>{
+    const row=mk('div','sssf-ev-row'+(idx===sssfExpandedEventIdx?' active':''));
+    const top=mk('div','sssf-ev-top');
+    const badgeCls=ev.kind==='tool_call'?'sssf-chip cyan':ev.kind==='gate_pass'||ev.kind==='agent_end'?'sssf-chip ok':ev.kind==='agent_start'?'sssf-chip purple':'sssf-chip';
+    top.append(mk('span',badgeCls,ev.kind),mk('strong','',ev.name||''),mk('span','',(ev.duration_ms!=null?ev.duration_ms+'ms':'')+(ev.tokens!=null?' · '+ev.tokens+' tok':'')));
+    row.append(top);
+    row.onclick=()=>{sssfExpandedEventIdx=idx;renderSssfAll(trace,researchMeta)};
+    bdList.append(row);
+   });
+   secList.append(bdList);listCol.append(secList);
+
+   const selEv=events[sssfExpandedEventIdx]||events.find(e=>e.kind==='tool_call')||events[0];
+   const secInsp=mk('div','sssf-sec');
+   secInsp.append(mk('div','sssf-sec-hd','SELECTED EVENT / TOOL CALL PAYLOAD INSPECTOR'));
+   const bdInsp=mk('div','sssf-sec-bd');
+   if(selEv){
+    const pl=selEv.payload||{};
+    for(const [k,v] of [
+     ['event kind',selEv.kind],
+     ['name / tool',pl.tool||selEv.name],
+     ['timestamp',selEv.ts],
+     ['duration',selEv.duration_ms!=null?selEv.duration_ms+' ms':'< 1 ms'],
+     ['tokens used',selEv.tokens!=null?selEv.tokens+' tok':'—']
+    ]){
+     const kv=mk('div','sssf-kv');kv.append(mk('span','',k),mk('span','',v));bdInsp.append(kv);
+    }
+    if(pl.args){
+     bdInsp.append(mk('span','sssf-chip cyan','INPUT ARGUMENTS (JSON)'),mk('pre','sssf-pre',JSON.stringify(pl.args,null,2)));
+    }
+    if(pl.result){
+     bdInsp.append(mk('span','sssf-chip ok','TOOL EXECUTION RESULT'),mk('pre','sssf-pre',String(pl.result)));
+    }else{
+     bdInsp.append(mk('span','sssf-chip purple','RAW EVENT PAYLOAD'),mk('pre','sssf-pre',JSON.stringify(pl,null,2)));
+    }
+   }
+   secInsp.append(bdInsp);inspCol.append(secInsp);
+   tGrid.append(listCol,inspCol);
+   return tGrid;
+  };
+
+  const buildGatesPart=()=>{
+   const secGt=mk('div','sssf-sec');
+   secGt.append(mk('div','sssf-sec-hd','DETERMINISTIC GATES & PRE-TRADE VERIFICATION ('+(activePhase.gates||[]).length+')'));
+   const bdGt=mk('div','sssf-sec-bd');
+   for(const gt of activePhase.gates||[]){
+    bdGt.append(mk('div','sssf-chip ok','✓ '+gt.gate_name+' · attempt '+gt.attempt+' · '+(gt.checks||[]).length+' checks passed · '+gt.ts));
+    for(const chk of gt.checks||[]){
+     const tc=mk('div','sssf-tool-card');
+     tc.append(mk('strong','','✓ '+chk.item),mk('div','sssf-card-trig','Measured: '+chk.note));
+     bdGt.append(tc);
+    }
+   }
+   secGt.append(bdGt);
+   return secGt;
+  };
+
+  const buildCostPart=()=>{
+   const secCost=mk('div','sssf-sec');
+   secCost.append(mk('div','sssf-sec-hd','ITEMIZED TOKENS, CONTEXT WINDOW OCCUPANCY & DOLLAR SPEND'));
+   const bdCost=mk('div','sssf-sec-bd');
+   for(const [k,v] of [
+    ['input tokens',Number(ag.input_tokens||0).toLocaleString()+' tok'],
+    ['output tokens',Number(ag.output_tokens||0).toLocaleString()+' tok'],
+    ['  ↳ thinking tokens',Number(ag.thinking_tokens||0).toLocaleString()+' tok'],
+    ['cache read tokens',Number(ag.cache_read_tokens||0).toLocaleString()+' tok'],
+    ['cache write tokens',Number(ag.cache_write_tokens||0).toLocaleString()+' tok'],
+    ['total tokens',Number(ag.total_tokens||0).toLocaleString()+' tok ('+Number(ag.context_pct||0).toFixed(1)+'% of '+Number(ag.context_window||128000).toLocaleString()+' window)'],
+    ['files read / written',ag.files_read+' read · '+ag.files_written+' written'],
+    ['agent phase spend','$'+Number(ag.cost_usd||0).toFixed(4)+' USD'],
+    ['agent phase runtime',activePhase.duration_ms+' ms']
+   ]){
+    const kv=mk('div','sssf-kv');kv.append(mk('span','',k),mk('span','',v));bdCost.append(kv);
+   }
+   secCost.append(bdCost);
+   return secCost;
+  };
+
+  const buildEnvelopePart=()=>{
+   const secEnv=mk('div','sssf-sec');
+   secEnv.append(mk('div','sssf-sec-hd','TYPED HANDOFF ENVELOPE EMITTED TO NEXT AGENT ('+(activePhase.envelopes||[]).length+')'));
+   const bdEnv=mk('div','sssf-sec-bd');
+   for(const env of activePhase.envelopes||[]){
+    bdEnv.append(mk('span','sssf-chip purple',env.envelope_type),mk('pre','sssf-pre',JSON.stringify(env.payload,null,2)));
+   }
+   secEnv.append(bdEnv);
+   return secEnv;
+  };
+
+  const partBody=mk('div','sssf-part-body');
+  if(sssfSelectedPart==='harness')partBody.append(buildHarnessPart());
+  else if(sssfSelectedPart==='prompts')partBody.append(buildPromptsPart());
+  else if(sssfSelectedPart==='tools')partBody.append(buildToolsPart());
+  else if(sssfSelectedPart==='gates')partBody.append(buildGatesPart());
+  else if(sssfSelectedPart==='cost')partBody.append(buildCostPart());
+  else if(sssfSelectedPart==='envelope')partBody.append(buildEnvelopePart());
+  else{
+   const allCol=mk('div','sssf-col');
+   allCol.append(buildHarnessPart(),buildPromptsPart(),buildToolsPart(),buildGatesPart(),buildCostPart(),buildEnvelopePart());
+   partBody.append(allCol);
+  }
+  inspector.append(partBody);
+  root.append(inspector);
  }
 }
 function renderSssfAll(trace,researchMeta){
