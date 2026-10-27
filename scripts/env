@@ -14,6 +14,10 @@ case "$TETS_PROFILE" in
   *) echo 'Unknown install profile; choose normal or mac2017.' >&2; exit 2;;
 esac
 export TETS_PROFILE
+if [ "$(uname -s)" = Darwin ] && [ "$(uname -m)" = x86_64 ]; then
+  MACOSX_DEPLOYMENT_TARGET=12.0
+  export MACOSX_DEPLOYMENT_TARGET
+fi
 : "${UV_NO_BUILD:=1}"
 : "${npm_config_jobs:=1}"
 : "${npm_config_maxsockets:=4}"

@@ -11,12 +11,14 @@ import importlib.metadata
 import json
 import os
 from pathlib import Path
+import re
 import signal
 import subprocess
 import sys
 import uuid
 
 from market_data import YahooSource, INTERVALS, date, iso, normalize_quote, regular
+from mac_compat import wheel_args
 
 ROOT = Path(__file__).resolve().parents[1]
 STATE = ROOT / 'desk/runtime/.state/shadow'
@@ -43,9 +45,11 @@ def install():
     lock = ROOT / 'scripts/shadow-requirements.lock'
     digest = hashlib.sha256(lock.read_bytes()).hexdigest()
     marker = STATE / 'installed.json'
-    if not marker.exists() or json.loads(marker.read_text()).get('dependency_sha256') != digest:
-        subprocess.run(['uv', 'pip', 'sync', '--python', str(venv / 'bin/python'), '--require-hashes', str(lock)], check=True, timeout=180)
-        save(marker, dict(dependency_sha256=digest, provider='yahoo_yfinance', live_orders=False))
+    target = wheel_args()
+    previous = json.loads(marker.read_text()) if marker.exists() else {}
+    if previous.get('dependency_sha256') != digest or previous.get('wheel_target', []) != target:
+        subprocess.run(['uv', 'pip', 'sync', '--python', str(venv / 'bin/python'), *target, '--require-hashes', str(lock)], check=True, timeout=180)
+        save(marker, dict(dependency_sha256=digest, wheel_target=target, provider='yahoo_yfinance', live_orders=False))
     print('Installed yfinance 1.7.0 with pinned strategy-engine dependencies. No account or key required.')
 
 
@@ -83,7 +87,7 @@ class Shadow:
             raise ValueError('invalid_shadow_budget')
         self.quantity = Decimal(0); self.entry_price = None; self.entry_sequence = None
         self.realized = Decimal(0); self.fees = Decimal(0); self.fills = []; self.decisions = []
-        self.received = 0; self.drops = Counter(); self.last_error = None
+        self.received = 0; self.drops = Counter(); self.last_error = None; self.quote_history = []
         self.bar_status = 'waiting_for_bars'; self.transport = 'connecting'
         self.slippage_bps = Decimal(10); self.commission_bps = Decimal(0)
         self.revision = False
@@ -125,7 +129,9 @@ class Shadow:
         index = len(self.rows) - 1
         entry_index = self.entry_sequence - (self.sequence - len(self.rows)) if self.entry_sequence is not None else None
         side = self.signal(self.spec, self.rows, index, bool(self.quantity), entry_index, self.entry_price)
-        decision = dict(decision_at=iso(now), bar_close_at=row['bar_close_at'], side=side or 'hold',
+        decision = dict(symbol=self.spec['symbol'], decision_at=iso(now), bar_close_at=row['bar_close_at'], side=side or 'hold',
+                        reason=f"{self.spec['family']} on a new completed {self.spec['timeframe']} bar; " +
+                               ('entry rule met' if side == 'buy' else 'exit rule met' if side == 'sell' else 'no entry/exit rule met'),
                         strategy_sha256=self.spec['strategy_sha256'])
         self.last_decision = iso(now); self.decisions.append(decision); self.decisions = self.decisions[-50:]
         self.emit('signal_observed', decision)
@@ -140,6 +146,8 @@ class Shadow:
         if self.latest and quote['quote_at'] <= self.latest['quote_at']:
             self.drops['duplicate_or_out_of_order'] += 1; return
         self.latest = quote; self.transport = 'connected'
+        self.quote_history.append(dict(at=quote['quote_at'], price=quote['price']))
+        self.quote_history = self.quote_history[-120:]
         self.emit('quote_observed', quote)
         if not self.pending: return
         pending = self.pending
@@ -200,7 +208,60 @@ class Shadow:
             bar_note='Closed regular-session OHLCV from Yahoo polling. Availability is first receipt time; warmup never trades.')
 
 
-async def watch(spec, directory, activity, seconds, source=None, capital='10000.00', entry_budget='1000'):
+def watchlist(value, primary=None):
+    values = value.split(',') if isinstance(value, str) else list(value)
+    symbols = list(dict.fromkeys(([primary] if primary else []) + [s.strip().upper() for s in values if isinstance(s, str) and s.strip()]))
+    if not 1 <= len(symbols) <= 5 or any(not re.fullmatch(r'[A-Z][A-Z0-9]{0,4}(?:[.-][A-Z])?', s) for s in symbols):
+        raise ValueError('Choose 1–5 unique US stock/ETF symbols, separated by commas')
+    return symbols
+
+
+class ShadowScan:
+    """One bounded watchlist, independent virtual sleeves, one shared quote stream."""
+    def __init__(self, spec, symbols, started, emit, capital, entry_budget):
+        sys.path.insert(0, str(ROOT / 'desk'))
+        from backtest.contracts import strategy_spec
+        self.symbols = watchlist(symbols, spec['symbol']); self.models = {}; self.events = []
+        self.active_symbol = None; self.last_scanned_at = None; self.checked = {}
+        total = Decimal(capital); budget = Decimal(entry_budget)
+        if not total.is_finite() or not budget.is_finite() or total <= 0 or not 0 < budget <= min(total, Decimal('1000')):
+            raise ValueError('invalid_shadow_budget')
+        cents = int((total * 100).to_integral_value(rounding=ROUND_DOWN))
+        if cents < len(self.symbols): raise ValueError('Capital must allow at least one cent per watched symbol')
+        for index, symbol in enumerate(self.symbols):
+            allocation = Decimal(cents // len(self.symbols) + (index < cents % len(self.symbols))) / 100
+            raw = {k:v for k,v in spec.items() if k != 'strategy_sha256'}
+            raw['symbol'] = symbol; candidate = strategy_spec(raw)
+            def event(kind, payload, symbol=symbol):
+                emit(kind, {**payload, 'symbol':symbol})
+                if kind not in ('quote_observed', 'bar_first_observed'):
+                    self.events.append({**payload, 'kind':kind, 'symbol':symbol, 'at':iso(datetime.now(timezone.utc))})
+                    self.events = self.events[-60:]
+            self.models[symbol] = Shadow(candidate, started, event, str(allocation), str(min(allocation, budget)))
+
+    def snapshot(self, now, stopped=False):
+        companies = []
+        for model in self.models.values():
+            value = model.snapshot(now, stopped)
+            value['chart_bars'] = [{k:r[k] for k in ('bar_close_at','open','high','low','close','volume')} for r in model.rows[-120:]]
+            value['quote_history'] = model.quote_history
+            value['parameters'] = model.spec['parameters']
+            value['last_checked_at'] = self.checked.get(model.spec['symbol'])
+            companies.append(value)
+        result = {**companies[0]}
+        result.update(companies=companies, watchlist=self.symbols, events=self.events,
+                      scanner=dict(active_symbol=None if stopped else self.active_symbol, last_scanned_at=self.last_scanned_at,
+                                   method='Sequential closed-bar rules; no AI company selection', maximum_symbols=5),
+                      portfolio=dict(initial_cash=str(sum(m.initial_cash for m in self.models.values())),
+                          cash=str(sum(m.cash for m in self.models.values())),
+                          virtual_equity=str(sum(Decimal(c['virtual_equity']) for c in companies)) if all(c['virtual_equity'] is not None for c in companies) else None,
+                          realized_pnl=str(sum(m.realized for m in self.models.values())),
+                          allocation='Capital divided into independent virtual sleeves; no cross-symbol borrowing'),
+                      signal_count=sum(len(m.decisions) for m in self.models.values()))
+        return result
+
+
+async def watch(spec, directory, activity, seconds, source=None, capital='10000.00', entry_budget='1000', symbols=None):
     source = source or YahooSource()
     directory.mkdir(parents=True, exist_ok=True, mode=0o700)
     lock = (directory / 'writer.lock').open('a')
@@ -217,8 +278,9 @@ async def watch(spec, directory, activity, seconds, source=None, capital='10000.
     started = datetime.now(timezone.utc); run_id = uuid.uuid4().hex
     source_files = ['scripts/shadow.py', 'scripts/market_data.py', 'scripts/shadow-requirements.lock',
                     'desk/backtest/engine.py', 'desk/backtest/contracts.py']
+    scan = ShadowScan(spec, symbols or [spec['symbol']], started, lambda *_:None, capital, entry_budget)
     save(directory / 'run.json', dict(run_id=run_id, pid=os.getpid(), started_at=iso(started), seconds=seconds,
-         strategy=spec, provider='yahoo_yfinance', live_orders=False,
+         strategy=spec, watchlist=scan.symbols, capital=capital, entry_budget=entry_budget, provider='yahoo_yfinance', live_orders=False,
          source_sha256={name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in source_files},
          engine_sha256=hashlib.sha256((ROOT / 'desk/backtest/engine.py').read_bytes()).hexdigest()))
     save(directory / 'strategy.json', spec)
@@ -232,29 +294,42 @@ async def watch(spec, directory, activity, seconds, source=None, capital='10000.
                      observed_at=iso(datetime.now(timezone.utc)), event_type=kind, payload=payload)
         previous = hashlib.sha256(canonical(event)).hexdigest()
         journal.write(canonical(dict(**event, event_sha256=previous)) + b'\n'); journal.flush()
-    model = Shadow(spec, started, emit, initial_cash=capital, entry_budget=entry_budget); stop = asyncio.Event()
+    scan = ShadowScan(spec, scan.symbols, started, emit, capital, entry_budget); stop = asyncio.Event()
     loop = asyncio.get_running_loop()
     for sig in (signal.SIGINT, signal.SIGTERM): loop.add_signal_handler(sig, stop.set)
     async def bars():
         while not stop.is_set():
-            try:
-                rows = await asyncio.to_thread(source.bars, spec['symbol'], spec['timeframe'], datetime.now(timezone.utc))
-                model.bars(rows, datetime.now(timezone.utc)); model.last_error = None
-            except Exception as error:
-                model.bar_status = 'unavailable'; model.last_error = 'bars_' + type(error).__name__
-                emit('bars_unavailable', dict(error_type=type(error).__name__))
-            try: await asyncio.wait_for(stop.wait(), timeout=15)
+            for symbol, model in scan.models.items():
+                if stop.is_set(): break
+                scan.active_symbol = symbol
+                save(activity, scan.snapshot(datetime.now(timezone.utc)))
+                try:
+                    rows = await asyncio.to_thread(source.bars, symbol, spec['timeframe'], datetime.now(timezone.utc))
+                    model.bars(rows, datetime.now(timezone.utc)); model.last_error = None
+                except Exception as error:
+                    model.bar_status = 'unavailable'; model.last_error = 'bars_' + type(error).__name__
+                    model.emit('bars_unavailable', dict(error_type=type(error).__name__))
+                scan.last_scanned_at = iso(datetime.now(timezone.utc))
+                scan.checked[symbol] = scan.last_scanned_at
+                model.emit('company_scanned', dict(checked_at=scan.last_scanned_at, bar_status=model.bar_status,
+                           message='Closed bars observed; signals require a new regular-session bar'))
+            scan.active_symbol = None
+            try: await asyncio.wait_for(stop.wait(), timeout=30 if len(scan.symbols) > 1 else 15)
             except asyncio.TimeoutError: pass
     async def quotes():
         while not stop.is_set():
             try:
                 async with source.websocket() as ws:
-                    await ws.subscribe([spec['symbol']]); model.transport = 'connected_waiting_for_quote'
-                    async def handle(message): model.quote(message, datetime.now(timezone.utc))
+                    await ws.subscribe(scan.symbols)
+                    for model in scan.models.values(): model.transport = 'connected_waiting_for_quote'
+                    async def handle(message):
+                        model = scan.models.get(message.get('id'))
+                        if model: model.quote(message, datetime.now(timezone.utc))
                     await ws.listen(handle)
             except asyncio.CancelledError: raise
             except Exception as error:
-                model.transport = 'disconnected'; model.last_error = 'stream_' + type(error).__name__
+                for model in scan.models.values():
+                    model.transport = 'disconnected'; model.last_error = 'stream_' + type(error).__name__
                 emit('stream_unavailable', dict(error_type=type(error).__name__))
             try: await asyncio.wait_for(stop.wait(), timeout=5)
             except asyncio.TimeoutError: pass
@@ -262,9 +337,9 @@ async def watch(spec, directory, activity, seconds, source=None, capital='10000.
     finish = loop.time() + seconds
     try:
         while not stop.is_set() and loop.time() < finish:
-            if model.received > 100000 or count >= 100000: raise RuntimeError('shadow_message_budget')
+            if sum(m.received for m in scan.models.values()) > 100000 or count >= 100000: raise RuntimeError('shadow_message_budget')
             if any(t.done() and t.exception() for t in tasks): raise RuntimeError('shadow_worker_failed')
-            snapshot = model.snapshot(datetime.now(timezone.utc))
+            snapshot = scan.snapshot(datetime.now(timezone.utc))
             save(activity, snapshot); save(directory / 'activity.json', snapshot)
             try: await asyncio.wait_for(stop.wait(), timeout=1)
             except asyncio.TimeoutError: pass
@@ -272,7 +347,7 @@ async def watch(spec, directory, activity, seconds, source=None, capital='10000.
         stop.set()
         for task in tasks: task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
-        final = model.snapshot(datetime.now(timezone.utc), stopped=True)
+        final = scan.snapshot(datetime.now(timezone.utc), stopped=True)
         save(activity, final); save(directory / 'activity.json', final)
         journal.flush(); os.fsync(journal.fileno()); journal.close(); activity_lock.close(); lock.close()
     print(json.dumps(dict(run_dir=str(directory), activity=str(activity), state=final['state'],
@@ -285,6 +360,7 @@ def main():
     parser.add_argument('action', choices=['install', 'watch', 'probe'])
     parser.add_argument('--spec', type=Path)
     parser.add_argument('--symbol', default='SPY')
+    parser.add_argument('--symbols', help='1–5 US stock/ETF symbols; the primary strategy symbol is always included')
     parser.add_argument('--seconds', type=int)
     parser.add_argument('--state-dir', type=Path)
     parser.add_argument('--activity', type=Path, default=ACTIVITY)
@@ -301,7 +377,8 @@ def main():
     if importlib.metadata.version('yfinance') != '1.7.0': raise ValueError('shadow_dependency_version_mismatch')
     spec = load_spec(args.spec, args.symbol)
     directory = args.state_dir or STATE / 'runs' / (datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ') + '-' + uuid.uuid4().hex[:6])
-    final = asyncio.run(watch(spec, directory.resolve(), args.activity.resolve(), seconds, capital=args.capital, entry_budget=args.entry_budget))
+    final = asyncio.run(watch(spec, directory.resolve(), args.activity.resolve(), seconds, capital=args.capital, entry_budget=args.entry_budget,
+                             symbols=watchlist(args.symbols, spec['symbol']) if args.symbols else None))
     if args.action == 'probe' and (final['quote'] is None or not final['bars_seen']):
         raise ValueError('live_probe_not_proven_check_activity_status')
 

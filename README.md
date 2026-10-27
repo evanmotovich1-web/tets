@@ -46,6 +46,32 @@ sh tets verify-hardware        # save actual hardware, runtime, backtest and HTT
 
 The same install command automatically chooses a free port if 8765 is occupied and prints/opens the actual URL. `TETS_PORT=8766 sh tets start` selects an explicit port; an occupied explicit port is refused. The runner never kills another process to take its port. A closed market or missing quote remains visible; neither is fabricated activity. Quitting paper mode stops new decisions; existing paper orders/positions remain at Alpaca.
 
+## Shadow watchlist, signals and moving charts
+
+Run `sh install.sh`, select **Yahoo shadow**, and enter up to five symbols when asked. The default list includes your primary symbol, AAPL and MSFT. The same command detects an 8 GB Mac and uses the older-Mac profile; `sh install-2017-mac.sh` explicitly selects it. Both install everything needed for this view, including the Yahoo feed. No chart library, local model, browser extension or API key is required. Requires macOS Monterey 12 or newer.
+
+The terminal shows each company's observed price, data freshness, last signal and the symbol currently being checked. Select a company to see its completed candlesticks, BUY/SELL signal markers and latest quote line, or switch to the observed live-quote chart. “Follow scanner” follows actual company checks; manual selection pins a chart. Quotes refresh the display once per second when received. Completed bars are fetched sequentially in watchlist rounds, with a 30-second pause after each round. The UI does not invent price movement when a feed is quiet or the market is closed.
+
+Every company uses the same selected canonical strategy rules, evaluated on new completed regular-session bars. A signal is an observed rule result, not an order or a forecast. Warmup candles never create historical trades. Assumed virtual fills require a later fresh quote and include modeled slippage. The capital is divided into separate virtual sleeves across the watchlist; total equity is shown separately from the selected company's equity. A sleeve too small for one share can show a BUY signal followed by a rejected virtual intent. The activity ledger records this reason rather than inventing a fill. This is a bounded rule scanner, not AI company research or automated selection of a winning strategy.
+
+Change the saved list with `sh tets setup`, or override it for one run:
+
+```sh
+TETS_SYMBOLS=SPY,AAPL,MSFT sh tets start
+```
+
+The primary setup symbol is always included, and the total is capped at five. The runner shares one quote stream, keeps at most 600 warmup bars per company and displays the latest 120 candles/quotes. Full forward signals and observation provenance remain in the bounded local run journal. Missing/stale data, source errors and bar revisions remain visible. This watchlist applies to Yahoo shadow mode; Alpaca paper mode keeps its configured single-symbol execution.
+
+Every install also runs the installed regression suite, including chart rendering logic without newer Safari abort helpers, signal timing, symbol routing and capital accounting. Intel installs explicitly select Monterey-compatible wheels, repair incompatible wheels from earlier installs and audit native dependencies' minimum macOS versions. Hardware evidence distinguishes native Intel from Rosetta. Intel execution on Apple Silicon does not establish physical 2017 or Monterey execution.
+
+## Combined market terminal and Algo Lab replay
+
+The opening screen uses the earlier dark-blue Algo Lab design and starts with the observed live-quote chart. Company selection changes the price chart, company snapshot and company-specific headlines together. Quote times and stale states remain visible. Fundamentals refresh hourly; headlines refresh every minute and retain publisher timestamps. The feed is unofficial Yahoo indicative data, and provider delay is not guaranteed.
+
+For companies, **estimated market cap** is snapshot shares outstanding multiplied by the last observed quote, with the share snapshot time shown. It is not an exchange-published live market-cap feed. If shares are unavailable, the UI shows a reported provider snapshot or an unavailable state. Funds such as SPY show reported fund assets instead of pretending to have a company market cap. Reported day volume is also a timestamped snapshot.
+
+The **Algo Lab replay** tab connects to an existing verified historical report from the adjacent Algo checkout, or from `desk/runtime/.state/tets/replay/backtest-report.json` and `backtest-report.html`. The connector checks the report digest, simulated-order flags, independent accounting checks and matching embedded HTML data before serving it. It never starts OpenTerminal or adds its dependencies. On a Mac without a saved report, the tab says that no replay is available; previous machine data is not bundled into the installer. Historical playback and simulated backtest fills remain separate from current market observations and prospective virtual fills.
+
 For unattended installation without starting services or opening account pages:
 
 ```sh
@@ -61,3 +87,6 @@ The backtest engine runs locally. Yahoo historical/forward observations and the 
 The optional Alpaca prompt is for simulated **broker execution**, account positions/orders and Alpaca data/news. You can configure the same paper-account key pair on your own computers. Those machines then share one simulated account and its limits; independent runners on the same symbol can conflict and pause on the paper ledger's position checks. Giving the same key to every user would give every user control of that same account. Free pricing does not make the key public. A shared data service would be a separate design with provider-authorized data access, not a bundled broker secret.
 
 Every install now saves `desk/runtime/.state/tets/hardware-verification.json`: actual model, RAM, OS, native/translated architecture, Python/Node runtime architectures, a completed synthetic receipt and HTTP checks. `sh tets verify-hardware` refreshes this local evidence without broker keys or order submissions. A successful Rosetta run checks Intel code execution on Apple Silicon; it does not establish a physical 2017 Mac or Monterey run. MacBookAir7,2 covers both 2015 and 2017 Air models, so that identifier alone does not prove the year.
+
+---
+Governed by [AGENTS.md](AGENTS.md).

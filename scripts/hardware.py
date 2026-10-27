@@ -5,8 +5,10 @@ import json
 import platform
 import resource
 import subprocess
+import sys
 import threading
 from urllib.request import urlopen
+from mac_compat import native_audit
 
 
 def command(args,timeout=30):
@@ -52,6 +54,21 @@ def verify(runner):
     expected='x64'if hardware['process_architecture']=='x86_64'else'arm64'
     if any(r['architecture']!=hardware['process_architecture']for k,r in runtimes.items()if k!='node')or runtimes['node']['architecture']!=expected:
         raise ValueError('Mixed runtime architectures; reinstall from source on this Mac')
+    native = native_audit(runner.ROOT)
+    runner.shadow.save(runner.STATE/'native-compatibility.json',native)
+    if native['state']=='failed':raise ValueError('A native dependency requires newer macOS; see local native-compatibility.json and rerun the installer')
+    # Run on this machine's installed interpreter, including the scanner and
+    # chart regressions. No dependency on a browser, account, or market hours.
+    test_code='''import json,sys,unittest
+result=unittest.TextTestRunner(verbosity=1).run(unittest.defaultTestLoader.discover('scripts/tests'))
+print('TETS_TEST_RESULT='+json.dumps(dict(run=result.testsRun,failures=len(result.failures),errors=len(result.errors),skipped=len(result.skipped))))
+sys.exit(0 if result.wasSuccessful() else 1)
+'''
+    checks=subprocess.run([sys.executable,'-c',test_code],cwd=runner.ROOT,capture_output=True,text=True,timeout=180)
+    runner.STATE.mkdir(parents=True,exist_ok=True)
+    (runner.STATE/'hardware-tests.log').write_text(checks.stdout+'\n'+checks.stderr)
+    if checks.returncode:raise ValueError('Installed regression checks failed; see local hardware-tests.log')
+    counts=json.loads(next(line.split('=',1)[1] for line in checks.stdout.splitlines() if line.startswith('TETS_TEST_RESULT=')))
     runner.self_test()
     self_test=runner.read(runner.STATE/'self-test.json')
     server=runner.open_server(0)
@@ -64,11 +81,13 @@ def verify(runner):
         if web!=200 or api!=200 or not isinstance(data.get('runner'),dict):raise ValueError('Status server verification failed')
     finally:server.shutdown();server.server_close();thread.join(timeout=5)
     locks=['desk/requirements.lock','desk/package-lock.json','scripts/paper-requirements.lock','scripts/shadow-requirements.lock']
-    sources=['scripts/hardware.py','scripts/runner.py','scripts/bootstrap','scripts/env','scripts/install','scripts/shadow.py','scripts/paper.py']
+    sources=['scripts/hardware.py','scripts/runner.py','scripts/bootstrap','scripts/env','scripts/install','scripts/shadow.py','scripts/paper.py',
+             'scripts/status.html','scripts/company_data.py','scripts/replay_bridge.py','scripts/news.py',
+             'scripts/mac_compat.py','install.sh','install-2017-mac.sh','tets']
     peak=resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss
     report=dict(kind='tets_hardware_verification',checked_at=datetime.now(timezone.utc).isoformat(),
         hardware=hardware,runtimes=runtimes,
-        software_checks_passed=True,synthetic_backtest_state=self_test['state'],
+        software_checks_passed=True,regression_checks=counts,native_compatibility={k:v for k,v in native.items() if k!='binaries'},synthetic_backtest_state=self_test['state'],
         receipt_sha256=self_test['card']['receipt_sha256'],web_http=web,status_api_http=api,
         largest_child_peak_rss_bytes=int(peak if platform.system()=='Darwin'else peak*1024),
         memory_measurement='Largest child peak RSS; not combined process-tree peak or system free RAM',

@@ -22,6 +22,8 @@ import onboarding
 import paper
 import shadow
 import news
+import company_data
+import replay_bridge
 
 ROOT = Path(__file__).resolve().parents[1]
 STATE = ROOT / 'desk/runtime/.state/tets'
@@ -40,7 +42,7 @@ def config():
 
 def read(path):
     if not path.exists(): return None
-    if path.is_symlink() or path.stat().st_size > 262144: raise ValueError('Invalid status file')
+    if path.is_symlink() or path.stat().st_size > 1024*1024: raise ValueError('Invalid status file')
     return json.loads(path.read_text())
 
 
@@ -50,7 +52,8 @@ def status():
         try: os.kill(runner['pid'], 0)
         except (ProcessLookupError, PermissionError): runner = {**runner,'state':'stopped'}
     return dict(observed_at=stamp(), runner=runner, activity=read(ACTIVITY), settings=public_profile(),
-                news=read(STATE/'news.json'), connections=read(STATE/'connections.json'))
+                news=read(STATE/'news.json'), market=read(STATE/'market.json'), connections=read(STATE/'connections.json'),
+                adw_fleet=read(STATE/'adw_latest_run.json') or read(ROOT/'desk/runtime/.state/harness2/adw_latest_run.json'))
 
 
 def setup():
@@ -69,7 +72,15 @@ def setup():
     if mode == 'shadow':
         from_spec = {k:v for k,v in spec.items() if k not in ('quantity','label','sizing_budget')}
         shadow.save(STATE/'strategy.json', from_spec)
-    shadow.save(CONFIG,dict(mode=mode,news_sources=['yahoo_finance','yahoo_finance_rss','bbc_business_rss','alpaca_news_when_connected']))
+    symbols = config().get('watchlist', [profile['symbol'], 'AAPL', 'MSFT'])
+    if mode == 'shadow':
+        if 'TETS_SYMBOLS' in os.environ: symbols = os.environ['TETS_SYMBOLS']
+        elif sys.stdin.isatty():
+            symbols = onboarding.ask('Shadow watchlist (1–5 symbols, comma-separated; primary always included)',
+                                     ','.join(shadow.watchlist(symbols, profile['symbol'])),
+                                     lambda value:shadow.watchlist(value, profile['symbol']))
+        symbols = shadow.watchlist(symbols, profile['symbol'])
+    shadow.save(CONFIG,dict(mode=mode,watchlist=symbols,news_sources=['yahoo_finance','yahoo_finance_rss','bbc_business_rss','alpaca_news_when_connected']))
     if mode == 'paper': connect()
     print(f'Saved {mode} mode. Yahoo prices/news need no API key. Alpaca news reuses local paper keys when available.')
 
@@ -99,9 +110,14 @@ def connect():
     return result
 
 
+def watch_symbols(profile=None):
+    profile=profile or onboarding.load_profile() or onboarding.defaults()
+    return shadow.watchlist(os.environ.get('TETS_SYMBOLS',config().get('watchlist',[profile['symbol']])),profile['symbol']) if config()['mode']=='shadow' else [profile['symbol']]
+
+
 def collect_news():
-    profile=onboarding.load_profile() or onboarding.defaults()
-    result=news.collect(profile['symbol'],paper.credentials())
+    symbols=watch_symbols()
+    result=news.collect_watchlist(symbols,paper.credentials())
     shadow.save(STATE/'news.json',result)
     return result
 
@@ -133,9 +149,16 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/': body=(ROOT/'scripts/status.html').read_bytes(); content='text/html; charset=utf-8'
         elif self.path == '/api/status': body=json.dumps(status()).encode(); content='application/json'
+        elif self.path == '/api/replay': body=json.dumps(replay_bridge.status()).encode(); content='application/json'
+        elif self.path == '/replay':
+            replay=replay_bridge.read()
+            if not replay:self.send_error(404,'No verified historical replay on this Mac');return
+            body=replay['html'];content='text/html; charset=utf-8'
         else: self.send_error(404); return
         self.send_response(200); self.send_header('Content-Type',content); self.send_header('Cache-Control','no-store')
         self.send_header('X-Content-Type-Options','nosniff'); self.send_header('Content-Length',str(len(body)))
+        if self.path=='/replay':
+            self.send_header('Content-Security-Policy',"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'self'")
         self.end_headers(); self.wfile.write(body)
     def log_message(self,*_): pass
 
@@ -166,13 +189,25 @@ def start(seconds, open_browser=True):
             while not stop.is_set():
                 try: collect_news()
                 except Exception: pass
-                stop.wait(300)
+                stop.wait(60)
         worker=threading.Thread(target=refresh_news,daemon=True);worker.start()
+        def refresh_companies():
+            symbols=watch_symbols(profile)
+            while not stop.is_set():
+                values=[]
+                for symbol in symbols:
+                    if stop.is_set():return
+                    values.append(company_data.collect(symbol))
+                    shadow.save(STATE/'market.json',dict(observed_at=stamp(),companies=values,refresh_seconds=3600))
+                stop.wait(3600)
+        metadata=threading.Thread(target=refresh_companies,daemon=True);metadata.start()
         activity=str(ACTIVITY); run_dir=STATE/'runs'/uuid.uuid4().hex
         if mode=='shadow':
+            symbols = shadow.watchlist(os.environ.get('TETS_SYMBOLS',config().get('watchlist',[profile['symbol']])),profile['symbol'])
             command=[sys.executable,str(ROOT/'scripts/shadow.py'),'watch','--spec',str(STATE/'strategy.json'),
                      '--seconds',str(seconds),'--state-dir',str(run_dir),'--activity',activity,
-                     '--capital',profile['capital_usd'],'--entry-budget',profile['order_budget_usd']]
+                     '--capital',profile['capital_usd'],'--entry-budget',profile['order_budget_usd'],
+                     '--symbols',','.join(symbols)]
         else:
             paper.check_install()
             command=[str(paper.STATE/'.venv/bin/python'),str(ROOT/'scripts/paper.py'),'watch','--activity',activity]
@@ -218,10 +253,16 @@ def self_test():
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('action',choices=['setup','connect','doctor','news','start','status','self-test','verify-hardware'])
+    p.add_argument('action',choices=['setup','connect','doctor','news','start','status','self-test','verify-hardware','evolve','adw','models'])
     p.add_argument('--seconds',type=int,default=28800)
     p.add_argument('--no-open',action='store_true')
     p.add_argument('--offline',action='store_true')
+    p.add_argument('--provider',default=None)
+    p.add_argument('--model',default=None)
+    p.add_argument('--agent',default='traders')
+    p.add_argument('--set',dest='assignments',action='append')
+    p.add_argument('--reset',action='store_true')
+    p.add_argument('--json',action='store_true')
     args=p.parse_args()
     if not 1<=args.seconds<=28800: p.error('seconds must be between 1 and 28800')
     if args.action=='setup':setup()
@@ -233,6 +274,18 @@ def main():
     elif args.action=='verify-hardware':
         import hardware
         hardware.verify(sys.modules[__name__])
+    elif args.action=='evolve':
+        import harness2_evolve
+        harness2_evolve.main(['run','--k','2','--mode','parallel'])
+    elif args.action in ('adw','models'):
+        import harness2_evolve
+        fwd=[args.action,'--agent',args.agent]
+        if args.provider: fwd.extend(['--provider',args.provider])
+        if args.model: fwd.extend(['--model',args.model])
+        for item in args.assignments or []: fwd.extend(['--set',item])
+        if args.reset: fwd.append('--reset')
+        if args.json: fwd.append('--json')
+        harness2_evolve.main(fwd)
     else:self_test()
 
 

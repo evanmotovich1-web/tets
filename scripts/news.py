@@ -79,3 +79,13 @@ def collect(symbol, creds=None, ticker=None, opener=urlopen,rss_sources=RSS_SOUR
     for source,url in rss_sources:reports.append(rss_feed(source,url.format(symbol=symbol),opener))
     return dict(kind='tets_news',symbol=symbol,observed_at=now(),sources=reports,
                 use='display_and_record_only; headlines do not trigger orders')
+
+
+def collect_watchlist(symbols, creds=None):
+    companies=[]
+    for symbol in symbols:
+        companies.append(collect(symbol,creds,rss_sources=RSS_SOURCES[:1]))
+    broad=rss_feed(*RSS_SOURCES[1])
+    return dict(kind='tets_news',symbol=symbols[0],observed_at=now(),companies=companies,
+                sources=companies[0]['sources']+[broad],broad_sources=[broad],
+                refresh_seconds=60,use='display_and_record_only; headlines do not trigger orders')

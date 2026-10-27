@@ -15,6 +15,7 @@ import time
 import webbrowser
 from zoneinfo import ZoneInfo
 from onboarding import load_profile, public_settings, LIQUIDITY
+from mac_compat import wheel_args
 
 ROOT = Path(__file__).resolve().parents[1]
 STATE = ROOT / 'desk/runtime/.state/paper'
@@ -65,7 +66,7 @@ def prepare():
     if venv.is_symlink(): raise ValueError('Paper environment symlink refused')
     if not venv.exists(): run(['uv', 'venv', '--python', '3.13', str(venv)])
     # Only the upstream helper runtime is needed; no scheduler, webhook, or RSI bot.
-    run(['uv', 'pip', 'sync', '--python', str(venv / 'bin/python'), '--require-hashes',
+    run(['uv', 'pip', 'sync', '--python', str(venv / 'bin/python'), *wheel_args(), '--require-hashes',
          str(ROOT / 'scripts/paper-requirements.lock')])
     run([str(venv / 'bin/python'), '-c', 'import alpaca, requests, dotenv, rfc8785, backtesting'])
     save(STATE / 'installed.json', dict(upstream=UPSTREAM, revision=REVISION, live_orders=False,

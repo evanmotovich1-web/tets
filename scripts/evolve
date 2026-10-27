@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+ALGO_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
+. "$ALGO_ROOT/scripts/env"
+if [ -x "$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python" ]; then
+  ALGO_EVOLVE_PYTHON="$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python"
+elif [ -x "$ALGO_ROOT/desk/backtest/.venv/bin/python" ]; then
+  ALGO_EVOLVE_PYTHON="$ALGO_ROOT/desk/backtest/.venv/bin/python"
+else
+  ALGO_EVOLVE_PYTHON="python3"
+fi
+exec "$ALGO_EVOLVE_PYTHON" "$ALGO_ROOT/scripts/harness2_evolve.py" "$@"

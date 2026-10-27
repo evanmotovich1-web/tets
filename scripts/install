@@ -15,7 +15,11 @@ ALGO_VENV="$ALGO_ROOT/desk/backtest/.venv"
 [ ! -L "$ALGO_VENV" ] || { echo 'Existing Python symlink refused.' >&2; exit 2; }
 if [ ! -e "$ALGO_VENV" ]; then uv venv --python 3.14 "$ALGO_VENV"; fi
 "$ALGO_VENV/bin/python" -c 'import sys;assert sys.version_info[:2]==(3,14)'
-uv pip sync --python "$ALGO_VENV/bin/python" "$ALGO_ROOT/desk/requirements.lock"
+if [ "$ALGO_PLATFORM:$ALGO_ARCH" = Darwin:x86_64 ]; then
+  uv pip sync --python "$ALGO_VENV/bin/python" --python-platform x86_64-apple-darwin --reinstall "$ALGO_ROOT/desk/requirements.lock"
+else
+  uv pip sync --python "$ALGO_VENV/bin/python" "$ALGO_ROOT/desk/requirements.lock"
+fi
 "$ALGO_VENV/bin/python" -c 'import subprocess,sys;subprocess.run([sys.executable,"-c","import numpy,pandas,backtesting,rfc8785"],check=True,timeout=180)'
 (cd "$ALGO_ROOT/desk" && npm ci --ignore-scripts --no-audit --no-fund)
 "$ALGO_VENV/bin/python" "$ALGO_ROOT/scripts/shadow.py" install
