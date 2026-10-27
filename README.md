@@ -41,6 +41,7 @@ sh tets doctor --offline       # installed package/profile check only
 sh tets news                   # fetch current source-labeled headlines
 sh tets status                 # read actual runner/activity/source snapshots
 sh tets self-test              # synthetic engine/receipt check; no network/model
+sh tets verify-hardware        # save actual hardware, runtime, backtest and HTTP proof; no keys
 ```
 
 The same install command automatically chooses a free port if 8765 is occupied and prints/opens the actual URL. `TETS_PORT=8766 sh tets start` selects an explicit port; an occupied explicit port is refused. The runner never kills another process to take its port. A closed market or missing quote remains visible; neither is fabricated activity. Quitting paper mode stops new decisions; existing paper orders/positions remain at Alpaca.
@@ -52,3 +53,11 @@ TETS_MODE=shadow TETS_NO_START=1 TETS_NO_OPEN=1 sh install.sh
 ```
 
 Runtime logs, profiles, keys, downloaded tools and all observations stay under ignored `desk/runtime/.state/`. Start each machine from source; do not copy virtual environments between Macs. `SOURCE-PROVENANCE.json` records the copied Algo source hashes. Original source is MIT; see `AGPL-NOTICE.md` for the backtesting dependency's license.
+
+## Backtesting does not need an API key
+
+The backtest engine runs locally. Yahoo historical/forward observations and the free RSS adapters also work without keys. The synthetic `self-test` checks accounting and runtime health; it is not a historical profitability result. Select option 1 to install and run without entering any broker credential.
+
+The optional Alpaca prompt is for simulated **broker execution**, account positions/orders and Alpaca data/news. You can configure the same paper-account key pair on your own computers. Those machines then share one simulated account and its limits; independent runners on the same symbol can conflict and pause on the paper ledger's position checks. Giving the same key to every user would give every user control of that same account. Free pricing does not make the key public. A shared data service would be a separate design with provider-authorized data access, not a bundled broker secret.
+
+Every install now saves `desk/runtime/.state/tets/hardware-verification.json`: actual model, RAM, OS, native/translated architecture, Python/Node runtime architectures, a completed synthetic receipt and HTTP checks. `sh tets verify-hardware` refreshes this local evidence without broker keys or order submissions. A successful Rosetta run checks Intel code execution on Apple Silicon; it does not establish a physical 2017 Mac or Monterey run. MacBookAir7,2 covers both 2015 and 2017 Air models, so that identifier alone does not prove the year.

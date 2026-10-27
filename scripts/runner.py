@@ -56,7 +56,7 @@ def status():
 def setup():
     mode = os.environ.get('TETS_MODE') or config()['mode']
     if sys.stdin.isatty() and 'TETS_MODE' not in os.environ:
-        print('1) Yahoo shadow — no account or keys; virtual fills\n2) Alpaca paper — simulated broker execution')
+        print('1) Yahoo shadow + local backtest engine — no API keys; virtual fills\n2) Alpaca paper account — optional; requires your paper-account keys')
         choice = input('Test mode [1/2, default 1]: ').strip() or '1'
         if choice not in ('1','2'): raise ValueError('Choose 1 or 2')
         mode = {'1':'shadow','2':'paper'}[choice]
@@ -218,7 +218,7 @@ def self_test():
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('action',choices=['setup','connect','doctor','news','start','status','self-test'])
+    p.add_argument('action',choices=['setup','connect','doctor','news','start','status','self-test','verify-hardware'])
     p.add_argument('--seconds',type=int,default=28800)
     p.add_argument('--no-open',action='store_true')
     p.add_argument('--offline',action='store_true')
@@ -230,6 +230,9 @@ def main():
     elif args.action=='news':print(json.dumps(collect_news(),indent=2))
     elif args.action=='start':start(args.seconds,not args.no_open and os.environ.get('TETS_NO_OPEN')!='1')
     elif args.action=='status':print(json.dumps(status(),indent=2))
+    elif args.action=='verify-hardware':
+        import hardware
+        hardware.verify(sys.modules[__name__])
     else:self_test()
 
 

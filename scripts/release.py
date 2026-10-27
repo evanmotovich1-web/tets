@@ -14,7 +14,7 @@ def allowed(name):
 def source_files(root):
     import os
     root=Path(root).resolve();result={}
-    roots={'README.md','AGENTS.md','LICENSE','AGPL-NOTICE.md','.gitignore','SOURCE-PROVENANCE.json','VERIFICATION.json','desk/runtime/.gitignore','install.sh','install-2017-mac.sh','tets'}
+    roots={'README.md','AGENTS.md','LICENSE','AGPL-NOTICE.md','.gitignore','SOURCE-PROVENANCE.json','VERIFICATION.json','INTEL-VERIFICATION.json','desk/runtime/.gitignore','install.sh','install-2017-mac.sh','tets'}
     paths=[root/n for n in roots]
     for folder in ('scripts','desk'):
         for current,dirs,names in os.walk(root/folder,followlinks=False):
