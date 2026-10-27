@@ -1,0 +1,1 @@
+{"op":"run_backtest","strategy":{"symbol":"SYNTH","parameters":{"fast_window":1,"slow_window":2},"position":{"quantity":"1"}},"dataset_id":"synthetic:sma-four-bars:v1","evaluation_window":{"start":"2024-01-08T09:30:00.000Z","end_exclusive":"2024-01-12T00:00:00.000Z"},"initial_cash":"1000.00","cost_model":{"commission_bps":"100","slippage_bps_per_side":"100"}}

@@ -1,0 +1,28 @@
+#!/bin/sh
+set -eu
+ALGO_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
+case "$(uname -s)" in
+  Darwin) ;;
+  Linux) case "$ALGO_ROOT" in /mnt/*) echo 'Use a native Linux filesystem.' >&2; exit 2;; esac;;
+  *) echo 'macOS 12+ or native Linux required.' >&2; exit 2;;
+esac
+TETS_PROFILE=${TETS_PROFILE:-normal}
+export TETS_PROFILE
+. "$ALGO_ROOT/scripts/bootstrap"
+mkdir -p "$ALGO_ROOT/desk/runtime/.state/tets"
+printf '%s\n' "$TETS_PROFILE" > "$ALGO_ROOT/desk/runtime/.state/tets/install-profile.txt"
+ALGO_VENV="$ALGO_ROOT/desk/backtest/.venv"
+[ ! -L "$ALGO_VENV" ] || { echo 'Existing Python symlink refused.' >&2; exit 2; }
+if [ ! -e "$ALGO_VENV" ]; then uv venv --python 3.14 "$ALGO_VENV"; fi
+"$ALGO_VENV/bin/python" -c 'import sys;assert sys.version_info[:2]==(3,14)'
+uv pip sync --python "$ALGO_VENV/bin/python" "$ALGO_ROOT/desk/requirements.lock"
+"$ALGO_VENV/bin/python" -c 'import subprocess,sys;subprocess.run([sys.executable,"-c","import numpy,pandas,backtesting,rfc8785"],check=True,timeout=180)'
+(cd "$ALGO_ROOT/desk" && npm ci --ignore-scripts --no-audit --no-fund)
+"$ALGO_VENV/bin/python" "$ALGO_ROOT/scripts/shadow.py" install
+"$ALGO_VENV/bin/python" "$ALGO_ROOT/scripts/paper.py" prepare
+"$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python" -c 'import yfinance,numpy,pandas,backtesting'
+sh "$ALGO_ROOT/tets" setup
+sh "$ALGO_ROOT/tets" self-test
+sh "$ALGO_ROOT/tets" doctor
+if [ "${TETS_NO_START:-0}" != 1 ]; then exec sh "$ALGO_ROOT/tets" start; fi
+echo 'Installed. Start with: sh tets start'

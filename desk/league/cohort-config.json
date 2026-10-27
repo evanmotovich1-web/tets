@@ -1,0 +1,1 @@
+{"experiment_id":"cohort-league-v1","generations":2,"population":4,"seeds":[11],"seed":5,"max_drawdown":0.05,"max_jobs":16,"wall_seconds":300,"cohorts":[{"id":"A","world_families":["trend_v1","regime_v1"]},{"id":"B","world_families":["meanrev_v1"]}]}

@@ -1,0 +1,26 @@
+#!/bin/sh
+# Source from repo entrypoints. No downloads or shell-profile changes.
+: "${ALGO_ROOT:?Set ALGO_ROOT before sourcing scripts/env}"
+ALGO_TOOLS="$ALGO_ROOT/desk/runtime/.state/tools"
+PATH="$ALGO_TOOLS/node/bin:$ALGO_TOOLS/uv:$ALGO_TOOLS/bin:$PATH"
+export PATH
+if [ -z "${TETS_PROFILE:-}" ] && [ -f "$ALGO_ROOT/desk/runtime/.state/tets/install-profile.txt" ]; then
+  IFS= read -r TETS_PROFILE < "$ALGO_ROOT/desk/runtime/.state/tets/install-profile.txt"
+fi
+TETS_PROFILE=${TETS_PROFILE:-normal}
+case "$TETS_PROFILE" in
+  mac2017) : "${NODE_OPTIONS:=--max-old-space-size=1536}"; : "${UV_CONCURRENT_DOWNLOADS:=4}"; : "${UV_CONCURRENT_BUILDS:=1}"; : "${UV_CONCURRENT_INSTALLS:=2}";;
+  normal) : "${NODE_OPTIONS:=--max-old-space-size=3072}"; : "${UV_CONCURRENT_DOWNLOADS:=8}"; : "${UV_CONCURRENT_BUILDS:=2}"; : "${UV_CONCURRENT_INSTALLS:=4}";;
+  *) echo 'Unknown install profile; choose normal or mac2017.' >&2; exit 2;;
+esac
+export TETS_PROFILE
+: "${UV_NO_BUILD:=1}"
+: "${npm_config_jobs:=1}"
+: "${npm_config_maxsockets:=4}"
+: "${OPENBLAS_NUM_THREADS:=1}"
+: "${OMP_NUM_THREADS:=1}"
+: "${VECLIB_MAXIMUM_THREADS:=1}"
+export NODE_OPTIONS UV_CONCURRENT_DOWNLOADS UV_CONCURRENT_BUILDS UV_CONCURRENT_INSTALLS
+export UV_NO_BUILD
+export npm_config_jobs npm_config_maxsockets OPENBLAS_NUM_THREADS OMP_NUM_THREADS VECLIB_MAXIMUM_THREADS
+export NEXT_TELEMETRY_DISABLED=1

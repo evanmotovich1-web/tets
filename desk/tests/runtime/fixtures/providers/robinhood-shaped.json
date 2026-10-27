@@ -1,0 +1,18 @@
+{
+  "classification": "synthetic",
+  "evidence": "Frozen Robinhood-shaped test responses, not authenticated captures. Tool names are documented at https://robinhood.com/us/en/support/articles/trading-with-your-agent/. Wire schemas and live compatibility remain unverified.",
+  "received_at": "2024-01-08T14:34:00.500Z",
+  "tools": [
+    {"name": "get_equity_historicals", "annotations": {"readOnlyHint": true}, "inputSchema": {"type": "object", "additionalProperties": false, "properties": {"symbols": {"type": "array", "items": {"type": "string"}}, "interval": {"enum": ["minute", "5minute", "15minute", "hour", "day"]}, "start": {"type": "string"}, "end": {"type": "string"}, "bounds": {"const": "regular"}}, "required": ["symbols", "interval", "start", "end", "bounds"]}},
+    {"name": "get_equity_quotes", "annotations": {"readOnlyHint": true}, "inputSchema": {"type": "object", "additionalProperties": false, "properties": {"symbols": {"type": "array", "items": {"type": "string"}}}, "required": ["symbols"]}},
+    {"name": "place_equity_order", "annotations": {"readOnlyHint": false}, "inputSchema": {"type": "object"}}
+  ],
+  "bars": {"structuredContent": {"symbol": "SPY", "interval": "minute", "historicals": [
+    {"begins_at": "2024-01-08T14:30:00Z", "ends_at": "2024-01-08T14:31:00Z", "available_at": "2024-01-08T14:31:00Z", "open_price": "100.00", "high_price": "102.00", "low_price": "99.00", "close_price": "101.00", "volume": 1000, "session": "reg", "interpolated": false},
+    {"begins_at": "2024-01-08T14:31:00Z", "ends_at": "2024-01-08T14:32:00Z", "available_at": "2024-01-08T14:32:00Z", "open_price": "101.00", "high_price": "103.00", "low_price": "100.00", "close_price": "102.00", "volume": 2000, "session": "reg", "interpolated": false},
+    {"begins_at": "2024-01-08T14:32:00Z", "ends_at": "2024-01-08T14:33:00Z", "open_price": "102.00", "high_price": "104.00", "low_price": "101.00", "close_price": "103.00", "volume": 1500, "session": "reg", "interpolated": false}
+  ]}},
+  "quotes": {"structuredContent": {"results": [
+    {"symbol": "SPY", "bid_price": "103.00", "ask_price": "103.02", "bid_size": 20, "ask_size": 15, "bid_price_updated_at": "2024-01-08T14:34:00.000Z", "ask_price_updated_at": "2024-01-08T14:34:00.100Z", "last_trade_price": "103.01", "last_trade_at": "2024-01-08T14:34:00.400Z"}
+  ]}}
+}

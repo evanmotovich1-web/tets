@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "campaign_id": "fixture-research-v1",
+  "dataset_ids": ["synthetic:sma-four-bars:v1"],
+  "evaluation_window": {"start": "2024-01-08T09:30:00.000Z", "end_exclusive": "2024-01-12T00:00:00.000Z"},
+  "initial_cash": "1000.00",
+  "cost_model": {"commission_bps": "100", "slippage_bps_per_side": "100"},
+  "budget": {"max_attempts_per_phase": 3, "operation_ms": 30000, "tick_ms": 60000, "max_model_calls": 20, "max_tool_calls": 40, "max_tokens": 32000, "max_output_tokens": 2000}
+}

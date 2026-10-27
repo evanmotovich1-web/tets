@@ -1,0 +1,12 @@
+node_modules/
+.venv/
+.state/
+**/runtime/.state/
+**/__pycache__/
+*.pyc
+.DS_Store
+.env
+.env.*
+credentials.json
+secrets.json
+/dist/

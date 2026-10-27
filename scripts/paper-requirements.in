@@ -1,0 +1,8 @@
+# Runtime subset for AlpacaTrading 2a415e13bbc3fd48c48279edbe74e02c642d5ecf.
+# First three pins match upstream requirements.txt; backtesting and rfc8785
+# support Algo's existing validated strategy contracts and family_signal.
+alpaca-py==0.44.0
+requests==2.34.2
+python-dotenv==1.2.3
+backtesting==0.6.6
+rfc8785==0.1.4

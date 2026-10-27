@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "research_acceptance_contract",
+  "contract_id": "research_accepted_v1",
+  "requires": {
+    "valid_spec": true,
+    "authentic_receipt": true,
+    "independent_replay_match": true,
+    "max_adjusted_pvalue": "0.05",
+    "min_independent_trades": 30,
+    "max_drawdown_pct": "15",
+    "min_excess_return_vs_buy_and_hold_pct": "0",
+    "cost_stress_multiplier": 2,
+    "excess_under_cost_stress_min_pct": "0"
+  },
+  "lineage": {
+    "max_survivors_per_lineage": 1,
+    "max_variants_searched_per_lineage": 12
+  },
+  "authority": "research_label_only_never_moves_a_referee_stage"
+}

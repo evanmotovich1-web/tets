@@ -1,0 +1,9 @@
+#!/bin/sh
+# Minimal realpath -e/-- fallback for uv on Monterey, backed by private Node.
+exec node -e '
+const fs = require("node:fs");
+let args = process.argv.slice(1).filter(x => x !== "--" && x !== "-e");
+if (!args.length || args.some(x => x.startsWith("-"))) process.exit(2);
+try { for (const p of args) console.log(fs.realpathSync(p)); }
+catch (e) { console.error(e.message); process.exit(1); }
+' -- "$@"

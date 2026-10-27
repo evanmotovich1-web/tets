@@ -1,0 +1,20 @@
+{
+  "name": "trading-desk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.19.0" },
+  "scripts": {
+    "tick": "node runtime/tick.mjs",
+    "tui": "node runtime/tui.mjs",
+    "test:runtime": "node --test tests/runtime/*.test.mjs",
+    "test:integration": "node --test tests/integration/*.test.mjs"
+  },
+  "dependencies": {
+    "@earendil-works/chord": "1.1.0",
+    "@earendil-works/pi-ai": "1.1.0",
+    "@earendil-works/pi-durable": "1.1.0",
+    "ajv": "8.17.1",
+    "canonicalize": "2.1.0"
+  }
+}

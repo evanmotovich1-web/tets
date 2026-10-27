@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "kind": "league_author_lanes",
+  "max_attempts_per_author": 4,
+  "lanes": {
+    "author_codex": { "provider": "cli_codex", "model_id": "gpt-6.1-sol" },
+    "author_claude": { "provider": "cli_claude", "model_id": "claude-sonnet-5-5" },
+    "author_hermes": { "provider": "localhost", "model_id": "qwen3.5:2b", "base_url": "http://127.0.0.1:11434/v1", "timeout_ms": 300000 },
+    "author_pi": { "provider": "fixture", "model_id": "fixture-fleet-v1" }
+  }
+}

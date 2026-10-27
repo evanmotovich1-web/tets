@@ -1,0 +1,2 @@
+-r ../desk/requirements.lock
+yfinance==1.7.0

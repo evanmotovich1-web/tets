@@ -1,0 +1,88 @@
+#!/bin/sh
+# Source from install: install pinned prebuilt tools privately, without Homebrew.
+set -eu
+: "${ALGO_ROOT:?Set ALGO_ROOT before sourcing scripts/bootstrap}"
+. "$ALGO_ROOT/scripts/env"
+ALGO_PLATFORM=$(uname -s)
+ALGO_ARCH=$(uname -m)
+case "$ALGO_PLATFORM:$ALGO_ARCH" in
+  Darwin:x86_64) ALGO_NODE_PLATFORM=darwin-x64; ALGO_UV_PLATFORM=x86_64-apple-darwin
+    ALGO_NODE_SHA=58e99022c2ff89395576cc7fd4d98cea24bb68081475d5f88b801ee8729fb026
+    ALGO_UV_SHA=bb7b805bdcf3d0bc8c74ceb94569e6b3e8aa35bd492acdbb9d46bf46d9d4ff6b;;
+  Darwin:arm64) ALGO_NODE_PLATFORM=darwin-arm64; ALGO_UV_PLATFORM=aarch64-apple-darwin
+    ALGO_NODE_SHA=61130f394c1630d211dd50aecc4353d379480f36d3ac913cd85dbba1aed585c6
+    ALGO_UV_SHA=cfe454573412ff7380d15fc7dae5997ab53ffce72fce0a78e91ddbc84001acd2;;
+  Linux:x86_64) ALGO_NODE_PLATFORM=linux-x64; ALGO_UV_PLATFORM=x86_64-unknown-linux-gnu
+    ALGO_NODE_SHA=b294a556e639d64338823920e5866c21c02741742d2e1529ee1a225c1ec9252a
+    ALGO_UV_SHA=eadd9d27c134ab5ac1ffd4473b97a741407f3ea238288f03121fc4deddf90220;;
+  Linux:aarch64|Linux:arm64) ALGO_NODE_PLATFORM=linux-arm64; ALGO_UV_PLATFORM=aarch64-unknown-linux-gnu
+    ALGO_NODE_SHA=013b59cfd2819703a6f4a14ab891fc46fc2a4e3f5bcd92de3fb4929b43e35b30
+    ALGO_UV_SHA=9041c73c99fdc5892cf128140beb354eca9231d502068cc36e6cb53a8e59ad14;;
+  *) echo "Unsupported platform: $ALGO_PLATFORM $ALGO_ARCH" >&2; exit 2;;
+esac
+if [ "$ALGO_PLATFORM" = Darwin ]; then
+  ALGO_MACOS=$(sw_vers -productVersion)
+  [ "${ALGO_MACOS%%.*}" -ge 12 ] || { echo 'macOS Monterey 12 or newer required. Update macOS, then rerun this command.' >&2; exit 2; }
+fi
+for ALGO_COMMAND in curl tar; do
+  command -v "$ALGO_COMMAND" >/dev/null 2>&1 || { echo "Required OS utility missing: $ALGO_COMMAND" >&2; exit 2; }
+done
+if ! git --version >/dev/null 2>&1; then
+  if [ "$ALGO_PLATFORM" = Darwin ] && [ -t 0 ]; then
+    echo 'Git needs Apple Command Line Tools. Complete the Apple Install dialog; this command will continue.'
+    xcode-select --install || true
+    ALGO_WAIT=0
+    until git --version >/dev/null 2>&1; do
+      ALGO_WAIT=$((ALGO_WAIT + 1))
+      [ "$ALGO_WAIT" -lt 1200 ] || { echo 'Apple tools are not ready. Finish their installation, then rerun sh scripts/install.' >&2; exit 2; }
+      sleep 1
+    done
+  else
+    echo 'Git is required. On Mac, run this installer in Terminal to install Apple Command Line Tools.' >&2
+    exit 2
+  fi
+fi
+mkdir -p "$ALGO_TOOLS"
+[ ! -L "$ALGO_TOOLS" ] || { echo 'Tool directory symlink refused.' >&2; exit 2; }
+algo_fetch_tool() (
+  ALGO_URL=$1; ALGO_SHA=$2; ALGO_DEST=$3
+  [ ! -e "$ALGO_DEST" ] && [ ! -L "$ALGO_DEST" ] || { echo "Inspect incomplete private tool directory: $ALGO_DEST" >&2; exit 2; }
+  ALGO_STAGE=$(mktemp -d "$ALGO_TOOLS/download.XXXXXX")
+  trap 'rm -rf "$ALGO_STAGE"' EXIT HUP INT TERM
+  curl --fail --location --retry 3 --connect-timeout 20 --max-time 300 --proto '=https' --tlsv1.2 "$ALGO_URL" -o "$ALGO_STAGE/tool.tar.gz"
+  if command -v shasum >/dev/null 2>&1; then
+    ALGO_ACTUAL=$(shasum -a 256 "$ALGO_STAGE/tool.tar.gz" | cut -d ' ' -f 1)
+  else
+    ALGO_ACTUAL=$(sha256sum "$ALGO_STAGE/tool.tar.gz" | cut -d ' ' -f 1)
+  fi
+  [ "$ALGO_ACTUAL" = "$ALGO_SHA" ] || { echo 'Tool download checksum mismatch; installation stopped.' >&2; exit 2; }
+  mkdir "$ALGO_STAGE/unpacked"
+  tar -xzf "$ALGO_STAGE/tool.tar.gz" --strip-components=1 -C "$ALGO_STAGE/unpacked"
+  mv "$ALGO_STAGE/unpacked" "$ALGO_DEST"
+)
+# Use one tested Node major; a system Node 24 can drop older macOS support.
+if ! node -e 'let [a,b]=process.versions.node.split(".").map(Number);process.exit(a===22&&b>=19?0:1)' >/dev/null 2>&1 || ! npm --version >/dev/null 2>&1; then
+  echo 'Installing private Node 22.23.2 + npm (verified prebuilt archive).'
+  algo_fetch_tool "https://nodejs.org/dist/v22.23.2/node-v22.23.2-$ALGO_NODE_PLATFORM.tar.gz" "$ALGO_NODE_SHA" "$ALGO_TOOLS/node"
+fi
+# Monterey lacks realpath. uv's Python-management scripts need this utility.
+if ! command -v realpath >/dev/null 2>&1; then
+  mkdir -p "$ALGO_TOOLS/bin"
+  cp "$ALGO_ROOT/scripts/realpath" "$ALGO_TOOLS/bin/realpath"
+  chmod 700 "$ALGO_TOOLS/bin/realpath"
+fi
+if ! uv --version >/dev/null 2>&1; then
+  echo 'Installing private uv 0.13.1 (verified prebuilt archive).'
+  algo_fetch_tool "https://github.com/astral-sh/uv/releases/download/0.13.1/uv-$ALGO_UV_PLATFORM.tar.gz" "$ALGO_UV_SHA" "$ALGO_TOOLS/uv"
+fi
+node --version
+uv --version
+node -e '
+const fs = require("node:fs");
+fs.writeFileSync(process.argv[1], JSON.stringify({
+  node: process.versions.node, node_executable: process.execPath,
+  platform: process.platform, architecture: process.arch,
+  node_options: process.env.NODE_OPTIONS, numerical_threads: process.env.OMP_NUM_THREADS,
+  local_model_installed: false, hardware_2017_verified: false
+}, null, 2) + "\n");
+' "$ALGO_TOOLS/runtime.json"

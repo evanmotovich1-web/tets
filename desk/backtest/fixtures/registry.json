@@ -1,0 +1,1 @@
+{"datasets":{"synthetic:sma-four-bars:v1":{"classification":"synthetic","data":"sma-four-bars.jsonl","manifest":"manifest.json","manifest_sha256":"def293e65172cbf41370f45f6770052ddf5635296d79af168c416ecb2cb6c491","partition":"development"}},"kind":"dataset_registry","schema_version":1}

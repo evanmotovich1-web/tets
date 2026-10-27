@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+ALGO_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+. "$ALGO_ROOT/scripts/env"
+TETS_PYTHON="$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python"
+[ -x "$TETS_PYTHON" ] || { echo 'Run sh install.sh or sh install-2017-mac.sh first.' >&2; exit 2; }
+exec "$TETS_PYTHON" "$ALGO_ROOT/scripts/runner.py" "$@"
