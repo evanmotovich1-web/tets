@@ -43,7 +43,7 @@ def config():
 
 def read(path):
     if not path.exists(): return None
-    if path.is_symlink() or path.stat().st_size > 1024*1024: raise ValueError('Invalid status file')
+    if path.is_symlink() or path.stat().st_size > 16*1024*1024: raise ValueError('Invalid status file')
     return json.loads(path.read_text())
 
 

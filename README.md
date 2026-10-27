@@ -2,7 +2,7 @@
 
 Private standalone algo test runner. Uses the reviewed Algo strategy/backtest engine with Yahoo live-data shadow observation, optional Alpaca paper execution and timestamped news. It does not install OpenTerminal, Next.js, Docker or Hermes.
 
-Evan Algo uses the Tunza design system: a full-brand home, one main **Open the market** action, quieter research/replay choices and paper-colored working screens. Back and Home replace the sidebar. Market companies sit above the chart; news, virtual account details and observations follow in reading order. The Inter variable font is bundled locally under its SIL Open Font License, with system fallbacks and no external font request. The same status, research, model-configuration and replay backends remain authoritative.
+Evan Algo opens as a full-width desktop workspace in dark and light blues, with four large choices: Live market, Research, Backtest replay, and Models & settings. Back and Home replace the sidebar. The navigation flow follows Tunza, while the colors and layout are adapted for a computer. Companies sit above the chart; news, virtual account details and observations follow in reading order. The Inter variable font is bundled locally under its SIL Open Font License, with system fallbacks and no external font request. Existing status, research, model-configuration and replay backends remain authoritative.
 
 ## Install
 
@@ -74,7 +74,7 @@ Models & setup edits the canonical sticky roster used by `sh tets adw` and `sh t
 
 `sh tets dashboard` reopens the UI and source refreshers over existing observations without starting another trading worker. This is useful if the browser/server has closed while an observation worker still owns its activity lock. The UI distinguishes an active observation writer from a stopped foreground runner. The usual one-command installer and both Mac profiles remain available; this UI adds no dependency.
 
-The opening screen uses the earlier dark-blue Algo Lab design and starts with the observed live-quote chart. Company selection changes the price chart, company snapshot and company-specific headlines together. Quote times and stale states remain visible. Fundamentals refresh hourly; headlines refresh every minute and retain publisher timestamps. The feed is unofficial Yahoo indicative data, and provider delay is not guaranteed.
+The Market view uses the blue workspace design and starts with the observed live-quote chart. Company selection changes the price chart, company snapshot and company-specific headlines together. Quote times and stale states remain visible. Fundamentals refresh hourly; headlines refresh every minute and retain publisher timestamps. The feed is unofficial Yahoo indicative data, and provider delay is not guaranteed.
 
 For companies, **estimated market cap** is snapshot shares outstanding multiplied by the last observed quote, with the share snapshot time shown. It is not an exchange-published live market-cap feed. If shares are unavailable, the UI shows a reported provider snapshot or an unavailable state. Funds such as SPY show reported fund assets instead of pretending to have a company market cap. Reported day volume is also a timestamped snapshot.
 

@@ -221,6 +221,46 @@ class Harness2EvolveTests(unittest.TestCase):
             self.assertGreater(ph['agent']['cost_usd'], 0.0)
         self.assertTrue(Path(sssf['db_path']).is_file())
 
+        # Verify LangGraph State-Graph architecture, 6 Preset Trade Workflows with all 6 Agent System Prompts, and Backtest Explorer
+        lg_arch = sssf['langgraph_architecture']
+        self.assertEqual(lg_arch['graph_name'], 'StateGraph(TradeWorkflowState)')
+        self.assertEqual(len(lg_arch['nodes']), 8)
+        self.assertEqual(len(lg_arch['edges']), 8)
+        self.assertEqual(len(lg_arch['state_schema']), 10)
+        self.assertEqual(len(lg_arch['system_files']), 5)
+
+        presets = sssf['workflow_presets']
+        self.assertEqual(len(presets), 6)
+        expected_agent_ids = (
+            'stage_0_jev_router',
+            'phase_1_scout_recon',
+            'trader_price_structure',
+            'trader_theta_mean_reversion',
+            'phase_3_risk_auditor',
+            'phase_4_fleet_dispatcher',
+        )
+        for preset in presets:
+            self.assertIn('agent_system_prompts', preset)
+            self.assertIn('langgraph_spec', preset)
+            for aid in expected_agent_ids:
+                self.assertIn(aid, preset['agent_system_prompts'])
+                self.assertIn(aid, preset['model_stack'])
+                self.assertIn(aid, preset['agent_system_prompts'][aid])
+
+        bt_exp = sssf['backtest_explorer']
+        self.assertEqual(len(bt_exp['runs']), 6)
+        for bt_run in bt_exp['runs']:
+            self.assertIn('truth_of_algo', bt_run)
+            self.assertIn('10.0% Daily Stop Loss', bt_run['truth_of_algo']['risk_and_stop_truth'])
+            self.assertFalse(bt_run['truth_of_algo']['live_orders'])
+            self.assertEqual(len(bt_run['days']), 10)
+            for day_obj in bt_run['days']:
+                self.assertEqual(len(day_obj['decisions']), 3)
+                for dec in day_obj['decisions']:
+                    self.assertIn('what_it_looked_at', dec)
+                    self.assertIn('model_and_agent_reasoning', dec)
+                    self.assertIn('gate_verdicts', dec)
+
         cli_text = ose.render_adw_visual_cli(adw_run)
         self.assertIn('SYNCED TRIAD: VERIFIED (11/11 TOOLS)', cli_text.upper())
         self.assertIn('codex:gpt-5.4', cli_text)
