@@ -32,6 +32,13 @@ fi
 CMD="$1"
 shift
 case "$CMD" in
+  start|dashboard|connect|setup|news)
+    RUNNER_PY="$PY_BIN"
+    if [ -x "$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python" ]; then
+      RUNNER_PY="$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python"
+    fi
+    exec "$RUNNER_PY" "$ALGO_ROOT/scripts/runner.py" "$CMD" "$@"
+    ;;
   visual|adw)
     exec "$PY_BIN" "$ALGO_ROOT/scripts/harness2_evolve.py" visual "$@"
     ;;
