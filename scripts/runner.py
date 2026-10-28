@@ -60,6 +60,7 @@ def status():
             except BlockingIOError: observer='active_writer'
     return dict(observed_at=stamp(), runner=runner, observer=observer, activity=read(ACTIVITY), settings=public_profile(),
                 news=read(STATE/'news.json'), market=read(STATE/'market.json'), connections=read(STATE/'connections.json'),
+                broker=terminal_state.broker(),
                 adw_fleet=read(STATE/'adw_latest_run.json') or read(ROOT/'desk/runtime/.state/harness2/adw_latest_run.json'))
 
 
@@ -158,6 +159,14 @@ class Handler(BaseHTTPRequestHandler):
         elif self.path == '/api/status': body=json.dumps(status()).encode(); content='application/json'
         elif self.path == '/api/replay': body=json.dumps(replay_bridge.status()).encode(); content='application/json'
         elif self.path == '/api/terminal': body=json.dumps(terminal_state.snapshot()).encode(); content='application/json'
+        elif self.path == '/api/broker': body=json.dumps(terminal_state.broker()).encode(); content='application/json'
+        elif self.path == '/api/broker/robinhood-redirect':
+            terminal_state.save_broker({'broker':'robinhood','connected':True})
+            self.send_response(302)
+            self.send_header('Location','https://robinhood.com/login')
+            self.send_header('Cache-Control','no-store')
+            self.end_headers()
+            return
         elif self.path == '/replay':
             replay=replay_bridge.read()
             if not replay:self.send_error(404,'No verified historical replay on this Mac');return
@@ -169,7 +178,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header('Content-Security-Policy',"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'self'")
         self.end_headers(); self.wfile.write(body)
     def do_POST(self):
-        if self.path != '/api/models': self.send_error(404); return
+        if self.path not in ('/api/models', '/api/broker'): self.send_error(404); return
         # Same-origin JSON only: no cross-site form submissions or arbitrary command execution.
         expected=f'http://127.0.0.1:{self.server.server_port}'
         if self.headers.get('Origin') != expected or self.headers.get('Host') != expected.removeprefix('http://'):
@@ -179,9 +188,10 @@ class Handler(BaseHTTPRequestHandler):
         try:
             length=int(self.headers.get('Content-Length','0'))
             if not 0 < length <= 4096: raise ValueError('Invalid request size')
-            result=terminal_state.save_models(json.loads(self.rfile.read(length)))
+            payload=json.loads(self.rfile.read(length))
+            result=terminal_state.save_models(payload) if self.path == '/api/models' else terminal_state.save_broker(payload)
         except (ValueError,TypeError):
-            self.send_error(400,'Invalid model assignment'); return
+            self.send_error(400,'Invalid request payload'); return
         body=json.dumps(result).encode()
         self.send_response(200); self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store')
         self.send_header('Content-Length',str(len(body))); self.end_headers();self.wfile.write(body)

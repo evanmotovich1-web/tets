@@ -127,7 +127,20 @@ body:not(.on-home) .view-page,body:not(.on-home) .workspace{width:100vw;max-widt
 .bt-day-pill.active{border-color:var(--s-green);color:var(--s-green);background:#4ade8018;font-weight:700}
 .bt-day-pill.neg.active{border-color:var(--s-red);color:var(--s-red);background:#ff6f6718}
 .bt-reason-modal{border:1px solid var(--s-purple);border-radius:11px;background:linear-gradient(180deg,#131629 0%,#090d16 100%);padding:14px;display:flex;flex-direction:column;gap:10px;position:sticky;top:74px}
-</style></head><body class="on-home"><div class="app-shell"><div class="app-content"><header class="app-chrome"><a class="brand" id="brand-home" href="#home" aria-label="Evan Algo home">Evan Algo</a><div class="chrome-actions"><button id="adw-tab" type="button">Trade Workflow</button><button id="back-action" hidden type="button">← Back</button><button id="home-tab" hidden type="button">Home</button></div></header><div class="view-heading" id="view-heading" hidden><h1 id="view-title">Home</h1><span id="mode" class="tag" hidden>Connecting</span></div>
+/* Robinhood & Paper Account Top Connect Button + Agent Capital Allocation Drawer */
+.rh-top-btn{background:linear-gradient(135deg,#00c80526,#4ade8018)!important;border:1px solid #00c805!important;color:#6eff74!important;font-weight:700!important;font-family:ui-monospace,SFMono-Regular,Menlo,monospace!important;box-shadow:0 0 14px #00c8052b}
+.rh-top-btn:hover{background:linear-gradient(135deg,#00c80540,#4ade8030)!important;transform:translateY(-1px)}
+.rh-drawer{margin:10px 20px;border:1px solid #00c805;border-radius:12px;background:linear-gradient(180deg,#0b1914 0%,#080d14 100%);padding:16px 18px;box-shadow:0 16px 40px #00000099}
+.rh-grid{display:grid;grid-template-columns:1.05fr 1.25fr 1fr;gap:16px;align-items:start;margin-top:12px}
+@media(max-width:1150px){.rh-grid{grid-template-columns:1fr}}
+.rh-redirect-btn{background:linear-gradient(135deg,#00c805,#22c55e);color:#031406;border:none;border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;box-shadow:0 0 18px #00c80540;text-decoration:none}
+.rh-redirect-btn:hover{filter:brightness(1.08)}
+.rh-alloc-bar{height:22px;border-radius:8px;background:#121b28;border:1px solid var(--s-border-hi);overflow:hidden;display:flex;margin:8px 0}
+.rh-alloc-agent{background:linear-gradient(90deg,#00c805,#4ade80);height:100%;display:flex;align-items:center;justify-content:center;color:#031406;font-size:10.5px;font-weight:800;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;overflow:hidden;transition:width .18s}
+.rh-alloc-reserve{background:repeating-linear-gradient(45deg,#131c2b,#131c2b 8px,#182436 8px,#182436 16px);height:100%;display:flex;align-items:center;justify-content:center;color:#93a8c7;font-size:10.5px;font-weight:700;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;overflow:hidden;transition:width .18s}
+.rh-input{background:#060911;border:1px solid var(--s-border-hi);color:#eaf2ff;border-radius:6px;padding:6px 9px;font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;width:100%}
+.rh-slider{width:100%;accent-color:#00c805;cursor:pointer}
+</style></head><body class="on-home"><div class="app-shell"><div class="app-content"><header class="app-chrome"><a class="brand" id="brand-home" href="#home" aria-label="Evan Algo home">Evan Algo</a><div class="chrome-actions"><button id="robinhood-connect-btn" class="rh-top-btn" type="button">🪶 Connect Robinhood / Paper · 25% Agent Cap</button><button id="adw-tab" type="button">Trade Workflow</button><button id="back-action" hidden type="button">← Back</button><button id="home-tab" hidden type="button">Home</button></div></header><div id="robinhood-drawer" class="rh-drawer sssf-wrap" hidden></div><div class="view-heading" id="view-heading" hidden><h1 id="view-title">Home</h1><span id="mode" class="tag" hidden>Connecting</span></div>
 <div id="home-intro"><p>More room for your market and research: a full-screen blue workspace, with no sidebar.</p></div><p id="health" role="status" hidden>Connecting to your market feed…</p>
 <div id="live-overview" class="overview" hidden><div><small>WORKSPACE</small><strong>Live market</strong><span>Observed Yahoo data</span></div><div><small>TOTAL VIRTUAL EQUITY</small><strong id="overview-equity">—</strong><span>Assumed fills, no broker</span></div><div><small>COMPANIES WATCHED</small><strong id="overview-companies">—</strong><span>Your active watchlist</span></div><div><small>SELECTED LAST SIGNAL</small><strong id="overview-signal">—</strong><span>A rule check, not a forecast</span></div></div>
 <main id="home-panel" class="home-page" aria-label="Evan Algo home"><div class="home-hero"><p class="eyebrow">YOUR MARKET &amp; RESEARCH WORKSPACE</p><h1>Evan <span>Algo</span></h1><p class="home-tagline">The market.<br>Your algorithms.</p><p class="home-description">Watch prices and signals, review your tests, or adjust your setup. Everything starts here.</p><p class="home-next">Next: choose what you want to open.</p></div><div class="home-choices" aria-label="Choose a workspace"><button id="home-live" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 3 8-10M15 5h5v5"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Live market</strong><span class="card-description">Full-screen live market watch, stock charts, company news and algo signals.</span><span class="card-action">Open market <span aria-hidden="true">→</span></span></button><button id="home-adw" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h14"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Trade Workflow</strong><span class="card-description">Preset ADWs with all 6 agents, per-agent system prompts, LangGraph state graph, and live harness inspector.</span><span class="card-action">Open Trade Workflow <span aria-hidden="true">→</span></span></button><button id="home-research" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20V10h4v10M10 20V4h4v16M15 20v-7h4v7M3 20h18"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Research</strong><span class="card-description">Saved tests, virtual accounts and your experiment library.</span><span class="card-action">Review results <span aria-hidden="true">→</span></span></button><button id="home-replay" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 0 7M4 4v5h5M10 8l6 4-6 4z"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Backtest replay</strong><span class="card-description">Go through all backtests day by day with Date &amp; Truth of Algo on the side and Model/Agent reasoning.</span><span class="card-action">Open replay <span aria-hidden="true">→</span></span></button><button id="home-models" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Models & settings</strong><span class="card-description">Choose your research models and review your algo setup.</span><span class="card-action">Open settings <span aria-hidden="true">→</span></span></button></div></main>
@@ -190,6 +203,320 @@ for(const view of ['live','adw','research','models','replay'])$('home-'+view).on
 $('adw-tab').onclick=()=>switchView('adw');
 $('back-action').onclick=()=>switchView(viewHistory.pop()||'home',false);
 $('home-tab').onclick=$('brand-home').onclick=()=>{viewHistory=[];switchView('home',false);return false};
+let rhDrawerOpen=false,rhSaveStatus='',rhState={
+ broker:'robinhood',
+ broker_label:'Robinhood Brokerage & Options',
+ execution_mode:'robinhood_paper_mirror',
+ connected:true,
+ account_handle:'RH-INDIV-8842',
+ robinhood_login_url:'https://robinhood.com/login',
+ total_account_equity_usd:25000,
+ agent_tradable_pct:25,
+ agent_tradable_usd:6250,
+ protected_reserve_pct:75,
+ protected_reserve_usd:18750,
+ max_per_trade_pct_of_allocation:15,
+ max_per_trade_usd:937.5,
+ daily_loss_stop_pct:10,
+ daily_loss_stop_usd:625,
+ price_trader_split_pct:60,
+ price_trader_usd:3750,
+ theta_trader_split_pct:40,
+ theta_trader_usd:2500
+};
+function recalcRhState(){
+ const eq=Math.max(100,Math.min(10000000,Number(rhState.total_account_equity_usd)||25000));
+ const pct=Math.max(1,Math.min(100,Number(rhState.agent_tradable_pct)||25));
+ const maxPct=Math.max(1,Math.min(100,Number(rhState.max_per_trade_pct_of_allocation)||15));
+ const stopPct=Math.max(1,Math.min(50,Number(rhState.daily_loss_stop_pct)||10));
+ const pricePct=Math.max(0,Math.min(100,Number(rhState.price_trader_split_pct)??60));
+ const agentUsd=Math.round(eq*(pct/100)*100)/100;
+ rhState.total_account_equity_usd=eq;
+ rhState.agent_tradable_pct=pct;
+ rhState.agent_tradable_usd=agentUsd;
+ rhState.protected_reserve_pct=Math.round((100-pct)*100)/100;
+ rhState.protected_reserve_usd=Math.round((eq-agentUsd)*100)/100;
+ rhState.max_per_trade_pct_of_allocation=maxPct;
+ rhState.max_per_trade_usd=Math.round(Math.min(1000,agentUsd*(maxPct/100))*100)/100;
+ rhState.daily_loss_stop_pct=stopPct;
+ rhState.daily_loss_stop_usd=Math.round(agentUsd*(stopPct/100)*100)/100;
+ rhState.price_trader_split_pct=pricePct;
+ rhState.theta_trader_split_pct=Math.round((100-pricePct)*100)/100;
+ rhState.price_trader_usd=Math.round(agentUsd*(pricePct/100)*100)/100;
+ rhState.theta_trader_usd=Math.round((agentUsd-rhState.price_trader_usd)*100)/100;
+}
+function updateRhTopButton(){
+ recalcRhState();
+ const btn=$('robinhood-connect-btn');if(!btn)return;
+ const modeBadge=rhState.execution_mode==='paper'?'📄 Paper Account':(rhState.execution_mode==='robinhood_staged'?'🪶 Robinhood (Staged)':'🪶 Robinhood (Paper-Mirror)');
+ btn.textContent=(rhState.connected?'🟢 ':'⚪ ')+modeBadge+' · Agent Cap: '+rhState.agent_tradable_pct+'% ('+money(rhState.agent_tradable_usd)+')';
+}
+async function saveRhBrokerConfig(extra={}){
+ Object.assign(rhState,extra);
+ recalcRhState();
+ updateRhTopButton();
+ rhSaveStatus='Saving Robinhood & Agent allocation…';
+ renderRobinhoodDrawer();
+ try{
+  const res=await fetch('/api/broker',{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({
+    broker:rhState.broker,
+    execution_mode:rhState.execution_mode,
+    connected:Boolean(rhState.connected),
+    account_handle:String(rhState.account_handle||'RH-INDIV-8842'),
+    total_account_equity_usd:Number(rhState.total_account_equity_usd),
+    agent_tradable_pct:Number(rhState.agent_tradable_pct),
+    max_per_trade_pct_of_allocation:Number(rhState.max_per_trade_pct_of_allocation),
+    daily_loss_stop_pct:Number(rhState.daily_loss_stop_pct),
+    price_trader_split_pct:Number(rhState.price_trader_split_pct)
+   })
+  });
+  if(res.ok){
+   const saved=await res.json();
+   Object.assign(rhState,saved);
+   rhSaveStatus='✓ Saved! Agents are capped at '+rhState.agent_tradable_pct+'% ('+money(rhState.agent_tradable_usd)+') of your '+money(rhState.total_account_equity_usd)+' account · '+money(rhState.protected_reserve_usd)+' Protected Reserve is untouchable.';
+  }else{
+   rhSaveStatus='✓ Applied locally ('+rhState.agent_tradable_pct+'% = '+money(rhState.agent_tradable_usd)+' tradable).';
+  }
+ }catch{
+  rhSaveStatus='✓ Applied locally ('+rhState.agent_tradable_pct+'% = '+money(rhState.agent_tradable_usd)+' tradable).';
+ }
+ updateRhTopButton();
+ renderRobinhoodDrawer();
+}
+function renderRobinhoodDrawer(){
+ const drawer=$('robinhood-drawer');if(!drawer)return;
+ drawer.hidden=!rhDrawerOpen;
+ if(!rhDrawerOpen)return;
+ recalcRhState();
+ drawer.replaceChildren();
+ const topRow=mk('div','sssf-top');
+ const titleLeft=mk('div','');
+ titleLeft.append(
+  mk('div','sssf-title','🪶 ROBINHOOD & PAPER ACCOUNT CONNECTION · AGENT TRADING ALLOCATION & CAPITAL GUARD'),
+  mk('div','sssf-sub','1) Click "Connect on Robinhood" to redirect & link your Robinhood account (or switch to Paper Mode in 1 click). 2) Set the exact % or $ of your Robinhood account the 6-Agent Trade Workflow is allowed to trade. The remaining balance stays locked in Protected Reserve.')
+ );
+ const closeBtn=mk('button','sssf-part-btn','✕ Close Panel');
+ closeBtn.type='button';
+ closeBtn.onclick=()=>{rhDrawerOpen=false;drawer.hidden=true};
+ topRow.append(titleLeft,closeBtn);
+ drawer.append(topRow);
+
+ const grid=mk('div','rh-grid');
+
+ // COLUMN 1: Connect Robinhood (Redirect) or Switch to Paper Mode
+ const col1=mk('div','sssf-sec');
+ col1.append(mk('div','sssf-sec-hd','1. CONNECT ROBINHOOD OR PAPER ACCOUNT'));
+ const bd1=mk('div','sssf-sec-bd');
+ const statusRow=mk('div','sssf-run-stats');
+ statusRow.append(
+  mk('span','sssf-chip '+(rhState.connected?'ok':'warn'),rhState.connected?'● CONNECTED ('+rhState.account_handle+')':'○ NOT LINKED'),
+  mk('span','sssf-chip cyan',rhState.execution_mode==='paper'?'PURE PAPER MODE':(rhState.execution_mode==='robinhood_staged'?'ROBINHOOD STAGED TICKETS':'ROBINHOOD PAPER-MIRROR')),
+  mk('span','sssf-chip ok','LIVE ORDERS: FALSE (SAFE)')
+ );
+ bd1.append(statusRow);
+
+ const redirectLink=mk('a','rh-redirect-btn','↗ Connect Robinhood Account (Redirect to Robinhood.com)');
+ redirectLink.href='/api/broker/robinhood-redirect';
+ redirectLink.target='_blank';
+ redirectLink.rel='noopener noreferrer';
+ redirectLink.onclick=()=>{
+  saveRhBrokerConfig({broker:'robinhood',connected:true});
+ };
+ bd1.append(redirectLink);
+ bd1.append(mk('div','sssf-card-trig','Clicking above redirects you to Robinhood login in a new tab and links your Robinhood profile here automatically.'));
+
+ bd1.append(mk('div','sssf-card-id','EXECUTION MODE (SWITCH BETWEEN ROBINHOOD & PAPER ANYTIME)'));
+ const modeBtns=mk('div','sssf-col');
+ for(const [mId,mTitle,mDesc] of [
+  ['robinhood_paper_mirror','🪶 Robinhood Paper-Mirror (Recommended)','$0 real-money risk · mirrors your Robinhood balance & options chain with simulated fills'],
+  ['paper','📄 Pure Paper Account Mode','$0 real-money risk · standalone paper trading account (Alpaca / Virtual Paper)'],
+  ['robinhood_staged','🎯 Robinhood Staged Order Tickets','Stages every agent trade as a Robinhood Equity/Options order ticket capped by your Agent Allocation']
+ ]){
+  const mb=mk('button','sssf-preset-btn'+(rhState.execution_mode===mId?' active':''));
+  mb.type='button';
+  mb.append(mk('div','sssf-card-title',mTitle),mk('div','sssf-card-trig',mDesc));
+  mb.onclick=()=>{
+   saveRhBrokerConfig({
+    execution_mode:mId,
+    broker:mId==='paper'?'alpaca_paper':'robinhood',
+    connected:true
+   });
+  };
+  modeBtns.append(mb);
+ }
+ bd1.append(modeBtns);
+
+ const handleWrap=mk('div','sssf-model-box');
+ handleWrap.append(mk('div','sssf-card-id','ACCOUNT HANDLE / LABEL'));
+ const handleInp=mk('input','rh-input');
+ handleInp.value=rhState.account_handle||'RH-INDIV-8842';
+ handleInp.onchange=e=>{rhState.account_handle=e.target.value.trim()||'RH-INDIV-8842'};
+ handleWrap.append(handleInp);
+ bd1.append(handleWrap);
+ col1.append(bd1);
+
+ // COLUMN 2: Configure How Much of the Robinhood / Paper Account the Agent Can Trade
+ const col2=mk('div','sssf-sec');
+ col2.append(mk('div','sssf-sec-hd','2. HOW MUCH OF YOUR ROBINHOOD / PAPER ACCOUNT CAN THE AGENT TRADE?'));
+ const bd2=mk('div','sssf-sec-bd');
+
+ // Total Account Balance
+ const eqBox=mk('div','sssf-model-box');
+ eqBox.append(mk('div','sssf-card-id','TOTAL ROBINHOOD / PAPER ACCOUNT BALANCE ($)'));
+ const eqInput=mk('input','rh-input');
+ eqInput.type='number';
+ eqInput.value=String(rhState.total_account_equity_usd);
+ eqInput.onchange=e=>{
+  rhState.total_account_equity_usd=Math.max(100,Number(e.target.value)||25000);
+  recalcRhState();
+  renderRobinhoodDrawer();
+  updateRhTopButton();
+ };
+ eqBox.append(eqInput);
+ const eqPills=mk('div','sssf-run-stats');
+ for(const presetEq of [5000,10000,25000,50000,100000]){
+  const pb=mk('button','sssf-part-btn'+(Number(rhState.total_account_equity_usd)===presetEq?' active':''),money(presetEq));
+  pb.type='button';
+  pb.onclick=()=>{
+   rhState.total_account_equity_usd=presetEq;
+   recalcRhState();
+   renderRobinhoodDrawer();
+   updateRhTopButton();
+  };
+  eqPills.append(pb);
+ }
+ eqBox.append(eqPills);
+ bd2.append(eqBox);
+
+ // Agent Tradable % & $ Controls
+ const allocBox=mk('div','sssf-model-box');
+ const allocHead=mk('div','sssf-card-top');
+ allocHead.append(
+  mk('span','sssf-card-title','AGENT TRADABLE ALLOCATION: '+rhState.agent_tradable_pct+'%'),
+  mk('span','sssf-chip ok','AGENT CAN TRADE: '+money(rhState.agent_tradable_usd))
+ );
+ allocBox.append(allocHead);
+
+ const slider=mk('input','rh-slider');
+ slider.type='range';
+ slider.setAttribute('min','1');
+ slider.setAttribute('max','100');
+ slider.setAttribute('step','1');
+ slider.value=String(rhState.agent_tradable_pct);
+ slider.onchange=e=>{
+  rhState.agent_tradable_pct=Number(e.target.value)||25;
+  recalcRhState();
+  renderRobinhoodDrawer();
+  updateRhTopButton();
+ };
+ allocBox.append(slider);
+
+ const pctPills=mk('div','sssf-run-stats');
+ for(const pVal of [10,20,25,50,75,100]){
+  const pBtn=mk('button','sssf-part-btn'+(Math.round(rhState.agent_tradable_pct)===pVal?' active':''),pVal+'% ('+money(rhState.total_account_equity_usd*(pVal/100))+')');
+  pBtn.type='button';
+  pBtn.onclick=()=>{
+   rhState.agent_tradable_pct=pVal;
+   recalcRhState();
+   renderRobinhoodDrawer();
+   updateRhTopButton();
+  };
+  pctPills.append(pBtn);
+ }
+ allocBox.append(pctPills);
+
+ const usdDirectRow=mk('div','sssf-kv');
+ usdDirectRow.append(mk('span','','Exact $ Agent Can Trade'));
+ const usdInp=mk('input','rh-input');
+ usdInp.type='number';
+ usdInp.value=String(rhState.agent_tradable_usd);
+ usdInp.onchange=e=>{
+  const desiredUsd=Math.max(1,Math.min(rhState.total_account_equity_usd,Number(e.target.value)||1000));
+  rhState.agent_tradable_pct=Math.round((desiredUsd/rhState.total_account_equity_usd)*10000)/100;
+  recalcRhState();
+  renderRobinhoodDrawer();
+  updateRhTopButton();
+ };
+ usdDirectRow.append(usdInp);
+ allocBox.append(usdDirectRow);
+
+ // Visual Split Bar (Agent Tradable vs Untouchable Reserve)
+ const barWrap=mk('div','rh-alloc-bar');
+ const barAgent=mk('div','rh-alloc-agent','AGENT: '+rhState.agent_tradable_pct+'% ('+money(rhState.agent_tradable_usd)+')');
+ barAgent.setAttribute('style','width:'+Math.max(8,rhState.agent_tradable_pct)+'%');
+ const barRes=mk('div','rh-alloc-reserve','🔒 RESERVE: '+rhState.protected_reserve_pct+'% ('+money(rhState.protected_reserve_usd)+')');
+ barRes.setAttribute('style','width:'+Math.max(0,100-rhState.agent_tradable_pct)+'%');
+ barWrap.append(barAgent,barRes);
+ allocBox.append(barWrap);
+
+ const summaryKv1=mk('div','sssf-kv');
+ summaryKv1.append(mk('span','','🟢 Agent Tradable Budget'),mk('span','',money(rhState.agent_tradable_usd)+' ('+rhState.agent_tradable_pct+'% of account)'));
+ const summaryKv2=mk('div','sssf-kv');
+ summaryKv2.append(mk('span','','🔒 Untouchable Reserve'),mk('span','',money(rhState.protected_reserve_usd)+' ('+rhState.protected_reserve_pct+'% locked · Agents cannot touch)'));
+ allocBox.append(summaryKv1,summaryKv2);
+ bd2.append(allocBox);
+ col2.append(bd2);
+
+ // COLUMN 3: Daily Stop-Loss, Per-Trade Cap & Agent Split + Save Button
+ const col3=mk('div','sssf-sec');
+ col3.append(mk('div','sssf-sec-hd','3. AGENT RISK CAPS, 10% STOP-LOSS & TRADER SPLIT'));
+ const bd3=mk('div','sssf-sec-bd');
+
+ const stopBox=mk('div','sssf-model-box');
+ stopBox.append(mk('div','sssf-card-id','DAILY STOP-LOSS ON AGENT ALLOCATION (%)'));
+ const stopPills=mk('div','sssf-run-stats');
+ for(const sPct of [5,10,15,20]){
+  const sb=mk('button','sssf-part-btn'+(Math.round(rhState.daily_loss_stop_pct)===sPct?' active':''),sPct+'% (-'+money(rhState.agent_tradable_usd*(sPct/100))+')');
+  sb.type='button';
+  sb.onclick=()=>{rhState.daily_loss_stop_pct=sPct;recalcRhState();renderRobinhoodDrawer()};
+  stopPills.append(sb);
+ }
+ stopBox.append(stopPills);
+ stopBox.append(mk('div','sssf-card-trig','If the agent loses '+rhState.daily_loss_stop_pct+'% ('+money(rhState.daily_loss_stop_usd)+') in a day, trading halts immediately. Your '+money(rhState.protected_reserve_usd)+' reserve is never touched.'));
+ bd3.append(stopBox);
+
+ const orderBox=mk('div','sssf-model-box');
+ orderBox.append(mk('div','sssf-card-id','MAX SINGLE ORDER SIZE (% OF AGENT ALLOCATION)'));
+ const orderPills=mk('div','sssf-run-stats');
+ for(const oPct of [5,10,15,25,50]){
+  const ob=mk('button','sssf-part-btn'+(Math.round(rhState.max_per_trade_pct_of_allocation)===oPct?' active':''),oPct+'% ('+money(Math.min(1000,rhState.agent_tradable_usd*(oPct/100)))+')');
+  ob.type='button';
+  ob.onclick=()=>{rhState.max_per_trade_pct_of_allocation=oPct;recalcRhState();renderRobinhoodDrawer()};
+  orderPills.append(ob);
+ }
+ orderBox.append(orderPills);
+ orderBox.append(mk('div','sssf-card-trig','Max per order: '+money(rhState.max_per_trade_usd)+' (also bounded by the 0.1% median 1m bar liquidity cap = $1,000 max).'));
+ bd3.append(orderBox);
+
+ const splitBox=mk('div','sssf-model-box');
+ splitBox.append(mk('div','sssf-card-id','CAPITAL SPLIT ACROSS THE 2 AGENTIC TRADERS'));
+ const splitKv1=mk('div','sssf-kv');
+ splitKv1.append(mk('span','','03 Price Structure ('+rhState.price_trader_split_pct+'%)'),mk('span','',money(rhState.price_trader_usd)+' (Equity & Long Call/Put)'));
+ const splitKv2=mk('div','sssf-kv');
+ splitKv2.append(mk('span','','04 Theta & Greeks ('+rhState.theta_trader_split_pct+'%)'),mk('span','',money(rhState.theta_trader_usd)+' (100% Cash-Secured Short Options)'));
+ splitBox.append(splitKv1,splitKv2);
+ bd3.append(splitBox);
+
+ const saveBtn=mk('button','sssf-run-btn','💾 Save Robinhood & Agent Allocation ('+money(rhState.agent_tradable_usd)+' Tradable)');
+ saveBtn.type='button';
+ saveBtn.onclick=()=>saveRhBrokerConfig({});
+ bd3.append(saveBtn);
+ if(rhSaveStatus){
+  bd3.append(mk('div','sssf-chip ok',rhSaveStatus));
+ }
+ col3.append(bd3);
+
+ grid.append(col1,col2,col3);
+ drawer.append(grid);
+}
+$('robinhood-connect-btn').onclick=()=>{
+ rhDrawerOpen=!rhDrawerOpen;
+ renderRobinhoodDrawer();
+};
+updateRhTopButton();
 switchView('home');
 let selectedSymbol=null,lastShadow=null,lastNewsKey=null;
 const svgNode=(name,attributes={},label)=>{const node=document.createElementNS('http://www.w3.org/2000/svg',name);for(const key of Object.keys(attributes))node.setAttribute(key,String(attributes[key]));if(label!=null)node.textContent=label;return node};
@@ -235,7 +562,7 @@ function newsList(data,symbol){const key=(symbol||'')+'|'+(data?.observed_at||'u
  if(!sources.length){box.textContent='No headlines fetched for this company yet.';return}const seen=new Set(),items=[];
  for(const source of sources){for(const item of source.items||[]){if(seen.has(item.url))continue;seen.add(item.url);items.push(item)}}
  items.sort((a,b)=>(Date.parse(b.published_at)||0)-(Date.parse(a.published_at)||0));for(const item of items.slice(0,25)){let url;try{url=new URL(item.url)}catch{continue}if(url.protocol!=='https:')continue;const div=document.createElement('div');div.className='news-item';const a=document.createElement('a');a.textContent=item.title;a.href=url.href;a.target='_blank';a.rel='noopener noreferrer';const time=document.createElement('small');time.textContent=sourceName(item.source)+' · published '+when(item.published_at);div.append(a,time);box.append(div)}if(!items.length){const empty=document.createElement('p');empty.textContent='Sources returned no company headlines. No articles have been fabricated.';box.append(empty)}}
-function render(d){lastResponse=d;const s=d.settings||{},paper=d.runner.mode==='paper',a=renderScan(d.activity,paper);const stale=a&&Date.now()-Date.parse(a.observed_at)>45000&&d.runner.state==='running';
+function render(d){lastResponse=d;if(d.broker&&!rhDrawerOpen){Object.assign(rhState,d.broker);updateRhTopButton()}const s=d.settings||{},paper=d.runner.mode==='paper',a=renderScan(d.activity,paper);const stale=a&&Date.now()-Date.parse(a.observed_at)>45000&&d.runner.state==='running';
 text('overview-equity',money(d.activity?.portfolio?.virtual_equity??d.activity?.account?.equity));text('overview-companies',d.activity?.companies?.length??(d.activity?1:0));text('overview-signal',(a?.decisions||[]).slice(-1)[0]?.side?.toUpperCase()||'Waiting');text('mode',paper?'Alpaca paper account':'Yahoo market data · virtual trades');text('health',(d.observer==='active_writer'?'Market observer connected':stateLabel(d.runner.state))+' · '+(stale?'Last observation is old':stateLabel(a?.state))+' · Updated '+when(a?.observed_at||d.observed_at));
 text('strategy',(a?.symbol||s.symbol||'—')+' / '+(a?.timeframe||s.timeframe||'—')+' / '+(a?.family||s.family||'').replaceAll('_',' '));text('price',money(paper?a?.price:a?.quote?.price));text('equity-label',paper?'PAPER ACCOUNT EQUITY':'SELECTED SYMBOL VIRTUAL EQUITY');text('equity',money(paper?a?.account?.equity:a?.virtual_equity));text('pnl-label',paper?'STRATEGY PRICE P&L':'VIRTUAL REALIZED P&L');text('pnl',money(paper?a?.performance?.strategy_price_pnl_usd:a?.virtual_realized_pnl));text('message',a?.state==='bar_revision_paused'?'Shadow trades paused because Yahoo revised a previously observed candle. The live price feed is still running.':a?.message||a?.last_error||'Watching for a new completed bar. Rule checks and virtual trades appear below.');text('feed',paper?(a?.feed||'Broker connection required'):a?.feed_note);text('activity',JSON.stringify(a||{state:'waiting_for_runner_data'},null,2));text('checks',JSON.stringify(d.connections||{state:'not_checked'},null,2));renderMarket(d,a);
 const settings=$('settings');settings.replaceChildren();for(const [label,value] of [['STRATEGY',s.family?.replaceAll('_',' ')],['SYMBOL / BARS',(s.symbol||'—')+' / '+(s.timeframe||'—')],['ALLOCATED CAPITAL',money(s.capital_usd)],['MAX ENTRY',money(s.order_budget_usd)],['NEW-ENTRY LOSS STOP',money(s.loss_stop_usd)]]){const item=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value||'—';item.append(dt,dd);settings.append(item)}
@@ -246,7 +573,7 @@ let terminalData=null,modelBusy=false;
 const roleNames={stage_0_jev_router:'Catalyst router',phase_1_scout_recon:'Market scout',trader_price_structure:'Price & momentum',trader_theta_mean_reversion:'Options & mean reversion',phase_3_risk_auditor:'Risk reviewer',phase_4_fleet_dispatcher:'Fleet coordinator'};
 function dataTable(id,headings,rows){const box=$(id);box.replaceChildren();if(!rows.length){box.textContent='No saved rows available.';return}const table=document.createElement('table'),head=document.createElement('tr');for(const title of headings){const th=document.createElement('th');th.textContent=title;head.append(th)}table.append(head);for(const row of rows){const tr=document.createElement('tr');for(const value of row){const td=document.createElement('td');td.textContent=value==null?'—':String(value);tr.append(td)}table.append(tr)}box.append(table)}
 function renderTerminal(d){
- terminalData=d;const r=d.research||{},l=d.library||{};
+ terminalData=d;if(d.broker&&!rhDrawerOpen){Object.assign(rhState,d.broker);updateRhTopButton()}const r=d.research||{},l=d.library||{};
  text('research-state',r.state==='saved_simulation'?'SAVED SIMULATION':'NO SAVED RUN');text('research-basis',(r.symbol?r.symbol+' · ':'')+(r.data_basis||r.message||'Results unavailable.'));
  text('research-pnl',money(r.net_pnl));$('research-pnl').className=Number(r.net_pnl)<0?'negative':r.net_pnl!=null?'positive':'';
  text('research-accounts',r.state==='saved_simulation'?r.accounts?.length:0);text('research-time',r.created_at?when(r.created_at):'Not recorded');

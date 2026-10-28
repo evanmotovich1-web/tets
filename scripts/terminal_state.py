@@ -115,5 +115,21 @@ def library():
         if connection:connection.close()
 
 
+def broker():
+    path = STATE / 'harness2/broker_allocation.json'
+    return engine.load_broker_allocation(path)
+
+
+def save_broker(value):
+    if not isinstance(value, dict) or not value:
+        raise ValueError('Expected broker allocation settings')
+    path = STATE / 'harness2/broker_allocation.json'
+    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+    with MODEL_LOCK:
+        if path.is_symlink():
+            raise ValueError('Invalid broker settings file')
+        return engine.save_broker_allocation(value, state_path=path)
+
+
 def snapshot():
-    return dict(models=models(), research=research(), library=library())
+    return dict(models=models(), broker=broker(), research=research(), library=library())

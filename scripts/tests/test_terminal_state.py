@@ -81,6 +81,24 @@ class TerminalTests(unittest.TestCase):
                 with urlopen(base+'/api/terminal')as response:
                     result=json.load(response);self.assertEqual(result['models']['state'],'saved')
                     self.assertEqual(result['research']['state'],'unavailable')
+                    self.assertEqual(result['broker']['broker'],'robinhood')
+                broker_payload=json.dumps({
+                    'broker':'robinhood',
+                    'execution_mode':'robinhood_paper_mirror',
+                    'connected':True,
+                    'total_account_equity_usd':40000.0,
+                    'agent_tradable_pct':30.0,
+                    'daily_loss_stop_pct':10.0,
+                }).encode()
+                with urlopen(Request(base+'/api/broker',data=broker_payload,headers={'Origin':base,'Content-Type':'application/json'}),timeout=5)as response:
+                    b_res=json.load(response)
+                    self.assertEqual(b_res['state'],'saved')
+                    self.assertEqual(b_res['total_account_equity_usd'],40000.0)
+                    self.assertEqual(b_res['agent_tradable_pct'],30.0)
+                    self.assertEqual(b_res['agent_tradable_usd'],12000.0)
+                    self.assertEqual(b_res['protected_reserve_usd'],28000.0)
+                    self.assertEqual(b_res['daily_loss_stop_usd'],1200.0)
+                    self.assertFalse(b_res['live_orders'])
             finally:server.shutdown();server.server_close();thread.join()
 
 

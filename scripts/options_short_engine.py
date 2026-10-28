@@ -1591,6 +1591,250 @@ def _default_provider_keys_path() -> Path:
     return root / 'desk/runtime/.state/harness2/provider_keys.json'
 
 
+def _default_broker_allocation_path() -> Path:
+    root = Path(__file__).resolve().parents[1]
+    return root / 'desk/runtime/.state/harness2/broker_allocation.json'
+
+
+SUPPORTED_BROKER_PROVIDERS: tuple[str, ...] = ('robinhood', 'alpaca_paper', 'shadow_virtual')
+SUPPORTED_BROKER_MODES: tuple[str, ...] = ('robinhood_paper_mirror', 'paper', 'robinhood_staged')
+
+
+def load_broker_allocation(state_path: Path | None = None) -> dict[str, Any]:
+    """Load the Robinhood / Paper Account connection and Agent Trading Allocation configuration."""
+    path = Path(state_path) if state_path else _default_broker_allocation_path()
+    saved: dict[str, Any] = {}
+    if path.is_file() and not path.is_symlink():
+        try:
+            raw = json.loads(path.read_text(encoding='utf-8'))
+            if isinstance(raw, dict):
+                saved = raw
+        except Exception:
+            saved = {}
+
+    broker = str(saved.get('broker', 'robinhood')).strip().lower()
+    if broker not in SUPPORTED_BROKER_PROVIDERS:
+        broker = 'robinhood'
+
+    execution_mode = str(saved.get('execution_mode', 'robinhood_paper_mirror')).strip().lower()
+    if execution_mode not in SUPPORTED_BROKER_MODES:
+        execution_mode = 'robinhood_paper_mirror'
+
+    connected = bool(saved.get('connected', True))
+    account_handle = str(saved.get('account_handle', 'RH-INDIV-8842')).strip()[:64] or 'RH-INDIV-8842'
+
+    try:
+        total_equity = float(saved.get('total_account_equity_usd', 25000.0))
+    except (TypeError, ValueError):
+        total_equity = 25000.0
+    total_equity = round(max(100.0, min(10_000_000.0, total_equity)), 2)
+
+    try:
+        agent_pct = float(saved.get('agent_tradable_pct', 25.0))
+    except (TypeError, ValueError):
+        agent_pct = 25.0
+    agent_pct = round(max(1.0, min(100.0, agent_pct)), 2)
+
+    try:
+        max_order_pct = float(saved.get('max_per_trade_pct_of_allocation', 15.0))
+    except (TypeError, ValueError):
+        max_order_pct = 15.0
+    max_order_pct = round(max(1.0, min(100.0, max_order_pct)), 2)
+
+    try:
+        daily_stop_pct = float(saved.get('daily_loss_stop_pct', 10.0))
+    except (TypeError, ValueError):
+        daily_stop_pct = 10.0
+    daily_stop_pct = round(max(1.0, min(50.0, daily_stop_pct)), 2)
+
+    try:
+        price_trader_pct = float(saved.get('price_trader_split_pct', 60.0))
+    except (TypeError, ValueError):
+        price_trader_pct = 60.0
+    price_trader_pct = round(max(0.0, min(100.0, price_trader_pct)), 2)
+    theta_trader_pct = round(100.0 - price_trader_pct, 2)
+
+    agent_tradable_usd = round(total_equity * (agent_pct / 100.0), 2)
+    protected_reserve_usd = round(total_equity - agent_tradable_usd, 2)
+    protected_reserve_pct = round(100.0 - agent_pct, 2)
+    max_per_trade_usd = round(min(1000.0, agent_tradable_usd * (max_order_pct / 100.0)), 2)
+    daily_loss_stop_usd = round(agent_tradable_usd * (daily_stop_pct / 100.0), 2)
+    price_trader_usd = round(agent_tradable_usd * (price_trader_pct / 100.0), 2)
+    theta_trader_usd = round(agent_tradable_usd - price_trader_usd, 2)
+
+    allowed_modes_raw = saved.get('allowed_modes')
+    if isinstance(allowed_modes_raw, list) and allowed_modes_raw:
+        allowed_modes = [str(m) for m in allowed_modes_raw if str(m) in INSTRUMENT_MODES]
+    else:
+        allowed_modes = list(INSTRUMENT_MODES)
+    if not allowed_modes:
+        allowed_modes = list(INSTRUMENT_MODES)
+
+    mode_labels = {
+        'robinhood_paper_mirror': 'Robinhood Paper-Mirror Mode ($0 Real Money Risk · Mirrors Robinhood Equity & Options)',
+        'paper': 'Pure Paper Account Mode ($0 Real Money Risk · Simulated Paper Fills)',
+        'robinhood_staged': 'Robinhood Staged Order-Ticket Mode (Pre-staged for 1-click Robinhood review · live_orders=False)',
+    }
+    broker_labels = {
+        'robinhood': 'Robinhood Brokerage & Options',
+        'alpaca_paper': 'Alpaca Paper Trading API',
+        'shadow_virtual': 'Yahoo Shadow Virtual Fleet',
+    }
+
+    return {
+        'schema_version': 1,
+        'state': 'saved' if saved else 'defaults',
+        'updated_at': saved.get('updated_at'),
+        'broker': broker,
+        'broker_label': broker_labels.get(broker, 'Robinhood Brokerage & Options'),
+        'execution_mode': execution_mode,
+        'execution_mode_label': mode_labels.get(execution_mode, mode_labels['robinhood_paper_mirror']),
+        'connected': connected,
+        'account_handle': account_handle,
+        'robinhood_login_url': 'https://robinhood.com/login',
+        'robinhood_oauth_url': 'https://robinhood.com/login?redirect_uri=http%3A%2F%2F127.0.0.1%3A8766%2F%23robinhood-connected',
+        'total_account_equity_usd': total_equity,
+        'agent_tradable_pct': agent_pct,
+        'agent_tradable_usd': agent_tradable_usd,
+        'protected_reserve_pct': protected_reserve_pct,
+        'protected_reserve_usd': protected_reserve_usd,
+        'max_per_trade_pct_of_allocation': max_order_pct,
+        'max_per_trade_usd': max_per_trade_usd,
+        'daily_loss_stop_pct': daily_stop_pct,
+        'daily_loss_stop_usd': daily_loss_stop_usd,
+        'price_trader_split_pct': price_trader_pct,
+        'price_trader_usd': price_trader_usd,
+        'theta_trader_split_pct': theta_trader_pct,
+        'theta_trader_usd': theta_trader_usd,
+        'allowed_modes': allowed_modes,
+        'live_orders': False,
+        'broker_orders': False,
+        'capability_note': (
+            'Paper-Mirror and Staged modes enforce live_orders=False via checkShadowIntent. '
+            'Agents can only size orders up to agent_tradable_usd and halt at daily_loss_stop_usd.'
+        ),
+    }
+
+
+def save_broker_allocation(
+    updates: dict[str, Any],
+    *,
+    state_path: Path | None = None,
+) -> dict[str, Any]:
+    """Validate and atomically persist Robinhood / Paper Account connection and Agent Trading Allocation."""
+    if not isinstance(updates, dict):
+        raise ValueError('Broker allocation payload must be a JSON object')
+    allowed_keys = {
+        'broker',
+        'execution_mode',
+        'connected',
+        'account_handle',
+        'total_account_equity_usd',
+        'agent_tradable_pct',
+        'agent_tradable_usd',
+        'max_per_trade_pct_of_allocation',
+        'daily_loss_stop_pct',
+        'price_trader_split_pct',
+        'allowed_modes',
+    }
+    unknown = set(updates.keys()) - allowed_keys
+    if unknown:
+        raise ValueError(f'Unsupported broker fields: {", ".join(sorted(unknown))}')
+
+    path = Path(state_path) if state_path else _default_broker_allocation_path()
+    current = load_broker_allocation(path)
+    merged: dict[str, Any] = {
+        'broker': current['broker'],
+        'execution_mode': current['execution_mode'],
+        'connected': current['connected'],
+        'account_handle': current['account_handle'],
+        'total_account_equity_usd': current['total_account_equity_usd'],
+        'agent_tradable_pct': current['agent_tradable_pct'],
+        'max_per_trade_pct_of_allocation': current['max_per_trade_pct_of_allocation'],
+        'daily_loss_stop_pct': current['daily_loss_stop_pct'],
+        'price_trader_split_pct': current['price_trader_split_pct'],
+        'allowed_modes': current['allowed_modes'],
+    }
+
+    if 'broker' in updates:
+        b_val = str(updates['broker'] or '').strip().lower()
+        if b_val not in SUPPORTED_BROKER_PROVIDERS:
+            raise ValueError(f'Unsupported broker: {b_val}')
+        merged['broker'] = b_val
+
+    if 'execution_mode' in updates:
+        m_val = str(updates['execution_mode'] or '').strip().lower()
+        if m_val not in SUPPORTED_BROKER_MODES:
+            raise ValueError(f'Unsupported execution_mode: {m_val}')
+        merged['execution_mode'] = m_val
+
+    if 'connected' in updates:
+        merged['connected'] = bool(updates['connected'])
+
+    if 'account_handle' in updates:
+        h_val = str(updates['account_handle'] or '').strip()
+        if not h_val or len(h_val) > 64 or any(ord(c) < 32 for c in h_val):
+            raise ValueError('Invalid account_handle')
+        merged['account_handle'] = h_val
+
+    if 'total_account_equity_usd' in updates:
+        eq_val = float(updates['total_account_equity_usd'])
+        if not (100.0 <= eq_val <= 10_000_000.0):
+            raise ValueError('total_account_equity_usd must be between $100 and $10,000,000')
+        merged['total_account_equity_usd'] = round(eq_val, 2)
+
+    if 'agent_tradable_pct' in updates:
+        pct_val = float(updates['agent_tradable_pct'])
+        if not (1.0 <= pct_val <= 100.0):
+            raise ValueError('agent_tradable_pct must be between 1% and 100%')
+        merged['agent_tradable_pct'] = round(pct_val, 2)
+    elif 'agent_tradable_usd' in updates:
+        usd_val = float(updates['agent_tradable_usd'])
+        total_eq = float(merged['total_account_equity_usd'])
+        if not (1.0 <= usd_val <= total_eq):
+            raise ValueError('agent_tradable_usd must be between $1 and total_account_equity_usd')
+        merged['agent_tradable_pct'] = round((usd_val / total_eq) * 100.0, 2)
+
+    if 'max_per_trade_pct_of_allocation' in updates:
+        mp_val = float(updates['max_per_trade_pct_of_allocation'])
+        if not (1.0 <= mp_val <= 100.0):
+            raise ValueError('max_per_trade_pct_of_allocation must be between 1% and 100%')
+        merged['max_per_trade_pct_of_allocation'] = round(mp_val, 2)
+
+    if 'daily_loss_stop_pct' in updates:
+        ds_val = float(updates['daily_loss_stop_pct'])
+        if not (1.0 <= ds_val <= 50.0):
+            raise ValueError('daily_loss_stop_pct must be between 1% and 50%')
+        merged['daily_loss_stop_pct'] = round(ds_val, 2)
+
+    if 'price_trader_split_pct' in updates:
+        ps_val = float(updates['price_trader_split_pct'])
+        if not (0.0 <= ps_val <= 100.0):
+            raise ValueError('price_trader_split_pct must be between 0% and 100%')
+        merged['price_trader_split_pct'] = round(ps_val, 2)
+
+    if 'allowed_modes' in updates:
+        modes_in = updates['allowed_modes']
+        if not isinstance(modes_in, list) or not modes_in:
+            raise ValueError('allowed_modes must be a non-empty list')
+        clean_modes = [str(m) for m in modes_in if str(m) in INSTRUMENT_MODES]
+        if not clean_modes:
+            raise ValueError('Select at least one valid instrument mode')
+        merged['allowed_modes'] = clean_modes
+
+    merged['updated_at'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+    merged['live_orders'] = False
+    merged['broker_orders'] = False
+
+    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+    path.write_text(json.dumps(merged, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+    try:
+        path.chmod(0o600)
+    except OSError:
+        pass
+    return load_broker_allocation(path)
+
+
 def _mask_secret(raw: str) -> str:
     val = str(raw or '').strip()
     if not val:
@@ -3921,6 +4165,7 @@ def build_sssf_trace_and_db(
             'runs': backtest_runs,
         },
         'available_models': available_models,
+        'broker_allocation': load_broker_allocation(),
         'sessions': sessions_payload,
     }
 
