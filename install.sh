@@ -9,4 +9,15 @@ if [ -z "${TETS_PROFILE:-}" ]; then
   fi
 fi
 export TETS_PROFILE
-exec sh "$(dirname "$0")/scripts/install" "$@"
+SCRIPT_DIR=$(dirname "$0" 2>/dev/null || printf '.')
+if [ -f "$SCRIPT_DIR/scripts/install" ]; then
+  exec sh "$SCRIPT_DIR/scripts/install" "$@"
+fi
+TARGET_DIR="${TETS_INSTALL_DIR:-$HOME/evan-algo}"
+if [ ! -d "$TARGET_DIR/.git" ]; then
+  git clone https://github.com/evanmotovich1-web/tets.git "$TARGET_DIR"
+else
+  (cd "$TARGET_DIR" && git pull --rebase origin main || true)
+fi
+cd "$TARGET_DIR"
+exec sh "$TARGET_DIR/scripts/install" "$@"

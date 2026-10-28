@@ -3,10 +3,16 @@ set -eu
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
 if [ -f "$SCRIPT_DIR/scripts/harness2_evolve.py" ]; then
   ALGO_ROOT="$SCRIPT_DIR"
-elif [ -d "/Users/davidmotovich/code/algo" ]; then
-  ALGO_ROOT="/Users/davidmotovich/code/algo"
+elif [ -L "$0" ] && [ -f "$(CDPATH= cd -- "$(dirname -- "$(readlink "$0")")" && pwd -P)/scripts/harness2_evolve.py" ]; then
+  ALGO_ROOT=$(CDPATH= cd -- "$(dirname -- "$(readlink "$0")")" && pwd -P)
+elif [ -d "$HOME/evan-algo/scripts" ]; then
+  ALGO_ROOT="$HOME/evan-algo"
+elif [ -d "$HOME/code/algo/scripts" ]; then
+  ALGO_ROOT="$HOME/code/algo"
+elif [ -d "$HOME/code/tets/scripts" ]; then
+  ALGO_ROOT="$HOME/code/tets"
 else
-  ALGO_ROOT="/Users/davidmotovich/code/tets"
+  ALGO_ROOT="$SCRIPT_DIR"
 fi
 
 if [ -x "$ALGO_ROOT/desk/backtest/.venv/bin/python" ]; then
@@ -17,7 +23,7 @@ else
   PY_BIN="python3"
 fi
 
-export PYTHONPATH="/Users/davidmotovich/code/harness2:${PYTHONPATH:-}"
+export PYTHONPATH="$HOME/code/harness2:${PYTHONPATH:-}"
 
 if [ $# -eq 0 ]; then
   exec "$PY_BIN" "$ALGO_ROOT/scripts/harness2_evolve.py" visual

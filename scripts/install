@@ -26,6 +26,13 @@ fi
 "$ALGO_VENV/bin/python" "$ALGO_ROOT/scripts/paper.py" prepare
 "$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python" -c 'import yfinance,numpy,pandas,backtesting'
 sh "$ALGO_ROOT/tets" setup
+"$ALGO_VENV/bin/python" "$ALGO_ROOT/scripts/harness2_evolve.py" visual >/dev/null 2>&1 || true
+mkdir -p "$HOME/.local/bin" 2>/dev/null || true
+if [ -d "$HOME/.local/bin" ]; then
+  ln -sf "$ALGO_ROOT/algo" "$HOME/.local/bin/algo" 2>/dev/null || true
+  ln -sf "$ALGO_ROOT/adw" "$HOME/.local/bin/adw" 2>/dev/null || true
+  ln -sf "$ALGO_ROOT/tets" "$HOME/.local/bin/tets" 2>/dev/null || true
+fi
 sh "$ALGO_ROOT/tets" verify-hardware
 sh "$ALGO_ROOT/tets" doctor
 if [ "${TETS_NO_START:-0}" != 1 ]; then exec sh "$ALGO_ROOT/tets" start; fi
