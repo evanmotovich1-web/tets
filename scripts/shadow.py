@@ -5,7 +5,12 @@ import asyncio
 from collections import Counter
 from datetime import datetime, timezone
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_EVEN
-import fcntl
+try: import fcntl
+except ImportError:
+    class fcntl:
+        LOCK_EX, LOCK_NB, LOCK_UN = 2, 4, 8
+        @staticmethod
+        def flock(*_): pass
 import hashlib
 import importlib.metadata
 import json

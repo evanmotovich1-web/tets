@@ -3,7 +3,12 @@
 import argparse
 from datetime import datetime, timedelta, timezone, time as day_time
 from decimal import Decimal, ROUND_DOWN, ROUND_UP
-import fcntl
+try: import fcntl
+except ImportError:
+    class fcntl:
+        LOCK_EX, LOCK_NB, LOCK_UN = 2, 4, 8
+        @staticmethod
+        def flock(*_): pass
 import getpass
 import hashlib
 import json

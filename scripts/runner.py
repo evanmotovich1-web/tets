@@ -3,7 +3,12 @@
 import argparse
 import errno
 from datetime import datetime, timezone
-import fcntl
+try: import fcntl
+except ImportError:
+    class fcntl:
+        LOCK_EX, LOCK_NB, LOCK_UN = 2, 4, 8
+        @staticmethod
+        def flock(*_): pass
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
@@ -287,9 +292,13 @@ def start(seconds, open_browser=True):
         finally:
             signal.signal(signal.SIGTERM,previous)
             if child and child.poll()is None:
-                os.killpg(child.pid,signal.SIGTERM)
+                if hasattr(os,'killpg'): os.killpg(child.pid,signal.SIGTERM)
+                else: child.terminate()
                 try: child.wait(timeout=20)
-                except subprocess.TimeoutExpired: os.killpg(child.pid,signal.SIGKILL);child.wait()
+                except subprocess.TimeoutExpired:
+                    if hasattr(os,'killpg'): os.killpg(child.pid,signal.SIGKILL)
+                    else: child.kill()
+                    child.wait()
             stop.set();server.shutdown();server.server_close()
             shadow.save(STATE/'runner.json',dict(state='stopped',mode=mode,pid=os.getpid(),stopped_at=stamp(),live_orders=False))
 
