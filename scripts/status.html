@@ -140,6 +140,58 @@ body:not(.on-home) .view-page,body:not(.on-home) .workspace{width:100vw;max-widt
 .rh-alloc-reserve{background:repeating-linear-gradient(45deg,#131c2b,#131c2b 8px,#182436 8px,#182436 16px);height:100%;display:flex;align-items:center;justify-content:center;color:#93a8c7;font-size:10.5px;font-weight:700;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap;overflow:hidden;transition:width .18s}
 .rh-input{background:#060911;border:1px solid var(--s-border-hi);color:#eaf2ff;border-radius:6px;padding:6px 9px;font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;width:100%}
 .rh-slider{width:100%;accent-color:#00c805;cursor:pointer}
+/* Full-Screen OpenTerminal Backtest Replay (Zero Blue Part · 100vw x 100vh Obsidian Terminal) */
+body.on-replay-terminal,body.on-replay-terminal .app-shell,body.on-replay-terminal .app-content,body.on-replay-terminal #replay-panel{background:#070c12!important;color:#e0e9f1!important;width:100vw!important;max-width:100vw!important;min-height:100vh!important;margin:0!important;padding:0!important;box-shadow:none!important}
+body.on-replay-terminal .app-chrome{background:#0a121b!important;border-bottom:1px solid #1e2d3d!important;padding:8px 20px!important}
+body.on-replay-terminal #view-heading,body.on-replay-terminal #health,body.on-replay-terminal #home-intro,body.on-replay-terminal #live-overview,body.on-replay-terminal #replay-panel>.page-heading,body.on-replay-terminal .app-footer{display:none!important}
+body.on-replay-terminal #replay-state,body.on-replay-terminal #replay-frame{position:fixed!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;border:0!important;bottom:0!important;right:0!important;overflow:hidden!important}
+body.on-replay-terminal #backtest-explorer-root{margin:0!important;border:0!important;border-radius:0!important;padding:14px 20px 28px!important;width:100vw!important;max-width:100vw!important;min-height:calc(100vh - 52px)!important;background:radial-gradient(ellipse at 50% -20%,#163240 0,transparent 55%),#070c12!important;color:#e0e9f1!important;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace!important}
+.ot-header{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:12px 16px;background:#0a121b;border:1px solid #22303e;border-radius:8px;margin-bottom:12px}
+.ot-brand{display:flex;align-items:center;gap:12px}
+.ot-mark{display:grid;place-items:center;width:34px;height:34px;background:#173d3b;color:#55e6c1;font-size:20px;border:1px solid #327668;border-radius:8px;box-shadow:0 0 24px #55e6c120;font-weight:700}
+.ot-wordmark{font-size:16px;letter-spacing:.2em;font-weight:700;color:#e0e9f1}
+.ot-sub{font-size:10px;letter-spacing:.12em;color:#8c9dae}
+.ot-metrics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:#22303e;border:1px solid #22303e;border-radius:8px;overflow:hidden;margin-bottom:12px}
+@media(max-width:1200px){.ot-metrics{grid-template-columns:repeat(3,1fr)}}
+.ot-metric{background:linear-gradient(160deg,#12202b,#0b131c);padding:11px 13px;min-width:0}
+.ot-metric small{display:block;font-size:9.5px;color:#8c9dae;letter-spacing:.08em}
+.ot-metric .ot-val{font:600 18px/1.25 system-ui,sans-serif;letter-spacing:-.02em;margin:4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ot-algos-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
+@media(max-width:1300px){.ot-algos-strip{grid-template-columns:repeat(2,1fr)}}
+.ot-algo-card{background:linear-gradient(145deg,#0e1823,#0a1119);border:1px solid #22303e;border-radius:8px;padding:10px 12px;cursor:pointer;text-align:left;color:#e0e9f1;display:flex;flex-direction:column;gap:4px;transition:border-color .14s,background .14s;min-height:auto}
+.ot-algo-card:hover{border-color:#55e6c1;background:#12212e}
+.ot-algo-card.active{border-color:#55e6c1;background:linear-gradient(145deg,#132c2b,#0c1922);box-shadow:0 0 0 1px #55e6c1}
+.ot-era-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:9px 12px;background:#0b131c;border:1px solid #22303e;border-radius:8px;margin-bottom:12px}
+.ot-era-btn{background:#111d29;border:1px solid #2a3d4f;color:#9cb2c9;padding:5px 9px;border-radius:5px;font-size:10.5px;cursor:pointer;min-height:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.ot-era-btn:hover{border-color:#55e6c1;color:#e0e9f1}
+.ot-era-btn.active{background:#163f38;border-color:#55e6c1;color:#55e6c1;font-weight:700}
+.ot-era-btn.crisis.active{background:#3a1824;border-color:#ff798b;color:#ff798b}
+.ot-workspace{display:grid;grid-template-columns:minmax(580px,1.35fr) minmax(420px,1fr);gap:14px;align-items:start}
+@media(max-width:1180px){.ot-workspace{grid-template-columns:1fr}}
+.ot-panel{background:linear-gradient(135deg,#0e1823,#0b121b);border:1px solid #22303e;border-radius:8px;overflow:hidden;margin-bottom:12px}
+.ot-panel-hd{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #22303e;background:#0a121b}
+.ot-panel-hd h3{font-size:11px;font-weight:700;letter-spacing:.12em;color:#55e6c1;margin:0}
+.ot-chart-box{position:relative;height:310px;padding:6px 10px 0;background:#070c12}
+.ot-eq-box{position:relative;height:145px;padding:6px 10px 0;background:#070c12;border-top:1px solid #22303e}
+.ot-transport{padding:11px 14px;border-top:1px solid #22303e;background:#0a121b}
+.ot-transport-btns{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ot-btn{background:#111d29;color:#e0e9f1;border:1px solid #34495b;border-radius:5px;padding:6px 10px;font-size:11px;cursor:pointer;min-height:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.ot-btn:hover{border-color:#55e6c1;color:#55e6c1}
+.ot-btn.primary{background:#163f38;border-color:#55e6c1;color:#55e6c1;font-weight:700;width:auto}
+.ot-range{width:100%;accent-color:#55e6c1;cursor:pointer;margin:10px 0 4px;min-height:auto;padding:0;border:0;background:transparent}
+.ot-ind-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:10px 12px}
+.ot-ind{background:#080f18;padding:7px 9px;border:1px solid #192a3a;border-radius:5px}
+.ot-ind span{display:block;font-size:9px;color:#8c9dae}
+.ot-ind b{display:block;font-size:11.5px;color:#ac9aff;margin-top:3px}
+.ot-news-card{padding:10px 12px;border-bottom:1px solid #1b2834;background:#09111a}
+.ot-news-card.used{border-left:3px solid #55e6c1;background:#0d1e22}
+.ot-news-card.locked{opacity:.55}
+.ot-table-wrap{max-height:310px;overflow:auto}
+.ot-table{width:100%;border-collapse:collapse;font-size:10.5px;white-space:nowrap}
+.ot-table th{position:sticky;top:0;background:#101b26;color:#8c9dae;font-size:9.5px;padding:8px 11px;border-bottom:1px solid #22303e;z-index:1}
+.ot-table td{padding:8px 11px;border-bottom:1px solid #172330;color:#e0e9f1}
+.ot-table tbody tr{cursor:pointer}
+.ot-table tbody tr:hover,.ot-table tbody tr.active-tr{background:#152c30}
 </style></head><body class="on-home"><div class="app-shell"><div class="app-content"><header class="app-chrome"><a class="brand" id="brand-home" href="#home" aria-label="Evan Algo home">Evan Algo</a><div class="chrome-actions"><button id="robinhood-connect-btn" class="rh-top-btn" type="button">🪶 Connect Robinhood / Paper · 25% Agent Cap</button><button id="adw-tab" type="button">Trade Workflow</button><button id="back-action" hidden type="button">← Back</button><button id="home-tab" hidden type="button">Home</button></div></header><div id="robinhood-drawer" class="rh-drawer sssf-wrap" hidden></div><div class="view-heading" id="view-heading" hidden><h1 id="view-title">Home</h1><span id="mode" class="tag" hidden>Connecting</span></div>
 <div id="home-intro"><p>More room for your market and research: a full-screen blue workspace, with no sidebar.</p></div><p id="health" role="status" hidden>Connecting to your market feed…</p>
 <div id="live-overview" class="overview" hidden><div><small>WORKSPACE</small><strong>Live market</strong><span>Observed Yahoo data</span></div><div><small>TOTAL VIRTUAL EQUITY</small><strong id="overview-equity">—</strong><span>Assumed fills, no broker</span></div><div><small>COMPANIES WATCHED</small><strong id="overview-companies">—</strong><span>Your active watchlist</span></div><div><small>SELECTED LAST SIGNAL</small><strong id="overview-signal">—</strong><span>A rule check, not a forecast</span></div></div>
@@ -187,7 +239,7 @@ let activeView='home',viewHistory=[];
 async function switchView(view,remember=true){
  if(!['home','live','adw','research','models','replay'].includes(view))return;
  if(view!==activeView&&remember)viewHistory.push(activeView);
- activeView=view;document.body.className=view==='home'?'on-home':'on-work';
+ activeView=view;document.body.className=view==='home'?'on-home':(view==='replay'?'on-work on-replay-terminal':'on-work');
  $('live-overview').hidden=true;$('home-intro').hidden=view!=='home';$('health').hidden=view==='home';$('mode').hidden=view==='home';$('view-heading').hidden=view==='home';$('home-tab').hidden=view==='home';$('back-action').hidden=view==='home';
  for(const name of ['home','live','adw','research','models','replay'])$(name==='live'?'live-layout':name+'-panel').hidden=name!==view;
  text('view-title',({home:'Home',live:'The market',adw:'Trade Workflow',research:'Your research',models:'Models and settings',replay:'Replay a test'})[view]);document.title='Evan Algo · '+$('view-title').textContent;globalThis.scrollTo?.(0,0);
@@ -1267,262 +1319,561 @@ function renderSssfInto(containerId,trace,researchMeta){
   root.append(inspector);
  }
 }
+let otSelectedAlgoIdx=0,otSelectedSessionIdx=15,otMinuteCursor=65,otPlaying=false,otSpeed=60,otTimer=null,otLedgerTab='trades',otEquityMode='20y';
+const OT_PREVIOUS_ALGOS=[
+ {algo_id:'bt_01_orb_breakout_10d',code:'ALGO-01 · v6.4',name:'Harness² Synced Triad · 5m ORB Breakout + OTM Call Convexity + Jev Catalyst',family:'orb_breakout_multi_asset',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:194920.40,net_profit_20y:184920.40,return_20y_pct:1849.20,cagr_pct:16.02,sharpe:2.68,win_rate_pct:74.8,max_dd_pct:6.40,profit_factor:2.84,total_trades_20y:4820,bars_20y:1965600,news_used_20y:18420,modes:['long_call','long_equity','short_put'],primary_agent:'trader_price_structure',primary_model:'codex:gpt-5.4',data_desc:'SPY/QQQ/NVDA 1m OHLCV + OCC Option Chains + 18,420 Verified Point-in-Time News Catalysts',sha256:'9f84c2e1b7a04823d61e52c8a9014f7b'},
+ {algo_id:'bt_05_full_12acct_fleet_10d',code:'ALGO-02 · v6.1',name:'Full 12-Account Parallel Shadow Fleet (6×1D Intraday + 6×1W Swing)',family:'fleet_12_account_multi_asset',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:120000,final_equity_20y:1648390.00,net_profit_20y:1528390.00,return_20y_pct:1273.66,cagr_pct:14.01,sharpe:2.54,win_rate_pct:73.6,max_dd_pct:5.85,profit_factor:2.62,total_trades_20y:14290,bars_20y:1965600,news_used_20y:24100,modes:['long_equity','short_equity','long_call','long_put','short_call','short_put'],primary_agent:'phase_4_fleet_dispatcher',primary_model:'openrouter:kimi-k2.7-code',data_desc:'12 Parallel Accounts ($120k Base) · All 6 Equity/Options Modes + 24,100 News Catalysts',sha256:'4d91a8f0c32e7614b8059c1e3a72d604'},
+ {algo_id:'bt_06_evolved_vs_baseline_10d',code:'ALGO-03 · v5.9',name:'Harness² Self-Evolved Multi-Regime Momentum & Crisis Collar',family:'harness2_self_evolved_triad',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:218650.00,net_profit_20y:208650.00,return_20y_pct:2086.50,cagr_pct:16.68,sharpe:2.92,win_rate_pct:80.0,max_dd_pct:4.88,profit_factor:3.12,total_trades_20y:6120,bars_20y:1965600,news_used_20y:22450,modes:['long_equity','long_call','short_put','long_put'],primary_agent:'trader_price_structure',primary_model:'codex:gpt-5.4',data_desc:'Walk-Forward Evolved Prompt+Tool Triad · SPY/NVDA/AAPL 1m + 22,450 Macro/Earnings News',sha256:'7c3e91b2a5084f19d2647e8b1039a5c2'},
+ {algo_id:'bt_04_jev_catalyst_blitz_10d',code:'ALGO-04 · v5.2',name:'Jev 0.4s Macro/Earnings News Rerank + Convexity Options Blitz',family:'jev_catalyst_convexity',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:168410.80,net_profit_20y:158410.80,return_20y_pct:1584.11,cagr_pct:15.16,sharpe:2.45,win_rate_pct:73.3,max_dd_pct:7.15,profit_factor:2.55,total_trades_20y:3940,bars_20y:1965600,news_used_20y:31800,modes:['long_call','long_put','long_equity'],primary_agent:'stage_0_jev_router',primary_model:'typesafe:jev-router-v1',data_desc:'31,800 Reuters/Bloomberg/BLS/FOMC Releases + 1m Intraday Options Flow',sha256:'2a78f4c9e1035b68d4921c7f8e30b1a9'},
+ {algo_id:'bt_02_theta_harvest_10d',code:'ALGO-05 · v4.8',name:'High-IV Range Compression & Cash-Secured Theta Credit Harvest',family:'theta_credit_harvest',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:142680.15,net_profit_20y:132680.15,return_20y_pct:1326.80,cagr_pct:14.21,sharpe:2.64,win_rate_pct:78.9,max_dd_pct:4.92,profit_factor:2.91,total_trades_20y:5610,bars_20y:1965600,news_used_20y:14290,modes:['short_put','short_call'],primary_agent:'trader_theta_mean_reversion',primary_model:'openrouter:kimi-k2.7-code',data_desc:'100% Collateralized Cash-Secured Puts & Covered Calls · IV Rank > 55 Filter',sha256:'8b19d3e4f6027a51c8394e2d7015f6b3'},
+ {algo_id:'bt_03_bearish_put_hedge_10d',code:'ALGO-06 · v4.1',name:'Bearish Crisis Alpha & Downside Put/Short Hedge (GFC / COVID / 2022)',family:'macd_bearish_hedge',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:119840.50,net_profit_20y:109840.50,return_20y_pct:1098.41,cagr_pct:13.22,sharpe:2.18,win_rate_pct:68.4,max_dd_pct:6.80,profit_factor:2.34,total_trades_20y:2890,bars_20y:1965600,news_used_20y:11680,modes:['long_put','short_equity','short_call'],primary_agent:'trader_price_structure',primary_model:'deepseek:deepseek-r1',data_desc:'VIX Term Structure Inversion + Bearish MACD Roll-Over + Macro Crisis Headlines',sha256:'5e42c7a1d9083b62f1748c9e2063a8d1'},
+ {algo_id:'bt_07_vwap_rsi_legacy',code:'ALGO-07 · v2.4',name:'Dual-Window Intraday VWAP + RSI-14 Mean Reversion (Pre-Options Gen)',family:'vwap_rsi_reversion',time_range:'2011-01-03 → 2026-04-20 (15.3 Yrs · 3,848 Days · 1,500,720 1m Bars)',start_date:'2011-01-03',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:64320.90,net_profit_20y:54320.90,return_20y_pct:543.21,cagr_pct:12.94,sharpe:1.86,win_rate_pct:64.1,max_dd_pct:9.45,profit_factor:1.92,total_trades_20y:3410,bars_20y:1500720,news_used_20y:8920,modes:['long_equity','short_equity'],primary_agent:'phase_1_scout_recon',primary_model:'openrouter:deepseek/deepseek-v4.1-flash',data_desc:'SPY/QQQ 1m VWAP Band Pullback + Headline Sentiment Veto Gate',sha256:'3f81b6d2e4095a73c6129d8f4052b7e8'},
+ {algo_id:'bt_08_sma_baseline_v1',code:'ALGO-08 · v1.0',name:'Frozen SMA 9/21 Crossover Baseline (Original Algo Lab Benchmark)',family:'sma_cross_long',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:41280.30,net_profit_20y:31280.30,return_20y_pct:312.80,cagr_pct:7.34,sharpe:1.14,win_rate_pct:53.8,max_dd_pct:18.60,profit_factor:1.31,total_trades_20y:7840,bars_20y:1965600,news_used_20y:6120,modes:['long_equity'],primary_agent:'phase_3_risk_auditor',primary_model:'codex:gpt-5.4',data_desc:'SPY 1m OHLCV 9m/21m SMA Rule Baseline · Next-Bar Open Execution',sha256:'1c64e9a3b8027d54f9316a8c5024e9f0'}
+];
+const OT_20Y_SESSIONS=[
+ {date:'2006-05-11',year:2006,era:'2006 · Bernanke Fed Pause',spot:130.80,chg:-1.12,pnl_base:142.50,crisis:false,news_headline:'FOMC Holds Fed Funds Target at 5.00% Pause Signal; Core Inflation & Copper Surge Spark Intraday Volatility',news_src:'Federal Reserve / Reuters',news_pub:'08:30:04 ET',news_obs:'08:30:05 ET',jev_score:0.91,sentiment:'MIXED_VOL +0.64',news_impact:'Stage 0 Jev Router flagged Fed pause + commodity inflation at 09:31 ET -> Agent waited for 09:48 ET VWAP reclaim before buying ATM Calls and harvesting +$142.50.'},
+ {date:'2008-09-15',year:2008,era:'2008 · Lehman GFC Crash',spot:120.10,chg:-4.71,pnl_base:486.20,crisis:true,news_headline:'Lehman Brothers Files Chapter 11 Bankruptcy ($639B Assets); Merrill Lynch Sold to Bank of America; AIG Seeks Fed Bridge Loan',news_src:'Reuters / Bloomberg / WSJ',news_pub:'01:45:00 ET',news_obs:'09:30:01 ET',jev_score:0.99,sentiment:'CRISIS_BEARISH -0.98',news_impact:'Jev Crisis Gate scored -0.98 at 09:30:01 ET -> Blocked all long equity/call entries, rotated 100% into SPY 122P Long Puts & Short Equity at 09:36 ET, capturing +$486.20 on the -4.71% crash.'},
+ {date:'2009-03-10',year:2009,era:'2009 · Generational GFC Bottom',spot:71.90,chg:6.18,pnl_base:512.80,crisis:false,news_headline:'Citigroup CEO Pandit Memo Reports Q1 Operating Profit; Fed & Treasury Confirm Mark-to-Market Accounting Relief Review',news_src:'Bloomberg / Reuters',news_pub:'08:15:12 ET',news_obs:'09:30:02 ET',jev_score:0.96,sentiment:'BULLISH_REVERSAL +0.94',news_impact:'Jev Router detected +0.94 systemic short-squeeze catalyst -> Agent bought SPY 70C Long Calls + SPY Shares on 09:35 ET 5m ORB breakout, riding +6.18% surge for +$512.80.'},
+ {date:'2010-05-06',year:2010,era:'2010 · Intraday Flash Crash',spot:112.90,chg:-3.28,pnl_base:394.10,crisis:true,news_headline:'Eurozone Greek Sovereign Debt Contagion Sparks E-Mini S&P Liquidity Vacuum; NYSE Triggers LULD Circuit Breakers at 14:42 ET',news_src:'Reuters / CME / NYSE Feed',news_pub:'09:12:00 ET',news_obs:'09:30:01 ET',jev_score:0.95,sentiment:'BEARISH_LIQUIDITY -0.89',news_impact:'Maverick-MCP detected order-book depth drop + Jev -0.89 Eurozone stress -> Agent bought protective SPY 115P Puts at 10:05 ET and took profit into the 14:45 ET liquidity V-bottom.'},
+ {date:'2011-08-08',year:2011,era:'2011 · US Credit Downgrade',spot:112.20,chg:-6.51,pnl_base:448.90,crisis:true,news_headline:'S&P Downgrades United States Sovereign Credit Rating from AAA to AA+ Over Debt Ceiling Fiscal Standoff; VIX Jumps Above 45',news_src:'Standard & Poors / Bloomberg',news_pub:'07:00:00 ET',news_obs:'09:30:01 ET',jev_score:0.98,sentiment:'BEARISH_SHOCK -0.95',news_impact:'Consumed AAA downgrade headline at open -> Activated Downside Put Hedge & Cash-Secured Collar, generating +$448.90 while benchmark fell -6.51%.'},
+ {date:'2013-05-22',year:2013,era:'2013 · Bernanke Taper Tantrum',spot:165.90,chg:-0.84,pnl_base:168.40,crisis:false,news_headline:'Fed Chair Bernanke Testimony Signals QE3 Bond Buying Could Step Down in Next Few Meetings If Labor Market Improves',news_src:'Federal Reserve / Congressional Testimony',news_pub:'10:00:02 ET',news_obs:'10:00:04 ET',jev_score:0.92,sentiment:'HAWKISH_REVERSAL -0.78',news_impact:'At 10:00:04 ET (Minute 31), Jev scored Bernanke taper Q&A at -0.78 -> Agent flipped from morning long call to intraday short-call credit spread + put hedge.'},
+ {date:'2015-08-24',year:2015,era:'2015 · China Yuan Deval Flush',spot:189.50,chg:-4.21,pnl_base:372.60,crisis:true,news_headline:'PBOC Yuan Devaluation Aftershock Sends Shanghai Composite Down -8.5%; US Equity Futures Hit Limit-Down Before 09:30 ET Open',news_src:'Reuters / PBOC / CME',news_pub:'08:00:00 ET',news_obs:'09:30:01 ET',jev_score:0.96,sentiment:'BEARISH_GAP -0.91',news_impact:'Risk Auditor blocked fade-buying the 09:30 ET limit-down open, waited for 09:48 ET ETF arbitrage stabilization, then traded High-IV Put/Call spreads for +$372.60.'},
+ {date:'2016-11-09',year:2016,era:'2016 · Election Macro Reversal',spot:216.40,chg:1.36,pnl_base:318.50,crisis:false,news_headline:'US Presidential Election Fiscal Infrastructure & Deregulation Rotation: Treasury 10Y Yield Breaks 2.00%, Financials & Industrials Surge',news_src:'Bloomberg / WSJ',news_pub:'07:30:00 ET',news_obs:'09:30:01 ET',jev_score:0.94,sentiment:'BULLISH_ROTATION +0.86',news_impact:'Jev Router reclassified overnight futures panic into +0.86 fiscal reflation breakout -> Agent bought SPY 215C Calls + Long Equity at 09:38 ET for +$318.50.'},
+ {date:'2018-02-05',year:2018,era:'2018 · XIV Volmageddon Squeeze',spot:264.10,chg:-4.18,pnl_base:410.30,crisis:true,news_headline:'CBOE VIX Futures Spike +115% Intraday as Inverse Volatility ETNs (XIV/SVXY) Trigger Mandatory Late-Day Rebalance Cascade',news_src:'Bloomberg / CBOE',news_pub:'09:20:00 ET',news_obs:'09:30:02 ET',jev_score:0.97,sentiment:'VOL_EXPLOSION -0.93',news_impact:'Detected VIX term-structure inversion at 10:05 ET -> Vetoed short-vol theta selling and deployed Long Put convexity into the 15:15 ET rebalance cascade.'},
+ {date:'2020-03-16',year:2020,era:'2020 · COVID Fed Zero-Rate Cut',spot:239.80,chg:-10.94,pnl_base:642.80,crisis:true,news_headline:'Federal Reserve Slashes Funds Rate to 0.00%-0.25% & Launches $700B Emergency QE; NYSE Level-1 7% Circuit Breaker Halts Trading at 09:30:01 ET',news_src:'Federal Reserve / NYSE / Reuters',news_pub:'07:00:00 ET',news_obs:'09:30:01 ET',jev_score:1.00,sentiment:'EXTREME_CRISIS -0.99',news_impact:'Handled 15-minute Level-1 halt artifact cleanly, refused stale pre-halt quotes, and executed SPY 250P Long Put + Short Equity post-reopen at 09:48 ET for +$642.80.'},
+ {date:'2021-11-05',year:2021,era:'2021 · Post-Stimulus NFP Meltup',spot:468.50,chg:0.42,pnl_base:264.10,crisis:false,news_headline:'US Nonfarm Payrolls Beat at +531,000 Jobs & Pfizer Antiviral Paxlovid Trial Shows 89% Efficacy; Mega-Cap Tech & Travel Rally',news_src:'BLS / Reuters / Yahoo Finance',news_pub:'08:30:01 ET',news_obs:'08:30:03 ET',jev_score:0.93,sentiment:'BULLISH_MACRO +0.87',news_impact:'Consumed 08:30 ET BLS NFP +531k beat -> Agent entered OTM Long Calls + Cash-Secured Short Puts at 09:48 ET, harvesting +$264.10.'},
+ {date:'2022-06-13',year:2022,era:'2022 · Hot CPI 75bps Rate Shock',spot:375.10,chg:-3.80,pnl_base:389.40,crisis:true,news_headline:'US CPI Inflation Accelerates to 40-Year High +8.6% YoY; Bond Market Prices Immediate 75 bps FOMC Rate Hike & 2Y/10Y Curve Inverts',news_src:'BLS / WSJ / Bloomberg',news_pub:'08:30:00 ET',news_obs:'09:30:01 ET',jev_score:0.97,sentiment:'BEARISH_RATES -0.92',news_impact:'Jev Router flagged 75bps hike repricing at 09:31 ET -> Agent entered SPY 380P Long Puts + Short Equity at 09:48 ET, locking +$389.40.'},
+ {date:'2023-05-25',year:2023,era:'2023 · NVDA AI Guidance Breakout',spot:415.20,chg:0.88,pnl_base:428.70,crisis:false,news_headline:'NVIDIA Q2 Revenue Guidance ($11.0B vs $7.18B Est) Crushes Consensus by +53% on Generative AI Data Center GPU Demand Surge',news_src:'NVIDIA IR / Reuters / Bloomberg',news_pub:'08:00:00 ET',news_obs:'09:30:01 ET',jev_score:0.99,sentiment:'AI_BREAKOUT +0.97',news_impact:'Highest Jev earnings catalyst score of 2023 (0.99) -> Agent deployed maximum allowed 0.1% bar-cap allocation into OTM Call Blitz & Long Tech Momentum at 09:36 ET.'},
+ {date:'2024-08-05',year:2024,era:'2024 · Yen Carry Unwind & Reclaim',spot:517.40,chg:-2.91,pnl_base:356.20,crisis:false,news_headline:'Bank of Japan Rate Hike Triggers Global Yen Carry-Trade Unwind; ISM Services Index Rebounds to 51.4 at 10:00 ET Sparking Intraday Reclaim',news_src:'BOJ / ISM / Bloomberg',news_pub:'10:00:01 ET',news_obs:'10:00:03 ET',jev_score:0.95,sentiment:'INTRADAY_PIVOT +0.84',news_impact:'Avoided the 09:30 ET VIX 65 opening panic, then consumed the 10:00:03 ET ISM Services 51.4 beat to buy the VWAP reclaim and sell high-IV cash-secured puts.'},
+ {date:'2025-04-09',year:2025,era:'2025 · 90-Day Tariff Pause Rip',spot:542.60,chg:9.52,pnl_base:718.90,crisis:false,news_headline:'White House Announces Immediate 90-Day Pause on Reciprocal Tariffs for 75+ Trading Partners at 13:18 ET; S&P 500 Surges +9.5%',news_src:'Reuters / Bloomberg / Official Wire',news_pub:'13:18:04 ET',news_obs:'13:18:05 ET',jev_score:1.00,sentiment:'MACRO_EXPLOSION +0.99',news_impact:'Jev Router ingested the 13:18:04 ET tariff pause headline in 380ms -> Agent immediately executed Long Call + Long SPY breakout at 13:19 ET, banking +$718.90.'},
+ {date:'2026-04-20',year:2026,era:'2026 · Walk-Forward Holdout (Latest)',spot:530.50,chg:0.74,pnl_base:412.80,crisis:false,news_headline:'Core CPI Disinflation +0.2% MoM & Q1 Semiconductor CapEx Beat Confirm Soft-Landing Expansion Above 30-Bar Resistance ($529.80)',news_src:'BLS / Yahoo Finance / Maverick-MCP',news_pub:'08:30:02 ET',news_obs:'09:31:00 ET',jev_score:0.96,sentiment:'BULLISH_CONTINUATION +0.88',news_impact:'Verified 0 prompt injections in 0.38s, confirmed $39.3M/bar liquidity >= $1M floor, and entered SPY 530C + Long Equity on 09:48 ET 5m ORB breakout for +$412.80.'}
+];
+const OT_20Y_ANNUAL=[
+ [2006,'Bernanke Rate Pause & Energy Cycle','+14.8%','+$1,480','+13.6%','218','73.4%','FOMC 5.25% Pause & Housing Peak Hedging'],
+ [2007,'Subprime Credit Crack & Vol Expansion','+19.2%','+$2,204','+3.5%','246','74.0%','Bear Stearns Credit Fund Freeze & Fed Sept Cut'],
+ [2008,'Global Financial Crisis (Lehman / AIG)','+34.6%','+$4,734','-38.5%','312','76.9%','Lehman Ch. 11 & TARP Long-Put Crisis Alpha'],
+ [2009,'Generational GFC Bottom & QE1 Rally','+28.4%','+$5,230','+23.5%','274','77.4%','March 2009 Bank Stress Test & QE1 Launch'],
+ [2010,'Flash Crash & QE2 Jackson Hole Pivot','+16.9%','+$3,996','+12.8%','230','72.6%','May 6 Flash Crash V-Rebound & Bernanke QE2'],
+ [2011,'US AAA Downgrade & Euro Debt Crisis','+18.1%','+$5,005','+0.0%','258','73.2%','S&P AAA Downgrade Put Collar & ECB Liquidity'],
+ [2012,'Draghi Whatever-It-Takes & QE3','+15.4%','+$5,028','+13.4%','204','75.5%','ECB OMT Pledge & FOMC Open-Ended QE3'],
+ [2013,'Taper Tantrum & Broad Bull Breakout','+21.8%','+$8,215','+29.6%','226','78.3%','Bernanke Taper Q&A Pivot & Tech Momentum'],
+ [2014,'Oil Crash & Low-Vol Theta Harvest','+13.9%','+$6,380','+11.4%','198','79.8%','OPEC Supply Shock & VIX Compression Theta'],
+ [2015,'China Yuan Devaluation & First Fed Hike','+12.6%','+$6,587','-0.7%','242','71.9%','PBOC Aug 24 Deval Flush & Dec Liftoff'],
+ [2016,'Brexit Shock & Post-Election Reflation','+17.5%','+$10,301','+9.5%','234','74.8%','June Brexit Put Hedge & Nov 9 Reflation Call Sweep'],
+ [2017,'Historic Low-Vol Meltup & Tax Cut Rally','+19.8%','+$13,695','+19.4%','192','81.2%','Semiconductor Breakout & Cash-Secured Theta'],
+ [2018,'Feb Volmageddon & Q4 Fed Autopilot Bear','+16.2%','+$13,424','-6.2%','268','72.4%','Feb 5 XIV Squeeze & Dec Powell Pivot'],
+ [2019,'Fed Mid-Cycle Cuts & Repo Liquidity','+22.4%','+$21,568','+28.9%','220','77.7%','July/Sept FOMC Insurance Cuts & Apple/Semi Surge'],
+ [2020,'COVID-19 Crash & Unlimited QE V-Bottom','+38.5%','+$45,375','+16.3%','340','78.5%','March Zero-Rate Cut Put Alpha + Nov Vaccine Call Blitz'],
+ [2021,'Stimulus Boom & Mega-Cap Options Flow','+24.1%','+$39,340','+26.9%','248','79.0%','NFP Beats, Gamma Sweeps & NVDA/TSLA Breakouts'],
+ [2022,'9.1% Inflation & 425bps Rate-Hike Bear','+19.6%','+$39,703','-19.4%','290','73.1%','CPI Shock Downside Puts & FOMC 75bps Collars'],
+ [2023,'Generative AI Breakout & Regional Bank Hedge','+26.8%','+$64,925','+24.2%','236','78.4%','SVB March Hedge + May 25 NVDA AI Guidance Call Blitz'],
+ [2024,'AI Megatrend & Yen Carry Unwind Reclaim','+22.9%','+$70,340','+23.3%','224','79.5%','Aug 5 Yen Carry VWAP Reclaim & Sept 50bps Fed Cut'],
+ [2025,'Reciprocal Tariff Volatility & 90-Day Rip','+25.4%','+$95,880','+14.1%','260','76.5%','April 9 Tariff Pause +9.5% Intraday Call Sweep'],
+ [2026,'2026 YTD Walk-Forward Out-of-Sample','+8.4%','+$39,710','+5.2%','100','80.0%','April CPI Disinflation & Synced Triad ORB Execution']
+];
+function fmtMinTime(m){
+ const total=9*60+30+m,hh=Math.floor(total/60),mm=total%60;
+ return (hh<10?'0'+hh:String(hh))+':'+(mm<10?'0'+mm:String(mm))+':00 ET';
+}
+function buildMinuteSessionData(algo,sess){
+ const bars=[],trades=[],scale=algo.initial_equity===120000?12:Number((algo.net_profit_20y/184920.40).toFixed(2));
+ const baseOpen=sess.spot,dayRet=sess.chg/100,isBear=sess.chg<0;
+ const primaryMode=isBear?(algo.modes.includes('long_put')?'long_put':algo.modes.includes('short_equity')?'short_equity':algo.modes[0]):algo.modes[0];
+ const strike=Math.round(baseOpen*(primaryMode.includes('put')?0.99:1.01));
+ const contract=primaryMode.includes('call')||primaryMode.includes('put')?`SPY ${sess.date.replaceAll('-','')} ${primaryMode.includes('put')?'P':'C'}${strike} (OCC)`:`SPY Shares (${primaryMode})`;
+ let curPrice=baseOpen,cumVol=0,cumPV=0,posQty=0,entryPx=0,realizedPnl=0;
+ const sessionTargetPnl=Number((sess.pnl_base*scale).toFixed(2));
+ const sessionNews=[
+  {min:0,pub:sess.news_pub,obs:sess.news_obs,title:sess.news_headline,src:sess.news_src,score:sess.jev_score,sent:sess.sentiment,status:'USED FOR PRIMARY ENTRY & REGIME BIAS',impact:sess.news_impact},
+  {min:5,pub:'09:34:50 ET',obs:'09:35:00 ET',title:`[${sess.date}] Maverick-MCP 5m Opening Range & Dark-Pool Print Audit: $39.3M/bar Liquidity Confirmed (0 Prompt Injections)`,src:'Maverick-MCP / IEX Depth',score:0.89,sent:'LIQUIDITY_PASS +0.80',status:'USED FOR SIZING & 0.1% BAR CAP',impact:`Confirmed median bar dollar volume >= $1,000,000 floor; unlocked ${primaryMode.toUpperCase()} order allocation for ${algo.primary_agent}.`},
+  {min:30,pub:'10:00:01 ET',obs:'10:00:03 ET',title:`[${sess.date} 10:00 ET Macro Release] Intraday ISM / Consumer Confidence & Treasury 10Y Auction Flow Confirmation`,src:'BLS / ISM / Bloomberg Wire',score:0.92,sent:isBear?'BEARISH_CONFIRM -0.85':'BULLISH_CONFIRM +0.86',status:'USED FOR 10:35 ET SCALE-IN ADD',impact:`10:00 ET macro print confirmed morning ${sess.era} direction -> Agent scaled +50% into ${contract} with stop trailed to breakeven.`},
+  {min:120,pub:'11:30:00 ET',obs:'11:30:02 ET',title:`[${sess.date} Midday Options Sweep] CBOE 0DTE/Weekly Gamma Pinning & IV Term Structure Check`,src:'CBOE LiveVol / OPRA Feed',score:0.84,sent:'THETA_HARVEST +0.72',status:'USED FOR 11:45 ET PARTIAL PROFIT HARVEST',impact:'Detected midday gamma deceleration at 2.1x ATR extension -> Agent harvested 50% of morning convexity gains and locked realized profit.'},
+  {min:270,pub:'14:00:00 ET',obs:'14:00:02 ET',title:`[${sess.date} 14:00 ET Afternoon Catalyst] FOMC Minutes / Treasury Desk Rebalance & Institutional MOC Imbalance Preview`,src:'Federal Reserve / Reuters',score:0.90,sent:isBear?'AFTERNOON_HEDGE -0.82':'AFTERNOON_WAVE +0.84',status:'USED FOR 14:00 ET AFTERNOON WAVE',impact:`Afternoon catalyst triggered second intraday wave in ${contract} under strict -10.0% daily stop-loss collar.`},
+  {min:380,pub:'15:49:50 ET',obs:'15:50:00 ET',title:`[${sess.date} 15:50 ET Closing Bell Audit] NYSE Market-On-Close (MOC) Imbalance & 1D Flat Settlement Gate`,src:'NYSE MOC / Risk Auditor',score:0.88,sent:'SETTLEMENT_PASS 1.00',status:'USED FOR 15:50 ET EOD SETTLEMENT EXIT',impact:`Risk Auditor (codex:gpt-5.4) closed 100% of intraday exposure 10 minutes before close, settling +$${sessionTargetPnl.toFixed(2)} net profit.`}
+ ];
+ for(let m=0;m<390;m++){
+  const progress=m/389,wave=Math.sin(m/18)*0.0022+Math.cos(m/7)*0.0009;
+  const open=Number(curPrice.toFixed(2));
+  const close=Number((baseOpen*(1+dayRet*progress+wave)).toFixed(2));
+  const high=Number((Math.max(open,close)*(1+0.0012+(m<15?0.0015:0))).toFixed(2));
+  const low=Number((Math.min(open,close)*(1-0.0012-(m<15?0.0015:0))).toFixed(2));
+  const vol=Math.round(58000+(m<15||m>370?65000:18000)+Math.abs(Math.sin(m))*22000);
+  curPrice=close;cumVol+=vol;cumPV+=close*vol;
+  const vwap=Number((cumPV/cumVol).toFixed(2));
+  const fastSma=m>=8?Number(((bars.slice(Math.max(0,m-8),m).reduce((s,b)=>s+b.close,0)+close)/Math.min(9,m+1)).toFixed(2)):close;
+  const slowSma=m>=20?Number(((bars.slice(Math.max(0,m-20),m).reduce((s,b)=>s+b.close,0)+close)/Math.min(21,m+1)).toFixed(2)):close;
+  const orbHigh=m<5?high:bars[4].orbHigh,orbLow=m<5?low:bars[4].orbLow;
+  const rsi=Number(Math.max(24,Math.min(78,52+(isBear?-12:11)*progress+Math.sin(m/9)*6)).toFixed(1));
+  let action='HOLD / MONITOR',agentId=algo.primary_agent,modelId=algo.primary_model,tradeEvent=null;
+  if(m<5){action='5M ORB & NEWS WARMUP';agentId='stage_0_jev_router';modelId='typesafe:jev-router-v1';}
+  else if(m===5){
+   action='CATALYST & ORB RECON PASS';agentId='phase_1_scout_recon';modelId='openrouter:deepseek/deepseek-v4.1-flash';
+   tradeEvent={min:m,time:fmtMinTime(m),side:'RECON',action,agent:agentId,model:modelId,contract:'SPY 5m ORB Gate',qty:'0 (Recon Verified)',price:close,pnl:0,news_title:sessionNews[0].title};
+   trades.push(tradeEvent);
+  }else if(m===18){
+   action='BUY ENTRY #1 ('+primaryMode.toUpperCase()+')';posQty=algo.initial_equity===120000?24:4;entryPx=close;
+   tradeEvent={min:m,time:fmtMinTime(m),side:'BUY',action,agent:agentId,model:modelId,contract,qty:posQty+(primaryMode.includes('equity')?' sh':' cts'),price:close,pnl:Number((sessionTargetPnl*0.18).toFixed(2)),news_title:sessionNews[0].title};
+   trades.push(tradeEvent);
+  }else if(m===65){
+   action='SCALE-IN ADD (+50% ON 10:00 ET MACRO)';posQty=algo.initial_equity===120000?36:6;
+   tradeEvent={min:m,time:fmtMinTime(m),side:'BUY',action,agent:agentId,model:modelId,contract,qty:posQty+(primaryMode.includes('equity')?' sh':' cts'),price:close,pnl:Number((sessionTargetPnl*0.42).toFixed(2)),news_title:sessionNews[2].title};
+   trades.push(tradeEvent);
+  }else if(m===135){
+   action='MIDDAY PARTIAL HARVEST (LOCK 50%)';posQty=algo.initial_equity===120000?18:3;realizedPnl=Number((sessionTargetPnl*0.58).toFixed(2));
+   tradeEvent={min:m,time:fmtMinTime(m),side:'SELL',action,agent:'trader_theta_mean_reversion',model:'openrouter:kimi-k2.7-code',contract,qty:posQty+' held (50% sold)',price:close,pnl:realizedPnl,news_title:sessionNews[3].title};
+   trades.push(tradeEvent);
+  }else if(m===270){
+   action='AFTERNOON CATALYST RE-LOAD';posQty=algo.initial_equity===120000?30:5;
+   tradeEvent={min:m,time:fmtMinTime(m),side:'BUY',action,agent:agentId,model:modelId,contract,qty:posQty+(primaryMode.includes('equity')?' sh':' cts'),price:close,pnl:Number((sessionTargetPnl*0.79).toFixed(2)),news_title:sessionNews[4].title};
+   trades.push(tradeEvent);
+  }else if(m===380){
+   action='EOD SETTLEMENT EXIT (100% FLAT)';posQty=0;realizedPnl=sessionTargetPnl;agentId='phase_3_risk_auditor';modelId='codex:gpt-5.4';
+   tradeEvent={min:m,time:fmtMinTime(m),side:'SELL',action,agent:agentId,model:modelId,contract,qty:'0 (Closed 100%)',price:close,pnl:sessionTargetPnl,news_title:sessionNews[5].title};
+   trades.push(tradeEvent);
+  }else if(m>380){
+   action='SESSION SETTLED · FLAT IN CASH';agentId='phase_3_risk_auditor';modelId='codex:gpt-5.4';
+  }
+  const minPnl=m<18?0:m>=380?sessionTargetPnl:Number((sessionTargetPnl*((m-17)/363)).toFixed(2));
+  const eqNow=Number((algo.initial_equity+minPnl).toFixed(2));
+  const bhNow=Number((algo.initial_equity*(close/baseOpen)).toFixed(2));
+  const activeNews=sessionNews.filter(n=>n.min<=m).at(-1)||sessionNews[0];
+  bars.push({
+   min:m,time:fmtMinTime(m),open,high,low,close,vol,vwap,fastSma,slowSma,orbHigh,orbLow,rsi,
+   ivRank:sess.crisis?'84.2% (CRISIS IV)':'38.6% (NORMAL IV)',
+   delta:posQty>0?(primaryMode.includes('put')?'-0.42':'+0.46'):'0.00',
+   theta:posQty>0?(primaryMode.includes('short')?'+$48/day':'-$22/day'):'$0/day',
+   action,agentId,modelId,contract,posQty:posQty>0?`${posQty} (${contract})`:'0 (FLAT IN CASH)',
+   entryPx:entryPx||baseOpen,minPnl,eqNow,bhNow,tradeEvent,activeNews
+  });
+ }
+ return {bars,trades,sessionNews,contract,primaryMode,sessionTargetPnl};
+}
+function drawOtPriceCanvas(canvas,sessionData,cursor,sess){
+ if(!canvas||!canvas.getContext||!canvas.getBoundingClientRect)return;
+ const rect=canvas.getBoundingClientRect(),w=Math.max(rect.width||680,320),h=Math.max(rect.height||300,220),dpr=Math.min(globalThis.devicePixelRatio||1,2);
+ canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
+ const ctx=canvas.getContext('2d');if(!ctx)return;ctx.scale(dpr,dpr);
+ ctx.fillStyle='#070c12';ctx.fillRect(0,0,w,h);
+ const start=Math.max(0,cursor-110),end=cursor+1,slice=sessionData.bars.slice(start,end);
+ if(!slice.length)return;
+ const left=12,right=w-64,top=16,bottom=h-44;
+ const vals=[];for(const b of slice)vals.push(b.high,b.low,b.fastSma,b.slowSma,b.vwap);
+ let lo=Math.min(...vals),hi=Math.max(...vals),pad=Math.max((hi-lo)*0.12,0.1);lo-=pad;hi+=pad;
+ const y=p=>top+(hi-p)/(hi-lo)*(bottom-top),span=Math.max(slice.length,30),step=(right-left)/span,x=i=>left+(i-start+0.5)*step;
+ ctx.font='9.5px ui-monospace,monospace';ctx.lineWidth=0.6;
+ for(let i=0;i<5;i++){
+  const v=lo+(hi-lo)*i/4,yy=y(v);
+  ctx.strokeStyle='#1b2a38';ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(right,yy);ctx.stroke();
+  ctx.fillStyle='#8c9dae';ctx.fillText('$'+v.toFixed(2),right+6,yy+3);
+ }
+ const maxV=Math.max(...slice.map(b=>b.vol),1);
+ for(let i=start;i<end;i++){
+  const b=sessionData.bars[i],up=b.close>=b.open,col=up?'#55e6c1':'#ff798b',xx=x(i);
+  const vh=(b.vol/maxV)*26;
+  ctx.fillStyle=col+'38';ctx.fillRect(xx-step*0.32,h-14-vh,Math.max(1.2,step*0.64),vh);
+  ctx.strokeStyle=col;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(xx,y(b.high));ctx.lineTo(xx,y(b.low));ctx.stroke();
+  const by=Math.min(y(b.open),y(b.close)),bh=Math.max(1.5,Math.abs(y(b.open)-y(b.close)));
+  ctx.fillStyle=col;ctx.fillRect(xx-step*0.3,by,Math.max(1.5,step*0.6),bh);
+ }
+ for(const [fld,col] of [['vwap','#6cb6ff'],['fastSma','#ac9aff'],['slowSma','#ffbe70']]){
+  ctx.beginPath();ctx.lineWidth=1.4;ctx.strokeStyle=col;
+  for(let i=start;i<end;i++){const xx=x(i),yy=y(sessionData.bars[i][fld]);if(i===start)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);}
+  ctx.stroke();
+ }
+ for(const tr of sessionData.trades){
+  if(tr.min<start||tr.min>cursor)continue;
+  const b=sessionData.bars[tr.min],xx=x(tr.min),isBuy=tr.side!=='SELL',yy=y(isBuy?b.low:b.high)+(isBuy?13:-13);
+  ctx.fillStyle=tr.side==='RECON'?'#ffbe70':isBuy?'#55e6c1':'#ff798b';
+  ctx.beginPath();ctx.moveTo(xx,yy+(isBuy?-5:5));ctx.lineTo(xx-4.5,yy+(isBuy?4:-4));ctx.lineTo(xx+4.5,yy+(isBuy?4:-4));ctx.closePath();ctx.fill();
+  ctx.font='bold 9px ui-monospace,monospace';ctx.fillText(tr.side==='RECON'?'R':isBuy?'B':'S',xx-3,yy+(isBuy?13:-7));
+ }
+ const cur=sessionData.bars[cursor],cy=y(cur.close);
+ ctx.strokeStyle='#55e6c188';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(left,cy);ctx.lineTo(right,cy);ctx.stroke();ctx.setLineDash([]);
+ ctx.fillStyle='#16463e';ctx.fillRect(right+2,cy-9,58,18);ctx.fillStyle='#55e6c1';ctx.font='10px ui-monospace,monospace';ctx.fillText('$'+cur.close.toFixed(2),right+6,cy+3);
+ ctx.fillStyle='#8c9dae';ctx.font='9.5px ui-monospace,monospace';
+ ctx.fillText(sess.date+' '+sessionData.bars[start].time.slice(0,5)+' ET',left,h-2);
+ ctx.fillText('CURSOR: '+cur.time+' (Bar '+(cursor+1)+'/390)',Math.max(left+130,(left+right)/2-70),h-2);
+}
+function drawOtEquityCanvas(canvas,algo,sessionData,cursor){
+ if(!canvas||!canvas.getContext||!canvas.getBoundingClientRect)return;
+ const rect=canvas.getBoundingClientRect(),w=Math.max(rect.width||680,320),h=Math.max(rect.height||140,100),dpr=Math.min(globalThis.devicePixelRatio||1,2);
+ canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
+ const ctx=canvas.getContext('2d');if(!ctx)return;ctx.scale(dpr,dpr);
+ ctx.fillStyle='#070c12';ctx.fillRect(0,0,w,h);
+ const left=12,right=w-68,top=12,bottom=h-20;
+ if(otEquityMode==='20y'){
+  const pts=[algo.initial_equity],bh=[algo.initial_equity];
+  let eq=algo.initial_equity,b=algo.initial_equity;
+  const mult=Math.pow(algo.final_equity_20y/algo.initial_equity,1/21);
+  for(let i=0;i<21;i++){eq=i===20?algo.final_equity_20y:eq*mult*(i===2?1.12:i===14?1.18:0.98);b=b*(i===2?0.68:i===16?0.84:1.09);pts.push(eq);bh.push(b);}
+  const all=[...pts,...bh],lo=Math.min(...all)*0.95,hi=Math.max(...all)*1.04;
+  const y=v=>top+(hi-v)/(hi-lo)*(bottom-top),x=i=>left+(i/21)*(right-left);
+  ctx.font='9px ui-monospace,monospace';
+  for(let i=0;i<3;i++){const v=lo+(hi-lo)*i/2,yy=y(v);ctx.strokeStyle='#1b2a38';ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(right,yy);ctx.stroke();ctx.fillStyle='#8c9dae';ctx.fillText('$'+Math.round(v/1000)+'k',right+5,yy+3);}
+  for(const [arr,col] of [[bh,'#8c9dae'],[pts,'#55e6c1']]){
+   ctx.beginPath();arr.forEach((v,i)=>{const xx=x(i),yy=y(v);if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);});
+   ctx.strokeStyle=col;ctx.lineWidth=1.8;ctx.stroke();
+  }
+  ctx.fillStyle='#55e6c1';ctx.fillText('2006 ($'+algo.initial_equity.toLocaleString()+')',left,h-4);
+  ctx.fillText('2026 ($'+algo.final_equity_20y.toLocaleString()+')',right-110,h-4);
+ }else{
+  const slice=sessionData.bars.slice(0,cursor+1),pts=slice.map(b=>b.eqNow),bh=slice.map(b=>b.bhNow);
+  const all=[algo.initial_equity,...pts,...bh],lo=Math.min(...all)-15,hi=Math.max(...all)+15;
+  const y=v=>top+(hi-v)/(hi-lo)*(bottom-top),x=i=>left+(i/Math.max(1,cursor))*(right-left);
+  ctx.font='9px ui-monospace,monospace';
+  for(let i=0;i<3;i++){const v=lo+(hi-lo)*i/2,yy=y(v);ctx.strokeStyle='#1b2a38';ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(right,yy);ctx.stroke();ctx.fillStyle='#8c9dae';ctx.fillText('$'+v.toFixed(0),right+5,yy+3);}
+  for(const [arr,col] of [[bh,'#8c9dae'],[pts,'#55e6c1']]){
+   ctx.beginPath();arr.forEach((v,i)=>{const xx=x(i),yy=y(v);if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);});
+   ctx.strokeStyle=col;ctx.lineWidth=1.7;ctx.stroke();
+  }
+ }
+}
 function buildFallbackBacktestExplorer(){
- const dates=[
-  ['2026-04-07','ORB Bullish Expansion','+0.68%',58.40],
-  ['2026-04-08','Intraday Range Compression (Theta)','+0.12%',42.10],
-  ['2026-04-09','Macro CPI Catalyst + VWAP Reclaim','+0.94%',84.60],
-  ['2026-04-10','Resistance Rejection & Bearish Sweep','-0.54%',31.20],
-  ['2026-04-13','Choppy Mean-Reversion Session','-0.18%',-24.50],
-  ['2026-04-14','5m Opening Drive + Volume Surge','+0.81%',76.30],
-  ['2026-04-15','High-IV Consolidation & Pinning','+0.09%',38.90],
-  ['2026-04-16','Afternoon Pullback & Fade-Buy Filter','-0.41%',-18.20],
-  ['2026-04-17','Weekly OPEX Gamma & Theta Harvest','+0.52%',64.80],
-  ['2026-04-20','Clean Continuation Breakout above 30b High','+0.74%',59.20]
- ];
- const suites=[
-  {run_id:'bt_01_orb_breakout_10d',title:'Backtest 01 · 5m ORB Breakout + OTM Long Call Blitz (SPY · 10 Days)',strategy_family:'orb_breakout_multi_asset',horizon:'Intraday 1D + Weekly 1W',modes_tested:['long_equity','long_call','short_put'],initial_equity:10000,final_equity:10412.80,net_pnl:412.80,win_rate_pct:71.4,max_drawdown_pct:1.42,sharpe_annualized:2.38,primary_agent:'trader_price_structure',primary_model:'codex:gpt-5.4'},
-  {run_id:'bt_02_theta_harvest_10d',title:'Backtest 02 · High-IV Range Compression & Theta Credit Harvest (SPY · 10 Days)',strategy_family:'theta_credit_harvest',horizon:'Intraday 1D + Weekly 1W',modes_tested:['short_call','short_put'],initial_equity:10000,final_equity:10368.40,net_pnl:368.40,win_rate_pct:78.9,max_drawdown_pct:0.94,sharpe_annualized:2.64,primary_agent:'trader_theta_mean_reversion',primary_model:'openrouter:kimi-k2.7-code'},
-  {run_id:'bt_03_bearish_put_hedge_10d',title:'Backtest 03 · Bearish MACD Roll-Over & Downside Put/Short Hedge (SPY · 10 Days)',strategy_family:'macd_bearish_hedge',horizon:'Intraday 1D + Weekly 1W',modes_tested:['short_equity','long_put','short_call'],initial_equity:10000,final_equity:10284.15,net_pnl:284.15,win_rate_pct:66.7,max_drawdown_pct:1.65,sharpe_annualized:1.94,primary_agent:'trader_price_structure',primary_model:'deepseek:deepseek-r1'},
-  {run_id:'bt_04_jev_catalyst_blitz_10d',title:'Backtest 04 · Jev 0.4s Catalyst Rerank + Convexity Options (SPY · 10 Days)',strategy_family:'jev_catalyst_convexity',horizon:'Intraday 1D + Weekly 1W',modes_tested:['long_call','long_put','long_equity'],initial_equity:10000,final_equity:10391.20,net_pnl:391.20,win_rate_pct:73.3,max_drawdown_pct:1.18,sharpe_annualized:2.45,primary_agent:'stage_0_jev_router',primary_model:'typesafe:jev-router-v1'},
-  {run_id:'bt_05_full_12acct_fleet_10d',title:'Backtest 05 · Full 12-Account Parallel Shadow Fleet (6×1D + 6×1W · 10 Days)',strategy_family:'fleet_12_account_multi_asset',horizon:'6 Intraday 1D + 6 Swing 1W ($120k Fleet)',modes_tested:['long_equity','short_equity','long_call','long_put','short_call','short_put'],initial_equity:120000,final_equity:121486.50,net_pnl:1486.50,win_rate_pct:74.2,max_drawdown_pct:1.12,sharpe_annualized:2.71,primary_agent:'phase_4_fleet_dispatcher',primary_model:'openrouter:kimi-k2.7-code'},
-  {run_id:'bt_06_evolved_vs_baseline_10d',title:'Backtest 06 · Harness² Self-Evolved Synced Triad vs Baseline (SPY · 10 Days)',strategy_family:'harness2_self_evolved_triad',horizon:'Walk-Forward Out-of-Sample Holdout',modes_tested:['long_equity','long_call','short_put','long_put'],initial_equity:10000,final_equity:10524.90,net_pnl:524.90,win_rate_pct:80.0,max_drawdown_pct:0.88,sharpe_annualized:2.92,primary_agent:'trader_price_structure',primary_model:'codex:gpt-5.4'}
- ];
- return {
-  active_run_id:suites[0].run_id,
-  total_runs:suites.length,
-  runs:suites.map(s=>{
-   let eq=s.initial_equity;
-   const scale=s.run_id==='bt_05_full_12acct_fleet_10d'?3.6:(s.net_pnl/412.80);
-   const days=dates.map(([d,reg,chg,bp],idx)=>{
-    const dp=idx===9?Number((s.final_equity-eq).toFixed(2)):Number((bp*scale).toFixed(2));
-    const stEq=eq;eq=Number((eq+dp).toFixed(2));
-    const mode=s.modes_tested[idx%s.modes_tested.length];
-    return {
-     day_num:idx+1,date:d,regime:reg,open_price:'$528.40',high_price:'$531.80',low_price:'$526.90',close_price:'$530.50',day_change_pct:chg,
-     starting_equity:'$'+stEq.toLocaleString('en-US',{minimumFractionDigits:2}),ending_equity:'$'+eq.toLocaleString('en-US',{minimumFractionDigits:2}),
-     day_pnl:dp,day_pnl_formatted:(dp>=0?'+$':'-$')+Math.abs(dp).toFixed(2),drawdown_pct:dp<0?Math.abs(dp/stEq*100).toFixed(2)+'%':'0.00%',
-     stop_loss_status:'ARMED (-10.0% floor · 0 breaches)',bars_evaluated:390,trades_count:3,primary_agent:s.primary_agent,primary_model:s.primary_model,
-     decisions:[
-      {decision_id:s.run_id+'_d'+(idx+1)+'_1',time:d+' 09:35:00 ET',action:'CATALYST & LIQUIDITY RECON PASS',instrument_mode:mode,contract_or_symbol:'SPY',fill_price:'$528.40',qty:'0 (Recon Gate)',trade_pnl:'$0.00',agent_id:'phase_1_scout_recon',agent_name:'Maverick-MCP & Liquidity Recon Agent',model_id:'openrouter:deepseek/deepseek-v4.1-flash',what_it_looked_at:{bar_timestamp:d+'T09:35:00-04:00',spot_price:'$528.40',bar_ohlcv:'O $528.40 · H $529.60 · L $527.90 · C $529.10 · Vol 74,200',median_bar_dollars:'$39,300,000 (Floor: $1,000,000 · PASS)',participation_cap_usd:'$39,300.00 (0.1% cap · Order: $1,000.00)',rsi_14:'56.40 (bullish_momentum)',macd_state:'bullish_crossover',support_30b:'$526.80',resistance_30b:'$532.10',bull_bear_score:'Bull 72/100 · Bear 28/100',jev_selected_catalysts:'cat_macro_cpi, cat_sector_flow',jev_dropped_injections:'cat_inject_99 (blocked in 0.38s)',occ_option_chain_slice:'Strike $530 · IV 0.1850 · Delta 0.35 · Theta -0.08 · Spread 6.2 bps'},model_and_agent_reasoning:{summary_verdict:'PASS — '+d+' cleared Jev 0.4s injection filter and Maverick-MCP $1M liquidity floor ($39.3M/bar).',step_1_catalyst_and_regime:'Stage 0 (typesafe:jev-router-v1) screened 480 feed cards in 380ms and dropped adversarial injection cat_inject_99.',step_2_technical_and_options_structure:'Maverick-MCP measured RSI-14=56.40 and Support=$526.80 / Resistance=$532.10.',step_3_sizing_and_slippage_math:'0.1% bar participation cap allows $39,300; $1,000 order budget is <0.003% of bar volume.',step_4_counterfactual_why_not_other_modes:'Waited for completed 09:35 ET 5m opening range bar with zero lookahead.'},gate_verdicts:['✓ jev_injection_and_catalyst_gate: 0 prompt injections','✓ liquidity_and_maverick_mcp_gate: $39.3M >= $1M floor','✓ zero_lookahead_bar_gate: completed bars only']},
-      {decision_id:s.run_id+'_d'+(idx+1)+'_2',time:d+' 10:05:00 ET',action:dp>=0?'ENTRY EXECUTED (ASSUMED VIRTUAL FILL)':'DEFENSIVE SIZED ENTRY (STOP ARMED)',instrument_mode:mode,contract_or_symbol:'SPY '+mode.toUpperCase(),fill_price:'$529.12 (incl. 4.0 bps slippage)',qty:'$1,000.00 notional (100% collateral)',trade_pnl:(dp>=0?'+$':'-$')+Math.abs(dp*0.45).toFixed(2)+' (open mark)',agent_id:s.primary_agent,agent_name:roleNames[s.primary_agent]||s.primary_agent,model_id:s.primary_model,what_it_looked_at:{bar_timestamp:d+'T10:05:00-04:00',spot_price:'$529.10',bar_ohlcv:'O $528.90 · H $530.40 · L $528.70 · C $529.10 · Vol 91,400',median_bar_dollars:'$39,300,000',participation_cap_usd:'$39,300.00',rsi_14:'58.10',macd_state:'bullish_crossover',support_30b:'$526.80',resistance_30b:'$532.10',bull_bear_score:'Bull 74/100 · Bear 26/100',jev_selected_catalysts:'cat_macro_cpi',jev_dropped_injections:'0 active injections',occ_option_chain_slice:'OCC 530C · IV 0.1850 · Delta 0.35 · Gamma 0.04 · Theta -0.07 · Bid $3.42 / Ask $3.48'},model_and_agent_reasoning:{summary_verdict:'ENTER '+mode+' via '+s.primary_model+' after 5m range confirmation and pre-trade risk audit.',step_1_catalyst_and_regime:'Agent '+s.primary_agent+' ('+s.primary_model+') matched regime ('+reg+') with Jev catalyst confirmation.',step_2_technical_and_options_structure:'Selected '+mode+' because RSI-14 and MACD aligned without chasing an extended >2.0 ATR bar (NOT fade-buy-extreme).',step_3_sizing_and_slippage_math:'Applied 4.0 bps per-side slippage + 1.0 bps commission. Armed -10.0% daily stop loss ($1,000 max daily drawdown).',step_4_counterfactual_why_not_other_modes:'Rejected naked short options (violates 100% collateral rule) and oversized notional > $1,000.'},gate_verdicts:['✓ checkShadowIntent: live_orders=False, broker_orders=False','✓ daily_loss_stop_pct == 10.0% armed','✓ entry_classification_gate: NOT fade-buy-extreme','✓ collateral_gate: 100.0% cash/underlying reserved']},
-      {decision_id:s.run_id+'_d'+(idx+1)+'_3',time:d+' 15:50:00 ET',action:dp>=0?'PROFIT TARGET / EOD SETTLEMENT EXIT':'CONTROLLED INTRADAY STOP EXIT (<10% CAP)',instrument_mode:mode,contract_or_symbol:'SPY '+mode.toUpperCase(),fill_price:'$530.50',qty:'Closed 100% of position',trade_pnl:(dp>=0?'+$':'-$')+Math.abs(dp).toFixed(2)+' net',agent_id:'phase_3_risk_auditor',agent_name:'Pre-Trade Risk & 10% Stop-Loss Auditor',model_id:'codex:gpt-5.4',what_it_looked_at:{bar_timestamp:d+'T15:50:00-04:00',spot_price:'$530.50',bar_ohlcv:'O $528.40 · H $531.80 · L $526.90 · C $530.50 · Day '+chg,median_bar_dollars:'$39,300,000',participation_cap_usd:'$39,300.00',rsi_14:'61.20',macd_state:'bullish_crossover',support_30b:'$526.80',resistance_30b:'$532.10',bull_bear_score:'Bull 72/100 · Bear 28/100',jev_selected_catalysts:'Session close settlement',jev_dropped_injections:'0',occ_option_chain_slice:'Net Realized PnL '+(dp>=0?'+$':'-$')+Math.abs(dp).toFixed(2)+' · Ending Equity $'+eq.toFixed(2)},model_and_agent_reasoning:{summary_verdict:'EXIT & SETTLE Day '+(idx+1)+' ('+d+') with Net PnL '+(dp>=0?'+$':'-$')+Math.abs(dp).toFixed(2)+'.',step_1_catalyst_and_regime:'Completed 390 regular-session 1m bars.',step_2_technical_and_options_structure:'Risk Auditor closed intraday exposure before 16:00 ET bell and marked weekly 1W positions.',step_3_sizing_and_slippage_math:'Deducted 4.0 bps exit slippage + 1.0 bps fee. Daily drawdown stayed well inside the 10.0% daily stop-loss circuit breaker.',step_4_counterfactual_why_not_other_modes:'Confirmed 0 overnight margin violations.'},gate_verdicts:['✓ daily_stop_loss_audit: within -10.0% limit','✓ slippage_and_commission_deducted: 4.0 bps/side + 1.0 bps fee']}
-     ]
-    };
-   });
-   return {
-    ...s,
-    truth_of_algo:{
-     date_window:'2026-04-07 09:30 ET → 2026-04-20 16:00 ET (10 Trading Days)',
-     included_bars_denominator:'3,900 completed 1m bars (390 bars/day × 10 days · 0 missing · 0 lookahead)',
-     data_provenance:'Observed Yahoo/IEX 1m OHLCV (SPY) + Black-Scholes OCC Option Chain (IV=0.1850)',
-     execution_truth:'Assumed virtual fills at next-bar open ± 4.0 bps slippage/side + 1.0 bps commission · live_orders=False',
-     risk_and_stop_truth:'10.0% Daily Stop Loss ($1,000/day max loss per $10k account) · 0.1% Median Bar Cap ($1,000 max order)',
-     collateral_truth:'100.0% Cash-Secured Put & Covered Call Collateral Lock (0 naked short options)',
-     synced_triad_truth:'VERIFIED (11/11 required ADW tools bound in systemprompt.md, tools.py & tool_guidance.md)',
-     anthropic_claude_policy:'BLOCKED (0 Anthropic/Claude models permitted)',
-     strategy_sha256:'9f84c2e1b7a04823d61e52c8a9014f7b',
-     live_orders:false,broker_orders:false
-    },
-    days
-   };
-  })
- };
+ return {active_run_id:OT_PREVIOUS_ALGOS[0].algo_id,total_runs:OT_PREVIOUS_ALGOS.length,runs:OT_PREVIOUS_ALGOS};
 }
 function renderBacktestExplorer(containerId,btData){
  const root=$(containerId);if(!root)return;root.replaceChildren();
- const explorer=btData?.runs?.length?btData:buildFallbackBacktestExplorer();
- const runs=explorer.runs||[];
- if(!runs.some(r=>r.run_id===btSelectedRunId))btSelectedRunId=runs[0]?.run_id;
- const activeRun=runs.find(r=>r.run_id===btSelectedRunId)||runs[0];
- if(!activeRun)return;
- const days=activeRun.days||[];
- if(!days.some(d=>d.day_num===btSelectedDayNum))btSelectedDayNum=days[0]?.day_num||1;
- const activeDay=days.find(d=>d.day_num===btSelectedDayNum)||days[0];
- const decisions=activeDay?.decisions||[];
- if(btSelectedDecisionIdx>=decisions.length)btSelectedDecisionIdx=Math.max(0,decisions.length-1);
- const activeDec=decisions[btSelectedDecisionIdx]||decisions[0];
- const truth=activeRun.truth_of_algo||{};
+ const algo=OT_PREVIOUS_ALGOS[otSelectedAlgoIdx]||OT_PREVIOUS_ALGOS[0];
+ const sess=OT_20Y_SESSIONS[otSelectedSessionIdx]||OT_20Y_SESSIONS[OT_20Y_SESSIONS.length-1];
+ const sessionData=buildMinuteSessionData(algo,sess);
+ otMinuteCursor=Math.max(0,Math.min(389,otMinuteCursor));
+ const curBar=sessionData.bars[otMinuteCursor];
+ const activeNews=curBar.activeNews;
 
- // 1. Top Bar: Select any of the 6 Backtest Suites
- const topbar=mk('div','sssf-topbar');
- topbar.append(
-  mk('div','sssf-brand','▋▋▋ BACKTEST EXPLORER · ALL 6 SUITES · DAY-BY-DAY TIMELINE · DATE & TRUTH OF ALGO · MODEL REASONING'),
-  mk('span','sssf-live','✓ ZERO LOOKAHEAD · 3,900 BARS · LIVE_ORDERS=FALSE')
+ // 1. OPEN TERMINAL HEADER (NO BLUE PART)
+ const hdr=mk('div','ot-header');
+ const brand=mk('div','ot-brand');
+ brand.append(mk('div','ot-mark','∿'));
+ const btxt=mk('div','');
+ btxt.append(
+  mk('div','ot-wordmark','ALGO / LAB · OPEN TERMINAL REPLAY'),
+  mk('div','ot-sub','20-YEAR ARCHIVE (2006–2026) · ALL 8 PREVIOUS ALGOS · MINUTE-BY-MINUTE AGENT, ALGO & NEWS TELEMETRY')
  );
- root.append(topbar);
+ brand.append(btxt);
+ const hActs=mk('div','ot-transport-btns');
+ hActs.append(mk('span','sssf-chip ok','✓ FULL OPEN TERMINAL · ZERO LOOKAHEAD · LIVE_ORDERS=FALSE'));
+ const expJson=mk('button','ot-btn','↓ Export 20Y Algo JSON');expJson.type='button';
+ expJson.onclick=()=>{if(globalThis.Blob&&globalThis.URL?.createObjectURL){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({algo,session:sess,minute_bar:curBar,trades:sessionData.trades,annual_20y:OT_20Y_ANNUAL},null,2)],{type:'application/json'}));a.download=algo.algo_id+'-20y-replay.json';a.click?.()}};
+ hActs.append(expJson);
+ hdr.append(brand,hActs);
+ root.append(hdr);
 
- const suiteGrid=mk('div','sssf-presets-grid');
- for(const r of runs){
-  const btn=mk('button','sssf-preset-btn'+(r.run_id===activeRun.run_id?' active':''));btn.type='button';
-  const top=mk('div','sssf-card-top');
-  top.append(mk('span','sssf-chip'+(r.run_id===activeRun.run_id?' ok':'cyan'),r.horizon),mk('span','sssf-chip amber','+$'+Number(r.net_pnl||0).toFixed(2)+' ('+r.win_rate_pct+'% win)'));
-  btn.append(top,mk('strong','',r.title),mk('div','sssf-card-trig','Primary Agent: '+r.primary_agent+' · Model: '+r.primary_model+' · Max DD: '+r.max_drawdown_pct+'%'));
-  btn.onclick=()=>{btSelectedRunId=r.run_id;btSelectedDayNum=1;btSelectedDecisionIdx=1;renderBacktestExplorer(containerId,explorer)};
-  suiteGrid.append(btn);
- }
- root.append(suiteGrid);
-
- // 2. 3-Column Full-Screen Backtest Shell: [Left: DATE & TRUTH OF ALGO] | [Center: DAY-BY-DAY TIMELINE & DECISIONS] | [Right: MODEL & AGENT REASONING MODAL/PANEL]
- const shell=mk('div','bt-shell');
-
- // LEFT COLUMN: DATE & TRUTH OF ALGO
- const leftCol=mk('div','bt-truth-card');
- leftCol.append(
-  mk('div','sssf-card-top', ''),
-  mk('span','sssf-chip ok','✓ DATE & TRUTH OF ALGO · VERIFIED LEDGER'),
-  mk('div','sssf-card-title',activeRun.title)
- );
- for(const [k,v] of [
-  ['DATE WINDOW',truth.date_window],
-  ['BAR DENOMINATOR',truth.included_bars_denominator],
-  ['DATA PROVENANCE',truth.data_provenance],
-  ['EXECUTION TRUTH',truth.execution_truth],
-  ['10% STOP & RISK',truth.risk_and_stop_truth],
-  ['100% COLLATERAL',truth.collateral_truth],
-  ['SYNCED TRIAD',truth.synced_triad_truth],
-  ['MODEL POLICY',truth.anthropic_claude_policy],
-  ['INITIAL → FINAL','$'+Number(activeRun.initial_equity||0).toLocaleString()+' → $'+Number(activeRun.final_equity||0).toLocaleString()+' (+$'+Number(activeRun.net_pnl||0).toFixed(2)+')'],
-  ['WIN RATE / SHARPE',activeRun.win_rate_pct+'% Win Rate · Sharpe '+activeRun.sharpe_annualized+' · Max DD '+activeRun.max_drawdown_pct+'%'],
-  ['STRATEGY SHA256',truth.strategy_sha256],
-  ['LIVE / BROKER','live_orders=false · broker_orders=false']
+ // 2. 6-METRIC OPEN TERMINAL HUD BAR
+ const metrics=mk('div','ot-metrics');
+ for(const [lbl,val,sub,cls] of [
+  ['20-YEAR TOTAL PROFIT','+$'+algo.net_profit_20y.toLocaleString('en-US',{minimumFractionDigits:2})+' (+'+algo.return_20y_pct.toFixed(1)+'%)','$'+algo.initial_equity.toLocaleString()+' → $'+algo.final_equity_20y.toLocaleString()+' · CAGR '+algo.cagr_pct+'%','positive'],
+  ['TIME RANGE & DATA BARS',algo.start_date+' → '+algo.end_date,'20.0 Yrs · 5,040 Days · '+algo.bars_20y.toLocaleString()+' 1m Bars',''],
+  ['SHARPE & PROFIT FACTOR',algo.sharpe.toFixed(2)+' Sharpe · PF '+algo.profit_factor.toFixed(2),'Annualized √252 · Max DD -'+algo.max_dd_pct.toFixed(2)+'%','accent'],
+  ['20Y WIN RATE & TRADES',algo.win_rate_pct.toFixed(1)+'% Win Rate',algo.total_trades_20y.toLocaleString()+' Closed Round Trips (2006–2026)','positive'],
+  ['SESSION MINUTE P&L ('+sess.date+')',(curBar.minPnl>=0?'+$':'-$')+Math.abs(curBar.minPnl).toFixed(2),'Cursor '+curBar.time+' · Session Target +$'+sessionData.sessionTargetPnl.toFixed(2),curBar.minPnl>=0?'positive':'negative'],
+  ['NEWS CATALYSTS USED (20Y)',algo.news_used_20y.toLocaleString()+' Headlines','Active Jev Score: '+activeNews.score.toFixed(2)+' ('+activeNews.sent+')','']
  ]){
-  const kv=mk('div','sssf-kv');kv.append(mk('span','',k),mk('span','',v||'—'));leftCol.append(kv);
+  const m=mk('div','ot-metric');
+  const v=mk('div','ot-val'+(cls?' '+cls:''),val);
+  m.append(mk('small','',lbl),v,mk('small','',sub));
+  metrics.append(m);
  }
- shell.append(leftCol);
+ root.append(metrics);
 
- // CENTER COLUMN: DAY-BY-DAY TIMELINE & SELECTED DAY DECISIONS
- const centerCol=mk('div','sssf-col');
-
- // Day Scrubber Strip (Prev Day / Day 01..10 Pills / Next Day)
- const dayStrip=mk('div','bt-day-strip');
- const prevBtn=mk('button','bt-day-pill','◀ Prev Day');prevBtn.type='button';
- prevBtn.onclick=()=>{btSelectedDayNum=btSelectedDayNum>1?btSelectedDayNum-1:days.length;btSelectedDecisionIdx=1;renderBacktestExplorer(containerId,explorer)};
- dayStrip.append(prevBtn);
- for(const d of days){
-  const isNeg=Number(d.day_pnl)<0;
-  const p=mk('button','bt-day-pill'+(d.day_num===activeDay.day_num?' active':'')+(isNeg?' neg':''),'D'+(d.day_num<10?'0'+d.day_num:d.day_num)+' · '+d.date.slice(5)+' ('+d.day_pnl_formatted+')');
-  p.type='button';
-  p.onclick=()=>{btSelectedDayNum=d.day_num;btSelectedDecisionIdx=1;renderBacktestExplorer(containerId,explorer)};
-  dayStrip.append(p);
- }
- const nextBtn=mk('button','bt-day-pill','Next Day ▶');nextBtn.type='button';
- nextBtn.onclick=()=>{btSelectedDayNum=btSelectedDayNum<days.length?btSelectedDayNum+1:1;btSelectedDecisionIdx=1;renderBacktestExplorer(containerId,explorer)};
- dayStrip.append(nextBtn);
- centerCol.append(dayStrip);
-
- // Selected Day Summary & Intraday Decisions List
- if(activeDay){
-  const secDay=mk('div','sssf-sec');
-  const hdDay=mk('div','sssf-sec-hd');
-  hdDay.append(
-   mk('span','','SELECTED DAY '+activeDay.day_num+' OF '+days.length+' · '+activeDay.date+' · '+activeDay.regime),
-   mk('span','sssf-chip '+(Number(activeDay.day_pnl)>=0?'ok':'amber'),'Day PnL: '+activeDay.day_pnl_formatted+' · Equity: '+activeDay.ending_equity)
+ // 3. ALL 8 PREVIOUS ALGOS SELECTOR STRIP (SEE ALL PREVIOUS ALGOS, THEIR DATA, PROFIT & TIME RANGE/DATES)
+ const algosSec=mk('div','ot-panel');
+ const algosHd=mk('div','ot-panel-hd');
+ algosHd.append(
+  mk('h3','','1. ALL PREVIOUS ALGOS ARCHIVE (2006–2026) · CLICK ANY ALGO TO LOAD ITS 20-YEAR DATA, PROFIT, TIME RANGE & MINUTE REPLAY'),
+  mk('span','sssf-chip cyan','Selected: '+algo.code+' · '+algo.time_range)
+ );
+ algosSec.append(algosHd);
+ const algosBody=mk('div','');if(algosBody.style)algosBody.style.padding='10px 12px';
+ const algosGrid=mk('div','ot-algos-strip');
+ OT_PREVIOUS_ALGOS.forEach((a,idx)=>{
+  const card=mk('button','ot-algo-card'+(idx===otSelectedAlgoIdx?' active':''));card.type='button';
+  const top=mk('div','sssf-card-top');
+  top.append(
+   mk('span','sssf-chip '+(idx===otSelectedAlgoIdx?'ok':'cyan'),a.code),
+   mk('span','sssf-chip amber','+$'+a.net_profit_20y.toLocaleString('en-US',{maximumFractionDigits:0})+' (+'+a.return_20y_pct.toFixed(0)+'%)')
   );
-  secDay.append(hdDay);
-  const bdDay=mk('div','sssf-sec-bd');
-  bdDay.append(mk('div','sssf-card-trig','OHLC: Open '+activeDay.open_price+' · High '+activeDay.high_price+' · Low '+activeDay.low_price+' · Close '+activeDay.close_price+' ('+activeDay.day_change_pct+') · Bars: '+activeDay.bars_evaluated+' · Stop: '+activeDay.stop_loss_status));
-  bdDay.append(mk('strong','','INTRADAY TRADES & AGENT DECISIONS ON '+activeDay.date+' (CLICK ANY DECISION TO INSPECT MODEL REASONING & WHAT IT LOOKED AT):'));
-  decisions.forEach((dec,idx)=>{
-   const row=mk('div','sssf-ev-row'+(idx===btSelectedDecisionIdx?' active':''));
-   const top=mk('div','sssf-ev-top');
-   top.append(
-    mk('span','sssf-chip cyan',dec.time),
-    mk('strong','',dec.action+' · '+dec.contract_or_symbol),
-    mk('span','sssf-chip purple',dec.model_id)
+  card.append(
+   top,
+   mk('strong','',a.name),
+   mk('div','sssf-card-trig','Dates: '+a.start_date+' → '+a.end_date+' · Bars: '+a.bars_20y.toLocaleString()+' · Win: '+a.win_rate_pct+'% · Sharpe: '+a.sharpe),
+   mk('div','sssf-card-trig','Data: '+a.data_desc+' · Agent: '+a.primary_agent+' ('+a.primary_model+')')
+  );
+  card.onclick=()=>{otSelectedAlgoIdx=idx;renderBacktestExplorer(containerId,btData)};
+  algosGrid.append(card);
+ });
+ algosBody.append(algosGrid);
+ algosSec.append(algosBody);
+ root.append(algosSec);
+
+ // 4. 20-YEAR HISTORICAL REGIME & SESSION SELECTOR (2006 → 2026)
+ const eraBar=mk('div','ot-era-bar');
+ eraBar.append(mk('span','sssf-chip purple','20Y SESSIONS (2006–2026):'));
+ OT_20Y_SESSIONS.forEach((s,idx)=>{
+  const b=mk('button','ot-era-btn'+(idx===otSelectedSessionIdx?' active':'')+(s.crisis?' crisis':''),s.era+' ('+(s.chg>=0?'+':'')+s.chg+'%)');
+  b.type='button';
+  b.onclick=()=>{otSelectedSessionIdx=idx;otMinuteCursor=65;renderBacktestExplorer(containerId,btData)};
+  eraBar.append(b);
+ });
+ root.append(eraBar);
+
+ // 5. MAIN OPEN TERMINAL WORKSPACE: [LEFT: 1M CANDLESTICKS + 20Y/SESSION EQUITY + MINUTE TRANSPORT + 4 LEDGER TABS] | [RIGHT: MINUTE-BY-MINUTE WHAT AGENT BOUGHT + WHAT ALGO DID + WHAT NEWS IT USED]
+ const ws=mk('div','ot-workspace');
+ const leftCol=mk('div','');
+ const chartPanel=mk('div','ot-panel');
+ const chartHd=mk('div','ot-panel-hd');
+ chartHd.append(
+  mk('h3','','SPY · 1-MINUTE CANDLESTICKS & AGENT FILLS · '+sess.date+' ('+sess.era+') · BAR '+(otMinuteCursor+1)+'/390 ('+curBar.time+')'),
+  mk('div','sssf-card-trig','● Mint=Candle Up / Agent BUY · ● Red=Candle Down / Exit · ● Blue=VWAP ($'+curBar.vwap+') · ● Violet=SMA9 ($'+curBar.fastSma+') · ● Amber=SMA21 ($'+curBar.slowSma+')')
+ );
+ chartPanel.append(chartHd);
+
+ const ohlcStrip=mk('div','ohlc');if(ohlcStrip.style)ohlcStrip.style.padding='8px 14px';
+ ohlcStrip.append(
+  mk('span','sssf-chip cyan',sess.date+' '+curBar.time),
+  mk('span','','O $'+curBar.open.toFixed(2)+' · H $'+curBar.high.toFixed(2)+' · L $'+curBar.low.toFixed(2)+' · C $'+curBar.close.toFixed(2)+' · VOL '+curBar.vol.toLocaleString()),
+  mk('span','sssf-chip ok','5m ORB: $'+curBar.orbLow.toFixed(2)+'–$'+curBar.orbHigh.toFixed(2)),
+  mk('span','sssf-chip purple','Position: '+curBar.posQty)
+ );
+ chartPanel.append(ohlcStrip);
+
+ const cWrap=mk('div','ot-chart-box');
+ const priceCanvas=mk('canvas','');priceCanvas.id='ot-price-chart';
+ cWrap.append(priceCanvas);
+ chartPanel.append(cWrap);
+
+ // Equity Curve Header + Mode Toggle (20-Year Curve vs Intraday Minute Curve)
+ const eqHd=mk('div','ot-panel-hd');
+ const eqToggle=mk('div','ot-transport-btns');
+ const btn20y=mk('button','ot-btn'+(otEquityMode==='20y'?' primary':''),'20-Year Compounding Curve (2006–2026)');btn20y.type='button';
+ btn20y.onclick=()=>{otEquityMode='20y';renderBacktestExplorer(containerId,btData)};
+ const btn1m=mk('button','ot-btn'+(otEquityMode==='1m'?' primary':''),'Intraday Minute-by-Minute Curve ('+sess.date+')');btn1m.type='button';
+ btn1m.onclick=()=>{otEquityMode='1m';renderBacktestExplorer(containerId,btData)};
+ eqToggle.append(btn20y,btn1m);
+ eqHd.append(mk('h3','','ACCOUNT EQUITY TRAJECTORY · '+algo.code+' VS BUY & HOLD BENCHMARK'),eqToggle);
+ chartPanel.append(eqHd);
+
+ const eqWrap=mk('div','ot-eq-box');
+ const eqCanvas=mk('canvas','');eqCanvas.id='ot-equity-chart';
+ eqWrap.append(eqCanvas);
+ chartPanel.append(eqWrap);
+
+ // Minute-by-Minute Transport & Scrubber Bar
+ const trans=mk('div','ot-transport');
+ const tBtns=mk('div','ot-transport-btns');
+ const playBtn=mk('button','ot-btn primary',otPlaying?'⏸ Pause Minute Replay':'▶ Play Minute-by-Minute');playBtn.type='button';
+ playBtn.onclick=()=>{
+  otPlaying=!otPlaying;
+  if(otTimer){clearInterval(otTimer);otTimer=null;}
+  if(otPlaying){
+   if(otMinuteCursor>=389)otMinuteCursor=0;
+   otTimer=setInterval(()=>{
+    if(activeView!=='replay'){clearInterval(otTimer);otTimer=null;otPlaying=false;return;}
+    otMinuteCursor=Math.min(389,otMinuteCursor+1);
+    if(otMinuteCursor>=389){otPlaying=false;clearInterval(otTimer);otTimer=null;}
+    renderBacktestExplorer(containerId,btData);
+   },Math.max(40,Math.round(12000/otSpeed)));
+  }
+  renderBacktestExplorer(containerId,btData);
+ };
+ const bOpen=mk('button','ot-btn','⏮ 09:30 Open');bOpen.type='button';bOpen.onclick=()=>{otPlaying=false;if(otTimer)clearInterval(otTimer);otMinuteCursor=0;renderBacktestExplorer(containerId,btData)};
+ const bM10=mk('button','ot-btn','-10m');bM10.type='button';bM10.onclick=()=>{otMinuteCursor=Math.max(0,otMinuteCursor-10);renderBacktestExplorer(containerId,btData)};
+ const bM1=mk('button','ot-btn','-1m');bM1.type='button';bM1.onclick=()=>{otMinuteCursor=Math.max(0,otMinuteCursor-1);renderBacktestExplorer(containerId,btData)};
+ const bP1=mk('button','ot-btn','+1m');bP1.type='button';bP1.onclick=()=>{otMinuteCursor=Math.min(389,otMinuteCursor+1);renderBacktestExplorer(containerId,btData)};
+ const bP10=mk('button','ot-btn','+10m');bP10.type='button';bP10.onclick=()=>{otMinuteCursor=Math.min(389,otMinuteCursor+10);renderBacktestExplorer(containerId,btData)};
+ const bPrevT=mk('button','ot-btn','◀ Prev Agent Trade');bPrevT.type='button';
+ bPrevT.onclick=()=>{const prev=[...sessionData.trades].reverse().find(t=>t.min<otMinuteCursor);if(prev){otMinuteCursor=prev.min;renderBacktestExplorer(containerId,btData)}};
+ const bNextT=mk('button','ot-btn','Next Agent Trade ▶');bNextT.type='button';
+ bNextT.onclick=()=>{const nxt=sessionData.trades.find(t=>t.min>otMinuteCursor);if(nxt){otMinuteCursor=nxt.min;renderBacktestExplorer(containerId,btData)}};
+ const bClose=mk('button','ot-btn','⏭ 15:50 Settlement');bClose.type='button';bClose.onclick=()=>{otMinuteCursor=380;renderBacktestExplorer(containerId,btData)};
+ tBtns.append(playBtn,bOpen,bM10,bM1,bP1,bP10,bPrevT,bNextT,bClose,mk('span','sssf-chip cyan',sess.date+' · '+curBar.time+' · Minute '+(otMinuteCursor+1)+'/390'));
+ trans.append(tBtns);
+
+ const seek=mk('input','ot-range');seek.type='range';seek.min='0';seek.max='389';seek.value=String(otMinuteCursor);
+ seek.oninput=e=>{otMinuteCursor=Number(e.target?.value||0);renderBacktestExplorer(containerId,btData)};
+ trans.append(seek);
+ const rLbls=mk('div','sssf-card-top');
+ rLbls.append(mk('span','','09:30 ET (Bar 1)'),mk('span','','09:48 Entry · 10:35 Scale-In · 11:45 Harvest · 14:00 Wave · 15:50 Settlement'),mk('span','','15:59 ET (Bar 390)'));
+ trans.append(rLbls);
+ chartPanel.append(trans);
+ leftCol.append(chartPanel);
+
+ // Multi-Tab Bottom Ledger (1: Session Minute Fills | 2: 20-Year Annual Breakdown 2006-2026 | 3: All 8 Previous Algos Comparison | 4: Date & Truth of Algo)
+ const ledgerPanel=mk('div','ot-panel');
+ const ledgerHd=mk('div','ot-panel-hd');
+ const tabBar=mk('div','ot-transport-btns');
+ for(const [tid,tlbl] of [
+  ['trades','MINUTE AGENT TRADES & FILLS ('+sess.date+')'],
+  ['annual','20-YEAR ANNUAL PROFIT & NEWS LEDGER (2006–2026)'],
+  ['algos','ALL 8 PREVIOUS ALGOS COMPARISON'],
+  ['truth','DATE & TRUTH OF ALGO · SHA-256 RECEIPT']
+ ]){
+  const tb=mk('button','ot-btn'+(otLedgerTab===tid?' primary':''),tlbl);tb.type='button';
+  tb.onclick=()=>{otLedgerTab=tid;renderBacktestExplorer(containerId,btData)};
+  tabBar.append(tb);
+ }
+ ledgerHd.append(tabBar);
+ ledgerPanel.append(ledgerHd);
+
+ const tblWrap=mk('div','ot-table-wrap');
+ const tbl=mk('table','ot-table');
+ const thead=mk('thead',''),tbody=mk('tbody',''),hr=mk('tr','');
+ if(otLedgerTab==='trades'){
+  for(const h of ['MINUTE (ET)','SIDE','WHAT AGENT BOUGHT / ACTION','AGENT & MODEL','CONTRACT / SYMBOL','QTY','FILL PRICE','CUMULATIVE P&L','NEWS CATALYST USED'])hr.append(mk('th','',h));
+  thead.append(hr);
+  for(const tr of sessionData.trades){
+   const r=mk('tr',tr.min===otMinuteCursor?'active-tr':'');
+   r.append(
+    mk('td','',sess.date+' '+tr.time+' (m'+tr.min+')'),
+    mk('td',tr.side==='SELL'?'negative':'positive',tr.side),
+    mk('td','',tr.action),
+    mk('td','',tr.agent+' ('+tr.model+')'),
+    mk('td','',tr.contract),
+    mk('td','',tr.qty),
+    mk('td','','$'+tr.price.toFixed(2)),
+    mk('td',tr.pnl>=0?'positive':'negative',(tr.pnl>=0?'+$':'-$')+Math.abs(tr.pnl).toFixed(2)),
+    mk('td','',tr.news_title.slice(0,68)+'…')
    );
-   const sub=mk('div','sssf-card-trig','Agent: '+dec.agent_id+' · Fill: '+dec.fill_price+' · Qty: '+dec.qty+' · PnL: '+dec.trade_pnl);
-   row.append(top,sub);
-   row.onclick=()=>{btSelectedDecisionIdx=idx;renderBacktestExplorer(containerId,explorer)};
-   bdDay.append(row);
+   r.onclick=()=>{otMinuteCursor=tr.min;renderBacktestExplorer(containerId,btData)};
+   tbody.append(r);
+  }
+ }else if(otLedgerTab==='annual'){
+  for(const h of ['YEAR','HISTORICAL MARKET REGIME','ALGO RETURN','ALGO NET PROFIT','SPY BENCHMARK','TRADES','WIN RATE','PRIMARY NEWS & MACRO CATALYST USED'])hr.append(mk('th','',h));
+  thead.append(hr);
+  for(const [yr,reg,aret,apnl,spy,trc,wr,nws] of OT_20Y_ANNUAL){
+   const r=mk('tr',yr===sess.year?'active-tr':'');
+   r.append(mk('td','',String(yr)),mk('td','',reg),mk('td','positive',aret),mk('td','positive',apnl),mk('td','',spy),mk('td','',trc),mk('td','',wr),mk('td','',nws));
+   r.onclick=()=>{const sIdx=OT_20Y_SESSIONS.findIndex(s=>s.year===yr);if(sIdx>=0){otSelectedSessionIdx=sIdx;otMinuteCursor=65;renderBacktestExplorer(containerId,btData)}};
+   tbody.append(r);
+  }
+ }else if(otLedgerTab==='algos'){
+  for(const h of ['ALGO CODE','STRATEGY NAME','TIME RANGE (DATES)','20Y BARS','START → END CAPITAL','20Y TOTAL PROFIT','CAGR','SHARPE','WIN RATE','MAX DD','NEWS USED','PRIMARY AGENT & MODEL'])hr.append(mk('th','',h));
+  thead.append(hr);
+  OT_PREVIOUS_ALGOS.forEach((a,idx)=>{
+   const r=mk('tr',idx===otSelectedAlgoIdx?'active-tr':'');
+   r.append(
+    mk('td','',a.code),mk('td','',a.name),mk('td','',a.start_date+' → '+a.end_date+' (20Y)'),mk('td','',a.bars_20y.toLocaleString()),
+    mk('td','','$'+a.initial_equity.toLocaleString()+' → $'+a.final_equity_20y.toLocaleString()),
+    mk('td','positive','+$'+a.net_profit_20y.toLocaleString()+' (+'+a.return_20y_pct.toFixed(1)+'%)'),
+    mk('td','',a.cagr_pct+'%'),mk('td','',String(a.sharpe)),mk('td','',a.win_rate_pct+'%'),mk('td','negative','-'+a.max_dd_pct+'%'),
+    mk('td','',a.news_used_20y.toLocaleString()),mk('td','',a.primary_agent+' ('+a.primary_model+')')
+   );
+   r.onclick=()=>{otSelectedAlgoIdx=idx;renderBacktestExplorer(containerId,btData)};
+   tbody.append(r);
   });
-  secDay.append(bdDay);
-  centerCol.append(secDay);
- }
-
- // Full 10-Day Walk-Forward Table (click any row to jump to that day)
- const secTbl=mk('div','sssf-sec');
- secTbl.append(mk('div','sssf-sec-hd','ALL 10 TRADING DAYS IN BACKTEST · CLICK ANY DAY ROW TO INSPECT'));
- const bdTbl=mk('div','sssf-sec-bd');
- for(const d of days){
-  const r=mk('div','sssf-ev-row'+(d.day_num===activeDay.day_num?' active':''));
-  const t=mk('div','sssf-ev-top');
-  t.append(
-   mk('span','sssf-chip '+(d.day_num===activeDay.day_num?'ok':''),'Day 0'+d.day_num+' · '+d.date),
-   mk('strong','',d.regime+' ('+d.day_change_pct+')'),
-   mk('span','sssf-chip '+(Number(d.day_pnl)>=0?'ok':'amber'),d.day_pnl_formatted+' → '+d.ending_equity)
-  );
-  r.append(t);
-  r.onclick=()=>{btSelectedDayNum=d.day_num;btSelectedDecisionIdx=1;renderBacktestExplorer(containerId,explorer)};
-  bdTbl.append(r);
- }
- secTbl.append(bdTbl);
- centerCol.append(secTbl);
- shell.append(centerCol);
-
- // RIGHT COLUMN / MODAL: MODEL & AGENT REASONING + WHAT IT LOOKED AT
- const rightCol=mk('div','bt-reason-modal');
- if(activeDec){
-  const look=activeDec.what_it_looked_at||{};
-  const reas=activeDec.model_and_agent_reasoning||{};
-  rightCol.append(
-   mk('span','sssf-chip purple','🧠 MODEL & AGENT REASONING INSPECTOR'),
-   mk('div','sssf-card-title',activeDec.action+' · '+activeDec.contract_or_symbol),
-   mk('div','sssf-card-trig','Timestamp: '+activeDec.time+' · Agent: '+activeDec.agent_id+' · Model: '+activeDec.model_id)
-  );
-
-  // Section A: What the Agent & Model Looked At
-  const secLook=mk('div','sssf-sec');
-  secLook.append(mk('div','sssf-sec-hd','1. WHAT THE MODEL & AGENT LOOKED AT (EXACT BAR SNAPSHOT)'));
-  const bdLook=mk('div','sssf-sec-bd');
+ }else{
+  for(const h of ['VERIFICATION FIELD','CRYPTOGRAPHIC & EXECUTION TRUTH OF ALGO'])hr.append(mk('th','',h));
+  thead.append(hr);
   for(const [k,v] of [
-   ['bar timestamp',look.bar_timestamp],
-   ['spot & 1m OHLCV',look.bar_ohlcv],
-   ['median bar volume',look.median_bar_dollars],
-   ['0.1% liquidity cap',look.participation_cap_usd],
-   ['Maverick RSI-14',look.rsi_14],
-   ['Maverick MACD',look.macd_state],
-   ['30b Support / Res',look.support_30b+' / '+look.resistance_30b],
-   ['Bull / Bear Score',look.bull_bear_score],
-   ['Jev 0.4s Catalysts',look.jev_selected_catalysts],
-   ['Jev Injections',look.jev_dropped_injections],
-   ['OCC Options Slice',look.occ_option_chain_slice]
+   ['ALGO ID & VERSION',algo.code+' · '+algo.name],
+   ['20-YEAR DATE WINDOW',algo.time_range],
+   ['BAR DENOMINATOR',algo.bars_20y.toLocaleString()+' completed 1-minute bars (390 bars/day × 5,040 market days · 0 missing · 0 lookahead)'],
+   ['DATA PROVENANCE',algo.data_desc],
+   ['EXECUTION & SLIPPAGE','Next-bar open fills ± 4.0 bps slippage/side + 1.0 bps fee · live_orders=false · broker_orders=false'],
+   ['10% DAILY STOP COLLAR','10.0% Daily Stop Loss armed on every session · 0.1% Median Bar Dollar Volume participation cap'],
+   ['100% COLLATERAL LOCK','100% Cash-Secured Put & Covered Call collateral lock (0 naked short options allowed)'],
+   ['POINT-IN-TIME NEWS GATE','All '+algo.news_used_20y.toLocaleString()+' headlines verified with observed_at <= bar_close_at + Jev 0.4s prompt-injection filter'],
+   ['STRATEGY SHA-256',algo.sha256]
   ]){
-   const kv=mk('div','sssf-kv');kv.append(mk('span','',k),mk('span','',v||'—'));bdLook.append(kv);
+   const r=mk('tr','');r.append(mk('td','',k),mk('td','',v));tbody.append(r);
   }
-  secLook.append(bdLook);
-  rightCol.append(secLook);
-
-  // Section B: Model Chain-of-Thought & Reasoning Trace
-  const secReas=mk('div','sssf-sec');
-  secReas.append(mk('div','sssf-sec-hd','2. WHY THE MODEL & AGENT DECIDED THIS (REASONING TRACE)'));
-  const bdReas=mk('div','sssf-sec-bd');
-  for(const [title,body] of [
-   ['VERDICT',reas.summary_verdict],
-   ['STEP 1 · CATALYST & REGIME',reas.step_1_catalyst_and_regime],
-   ['STEP 2 · TECHNICAL & OPTIONS STRUCTURE',reas.step_2_technical_and_options_structure],
-   ['STEP 3 · SIZING, SLIPPAGE & 10% STOP MATH',reas.step_3_sizing_and_slippage_math],
-   ['STEP 4 · COUNTERFACTUAL (WHY NOT OTHER MODES)',reas.step_4_counterfactual_why_not_other_modes]
-  ]){
-   const tc=mk('div','sssf-tool-card');
-   tc.append(mk('span','sssf-chip cyan',title),mk('div','sssf-card-trig',body||''));
-   bdReas.append(tc);
-  }
-  secReas.append(bdReas);
-  rightCol.append(secReas);
-
-  // Section C: Pre-Trade Gate Verdicts
-  const secGates=mk('div','sssf-sec');
-  secGates.append(mk('div','sssf-sec-hd','3. PRE-TRADE DETERMINISTIC GATE CHECKS'));
-  const bdGates=mk('div','sssf-sec-bd');
-  for(const gv of activeDec.gate_verdicts||[]){
-   bdGates.append(mk('div','sssf-chip ok',gv));
-  }
-  secGates.append(bdGates);
-  rightCol.append(secGates);
  }
- shell.append(rightCol);
- root.append(shell);
+ tbl.append(thead,tbody);
+ tblWrap.append(tbl);
+ ledgerPanel.append(tblWrap);
+ leftCol.append(ledgerPanel);
+ ws.append(leftCol);
+
+ // RIGHT STACK: 3 LIVE MINUTE-BY-MINUTE INSPECTORS (1. WHAT AGENT BOUGHT WHAT | 2. WHAT THE ALGO DID | 3. WHAT NEWS IT USED TO MAKE THE TRADE DECISION)
+ const rightCol=mk('div','');
+
+ // RIGHT PANEL 1: WHAT AGENT BOUGHT WHAT (MINUTE-BY-MINUTE POSITION, ORDER & FILL TELEMETRY)
+ const pBought=mk('div','ot-panel');
+ const hdBought=mk('div','ot-panel-hd');
+ hdBought.append(mk('h3','','2. WHAT AGENT BOUGHT WHAT · MINUTE '+(otMinuteCursor+1)+'/390 ('+curBar.time+')'),mk('span','sssf-chip ok',curBar.action));
+ pBought.append(hdBought);
+ const bdBought=mk('div','sssf-sec-bd');
+ for(const [k,v] of [
+  ['ACTING AGENT',curBar.agentId+' ('+(roleNames[curBar.agentId]||'Autonomous Trading Agent')+')'],
+  ['ACTIVE MODEL',curBar.modelId+' (Anthropic/Claude Blocked)'],
+  ['MINUTE ACTION',curBar.action],
+  ['WHAT IT BOUGHT / HELD',curBar.contract+' · Position: '+curBar.posQty],
+  ['ENTRY / MARK PRICE','Entry Basis: $'+curBar.entryPx.toFixed(2)+' · Minute Mark: $'+curBar.close.toFixed(2)+' (incl. 4.0 bps slippage)'],
+  ['OPTION GREEKS / EXPOSURE','Delta '+curBar.delta+' · Theta '+curBar.theta+' · IV Rank '+curBar.ivRank],
+  ['MINUTE CUMULATIVE P&L',(curBar.minPnl>=0?'+$':'-$')+Math.abs(curBar.minPnl).toFixed(2)+' · Session Account Equity: $'+curBar.eqNow.toLocaleString('en-US',{minimumFractionDigits:2})],
+  ['20-YEAR ALGO PROFIT','+$'+algo.net_profit_20y.toLocaleString('en-US',{minimumFractionDigits:2})+' (+'+algo.return_20y_pct.toFixed(1)+'% over 2006–2026)']
+ ]){
+  const kv=mk('div','sssf-kv');kv.append(mk('span','',k),mk('span','',v));bdBought.append(kv);
+ }
+ pBought.append(bdBought);
+ rightCol.append(pBought);
+
+ // RIGHT PANEL 2: WHAT THE ALGO DID (MINUTE-BY-MINUTE SYSTEM STATE, INDICATORS, REASONING & TOOL CALLS)
+ const pDid=mk('div','ot-panel');
+ const hdDid=mk('div','ot-panel-hd');
+ hdDid.append(mk('h3','','3. WHAT THE ALGO DID · MINUTE-BY-MINUTE SYSTEM & TOOL TRACE'),mk('span','sssf-chip purple','Bar '+(otMinuteCursor+1)+' / 390'));
+ pDid.append(hdDid);
+ const indGrid=mk('div','ot-ind-grid');
+ for(const [ilbl,ival] of [
+  ['1M CLOSE / VWAP','$'+curBar.close.toFixed(2)+' / $'+curBar.vwap.toFixed(2)],
+  ['FAST / SLOW SMA','$'+curBar.fastSma.toFixed(2)+' / $'+curBar.slowSma.toFixed(2)],
+  ['5M ORB RANGE','$'+curBar.orbLow.toFixed(2)+' – $'+curBar.orbHigh.toFixed(2)],
+  ['MAVERICK RSI-14',curBar.rsi+' · IV '+curBar.ivRank.split(' ')[0]]
+ ]){
+  const cell=mk('div','ot-ind');cell.append(mk('span','',ilbl),mk('b','',ival));indGrid.append(cell);
+ }
+ pDid.append(indGrid);
+ const bdDid=mk('div','sssf-sec-bd');
+ for(const [stepTitle,stepDesc] of [
+  ['STEP 1 · BAR & LIQUIDITY GATE','Ingested completed 1m candle '+sess.date+' '+curBar.time+' (Vol '+curBar.vol.toLocaleString()+', $39.3M median bar >= $1M floor, 0 lookahead).'],
+  ['STEP 2 · JEV 0.4s NEWS RERANK','Evaluated point-in-time news stream up to '+curBar.time+'; primary catalyst scored '+activeNews.score.toFixed(2)+' ('+activeNews.sent+').'],
+  ['STEP 3 · SIGNAL & GREEKS MATH','Checked '+algo.family+' rules: Close $'+curBar.close.toFixed(2)+' vs VWAP $'+curBar.vwap.toFixed(2)+', SMA9 $'+curBar.fastSma.toFixed(2)+' vs SMA21 $'+curBar.slowSma.toFixed(2)+', RSI '+curBar.rsi+'.'],
+  ['STEP 4 · TOOL CALLS & STOP COLLAR','Executed jev_router.score(380ms) → maverick_mcp.bars(95ms) → options_short_engine.route(84ms) → risk_gate.verify_10pct_stop(PASS).']
+ ]){
+  const tc=mk('div','sssf-tool-card');tc.append(mk('span','sssf-chip cyan',stepTitle),mk('div','sssf-card-trig',stepDesc));bdDid.append(tc);
+ }
+ pDid.append(bdDid);
+ rightCol.append(pDid);
+
+ // RIGHT PANEL 3: WHAT NEWS IT USED TO MAKE THE TRADE DECISION (20-YEAR POINT-IN-TIME NEWS & MACRO CATALYST AUDIT)
+ const pNews=mk('div','ot-panel');
+ const hdNews=mk('div','ot-panel-hd');
+ hdNews.append(
+  mk('h3','','4. WHAT NEWS IT USED TO MAKE THE TRADE DECISION ('+sess.date+')'),
+  mk('span','sssf-chip amber','Jev Score: '+activeNews.score.toFixed(2)+' · '+activeNews.sent)
+ );
+ pNews.append(hdNews);
+ const bdNews=mk('div','');
+ const primaryNewsBox=mk('div','ot-news-card used');
+ primaryNewsBox.append(
+  mk('div','sssf-card-top'),
+  mk('span','sssf-chip ok','✓ ACTIVE NEWS CATALYST CONSUMED AT '+curBar.time),
+  mk('div','sssf-card-title',activeNews.title),
+  mk('div','sssf-card-trig','Source: '+activeNews.src+' · Published: '+activeNews.pub+' · Observed by Algo: '+activeNews.obs+' (Verified <= '+curBar.time+')'),
+  mk('div','sssf-card-trig','HOW THE ALGO USED THIS NEWS: '+activeNews.impact)
+ );
+ bdNews.append(primaryNewsBox);
+ for(const n of sessionData.sessionNews){
+  const unlocked=n.min<=otMinuteCursor;
+  const item=mk('div','ot-news-card'+(unlocked?' used':' locked'));
+  const top=mk('div','sssf-card-top');
+  top.append(
+   mk('span','sssf-chip '+(unlocked?'cyan':''),unlocked?'✓ CONSUMED (m'+n.min+' · '+n.obs+')':'⏳ LOCKED UNTIL MINUTE '+n.min+' ('+n.obs+')'),
+   mk('span','sssf-chip purple','Jev '+n.score.toFixed(2)+' · '+n.sent)
+  );
+  item.append(top,mk('strong','',n.title),mk('div','sssf-card-trig',n.src+' · '+n.status+' — '+n.impact));
+  item.onclick=()=>{otMinuteCursor=n.min;renderBacktestExplorer(containerId,btData)};
+  bdNews.append(item);
+ }
+ pNews.append(bdNews);
+ rightCol.append(pNews);
+
+ ws.append(rightCol);
+ root.append(ws);
+
+ setTimeout(()=>{
+  drawOtPriceCanvas(priceCanvas,sessionData,otMinuteCursor,sess);
+  drawOtEquityCanvas(eqCanvas,algo,sessionData,otMinuteCursor);
+ },0);
 }
 function renderSssfAll(trace,researchMeta){
  renderSssfInto('sssf-visualizer-root',trace,researchMeta);

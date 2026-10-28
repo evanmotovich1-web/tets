@@ -70,6 +70,8 @@ def locate_harness2_repo() -> Path:
     if env_root:
         candidates.append(Path(env_root).expanduser())
     candidates.extend([
+        SCRIPTS,
+        ROOT,
         DEFAULT_HARNESS2_REPO,
         HARNESS2_STATE / 'repo',
     ])

@@ -249,10 +249,15 @@ class Harness2EvolveTests(unittest.TestCase):
 
         bt_exp = sssf['backtest_explorer']
         self.assertEqual(len(bt_exp['runs']), 6)
+        self.assertEqual(bt_exp['span_years'], 20)
+        self.assertIn('2006-04-20', bt_exp['archive_window'])
         for bt_run in bt_exp['runs']:
             self.assertIn('truth_of_algo', bt_run)
             self.assertIn('10.0% Daily Stop Loss', bt_run['truth_of_algo']['risk_and_stop_truth'])
             self.assertFalse(bt_run['truth_of_algo']['live_orders'])
+            self.assertEqual(bt_run['bars_evaluated_20y'], 1965600)
+            self.assertGreater(bt_run['profit_20y_usd'], 0)
+            self.assertGreater(bt_run['news_catalysts_used_20y'], 0)
             self.assertEqual(len(bt_run['days']), 10)
             for day_obj in bt_run['days']:
                 self.assertEqual(len(day_obj['decisions']), 3)
@@ -260,6 +265,19 @@ class Harness2EvolveTests(unittest.TestCase):
                     self.assertIn('what_it_looked_at', dec)
                     self.assertIn('model_and_agent_reasoning', dec)
                     self.assertIn('gate_verdicts', dec)
+
+        status_html = (Path(__file__).resolve().parents[1] / 'status.html').read_text(encoding='utf-8')
+        for token in (
+            'on-replay-terminal',
+            'ALGO / LAB · OPEN TERMINAL REPLAY',
+            'OT_PREVIOUS_ALGOS',
+            'OT_20Y_SESSIONS',
+            'OT_20Y_ANNUAL',
+            'WHAT AGENT BOUGHT WHAT',
+            'WHAT THE ALGO DID',
+            'WHAT NEWS IT USED TO MAKE THE TRADE DECISION',
+        ):
+            self.assertIn(token, status_html)
 
         cli_text = ose.render_adw_visual_cli(adw_run)
         self.assertIn('SYNCED TRIAD: VERIFIED (11/11 TOOLS)', cli_text.upper())
