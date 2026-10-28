@@ -2023,6 +2023,92 @@ def _sync_adw_state_quietly(output_dir: Path = HARNESS2_STATE, symbol: str = 'SP
     return adw_run
 
 
+def _connect_provider_and_pick_model_interactive(
+    p_token: str,
+    *,
+    roster_path: Path,
+    keys_path: Path,
+    output_dir: Path,
+    target_agent_override: str | None = None,
+) -> bool:
+    """Hermes-style 3-step interactive connector: 1) Subscription or API Key -> 2) Pick Model -> 3) Assign Agent(s)."""
+    import options_short_engine
+    cat_map = {str(p['num']): p for p in options_short_engine.PROVIDER_CATALOG}
+    for p in options_short_engine.PROVIDER_CATALOG:
+        cat_map[p['provider']] = p
+        for al in p['aliases']:
+            cat_map[al] = p
+
+    cat_entry = cat_map.get(p_token.strip().lower())
+    if not cat_entry:
+        print(f"  [!] Unknown provider '{p_token}'. Choose 1-7 (OpenAI/Codex, Grok, DeepSeek, GLM, OpenRouter, Gemini, Local).")
+        return False
+
+    prov = cat_entry['provider']
+    label = cat_entry['label']
+    preset_models = cat_entry['models']
+
+    print(f"\n┌── CONNECTING [{cat_entry['num']}] {label.upper()} ──────────────────────────────────────────────────────────")
+    if prov == 'local':
+        saved = options_short_engine.save_provider_connection(prov, 'subscription', keys_path=keys_path)
+        print(f"│ ✓ Connected Local endpoint ({cat_entry['endpoint']}) -> {saved['masked_status']}")
+    else:
+        print("│ How do you want to connect this provider?")
+        print("│   [1] Connect Subscription (1-click signed-in ChatGPT/Codex/SuperGrok/Gemini subscription — no API key needed)")
+        print("│   [2] Paste API Key (saved privately with 0600 permissions)")
+        print("│   [S] Keep existing connection status")
+        auth_mode = input("│ Select [1/2/S, Enter = 1 (Subscription)]: ").strip().lower() or '1'
+        if auth_mode == '1' or auth_mode.startswith('sub'):
+            saved = options_short_engine.save_provider_connection(prov, 'subscription', keys_path=keys_path)
+            print(f"│ ✓ Connected {label} via Subscription -> {saved['masked_status']}")
+        elif auth_mode == '2':
+            k_val = input(f"│ Paste your {label} API Key: ").strip()
+            if k_val:
+                saved = options_short_engine.save_provider_connection(prov, k_val, keys_path=keys_path)
+                print(f"│ ✓ Saved {label} API Key -> {saved['masked_status']}")
+        elif auth_mode not in ('s', 'skip'):
+            # User pasted the key directly at the prompt
+            saved = options_short_engine.save_provider_connection(prov, auth_mode, keys_path=keys_path)
+            print(f"│ ✓ Saved {label} -> {saved['masked_status']}")
+
+    print(f"│\n│ Pick which {label} model to use:")
+    for idx_m, m_id in enumerate(preset_models, start=1):
+        default_tag = " (recommended default)" if idx_m == 1 else ""
+        print(f"│   [{idx_m}] {m_id}{default_tag}")
+    m_in = input(f"│ Select model [1-{len(preset_models)} or type custom model ID, Enter = 1 ({preset_models[0]})]: ").strip()
+    if not m_in:
+        chosen_model = preset_models[0]
+    elif m_in.isdigit() and 1 <= int(m_in) <= len(preset_models):
+        chosen_model = preset_models[int(m_in) - 1]
+    else:
+        chosen_model = m_in
+
+    if target_agent_override:
+        target_agent = target_agent_override
+    else:
+        print(f"│\n│ Which Trading Agent(s) should run {prov}:{chosen_model}?")
+        print("│   [A] All Trading Agents (Price Structure + Theta/Options + Scout + Risk + Fleet) [default]")
+        print("│   [1] 01 · stage_0_jev_router          (0.4s Catalyst & Injection Filter)")
+        print("│   [2] 02 · phase_1_scout_recon         (Regime, 0.1% Liquidity & Maverick-MCP)")
+        print("│   [3] 03 · trader_price_structure      (Long/Short Equity + Long Call/Put · 1D & 1W)")
+        print("│   [4] 04 · trader_theta_mean_reversion (Short Call & 100% Cash-Secured Short Put · 1D & 1W)")
+        print("│   [5] 05 · phase_3_risk_auditor        (10.0% Daily Stop Loss & Non-Live Gate)")
+        print("│   [6] 06 · phase_4_fleet_dispatcher    (12-Account Shadow Fleet & Robinhood/Paper Dispatch)")
+        target_agent = input("│ Select [A or 1-6, Enter = A]: ").strip() or 'traders'
+        if target_agent.lower() == 'a':
+            target_agent = 'traders'
+
+    options_short_engine.configure_sticky_models(
+        state_path=roster_path,
+        provider=prov,
+        model=chosen_model,
+        agent_id=target_agent,
+    )
+    _sync_adw_state_quietly(output_dir=output_dir)
+    print(f"└── ✓ Assigned {prov}:{chosen_model} -> Agent(s): {target_agent}\n")
+    return True
+
+
 def run_model_cli(
     *,
     positional: list[str] | None = None,
@@ -2033,6 +2119,7 @@ def run_model_cli(
     assignments: list[str] | None = None,
     reset: bool = False,
     as_json: bool = False,
+    install_wizard: bool = False,
 ) -> dict[str, Any]:
     """Run the `algo model` terminal selector: view/pick each Agentic Trader's model and connect Subscriptions/API keys."""
     import options_short_engine
@@ -2044,6 +2131,7 @@ def run_model_cli(
 
     # Handle positional shortcuts:
     # - `algo model reset`
+    # - `algo model wizard` / `algo model install`
     # - `algo model key <provider> <api_key_or_subscription>`
     # - `algo model <agent_num_or_name> <provider> [model]`
     # - `algo model <provider> [model]`
@@ -2051,6 +2139,9 @@ def run_model_cli(
         first = pos[0].lower()
         if first == 'reset':
             reset = True
+        elif first in ('wizard', 'install-wizard', 'setup'):
+            install_wizard = True
+            pos = []
         elif first in ('key', 'keys', 'connect', 'api'):
             if len(pos) >= 3:
                 options_short_engine.save_provider_connection(pos[1], pos[2], keys_path=keys_path)
@@ -2090,76 +2181,65 @@ def run_model_cli(
 
     print(options_short_engine.render_model_and_keys_cli(roster, conns))
 
-    # Interactive menu when invoked directly as `algo model` in a terminal without one-shot arguments
+    # Interactive Hermes-style wizard when invoked in a terminal (`sh install.sh` or `algo model`)
     if not pos and not provider and not model and not assignments and not reset and sys.stdin.isatty():
         try:
-            choice = input(
-                "\nSelect [1-6] Choose Agent | [A] All Trading Agents | [K] Connect API Key/Subscription | [R] Reset | [Enter] Done: "
-            ).strip()
-        except EOFError:
-            choice = ''
-        if choice.lower() == 'r':
-            options_short_engine.configure_sticky_models(state_path=roster_path, reset=True)
-            _sync_adw_state_quietly(output_dir=output_dir)
-            print("\n[OK] Reset all Agentic Traders to default non-Anthropic models:\n")
-            print(options_short_engine.render_model_and_keys_cli())
-        elif choice.lower() == 'k':
-            try:
-                p_choice = input(
-                    "Choose Provider to Connect [1=OpenAI/Codex, 2=Grok/xAI, 3=DeepSeek, 4=GLM, 5=OpenRouter, 6=Gemini]: "
-                ).strip()
-                if p_choice:
-                    k_val = input(
-                        "Paste API Key (or type 'subscription' for signed-in subscription, or 'clear' to remove): "
-                    ).strip()
-                    if k_val:
-                        saved = options_short_engine.save_provider_connection(p_choice, k_val, keys_path=keys_path)
-                        _sync_adw_state_quietly(output_dir=output_dir)
-                        print(f"\n[OK] Connected {saved['provider']} -> {saved['masked_status']}\n")
-                        print(options_short_engine.render_model_and_keys_cli())
-            except EOFError:
-                pass
-        elif choice.lower() in ('1', '2', '3', '4', '5', '6', 'a', 'all', 'traders'):
-            try:
-                p_choice = input(
-                    "Choose Provider [1=OpenAI/Codex, 2=Grok/xAI, 3=DeepSeek, 4=GLM, 5=OpenRouter, 6=Gemini, 7=Local]: "
-                ).strip()
-                if p_choice:
-                    cat_map = {str(p['num']): p for p in options_short_engine.PROVIDER_CATALOG}
-                    for p in options_short_engine.PROVIDER_CATALOG:
-                        cat_map[p['provider']] = p
-                        for al in p['aliases']:
-                            cat_map[al] = p
-                    cat_entry = cat_map.get(p_choice.lower())
-                    if cat_entry:
-                        preset_models = cat_entry['models']
-                        preset_str = "  ".join(f"[{i}] {m}" for i, m in enumerate(preset_models, start=1))
-                        print(f"Available {cat_entry['provider']} models: {preset_str}")
-                        m_choice = input(
-                            f"Choose Model [1-{len(preset_models)} or type model name, Enter for {preset_models[0]}]: "
-                        ).strip()
-                        if not m_choice:
-                            chosen_model = preset_models[0]
-                        elif m_choice.isdigit() and 1 <= int(m_choice) <= len(preset_models):
-                            chosen_model = preset_models[int(m_choice) - 1]
-                        else:
-                            chosen_model = m_choice
-                        chosen_prov = cat_entry['provider']
-                    else:
-                        chosen_prov = p_choice
-                        chosen_model = input("Enter Model ID: ").strip() or None
+            if install_wizard:
+                print("\n╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗")
+                print("║  HERMES-STYLE AI MODEL & SUBSCRIPTION INSTALL WIZARD · CONNECT MODELS & SUBSCRIPTIONS FOR YOUR 6 TRADING AGENTS  ║")
+                print("╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝")
+                want = input("Do you want to connect an AI model or subscription in the terminal now? [Y/n, Enter = Yes]: ").strip().lower()
+                if want in ('n', 'no', 'skip', 'q'):
+                    return {'roster': options_short_engine.load_sticky_model_roster(roster_path), 'provider_connections': options_short_engine.load_provider_connections(keys_path)}
 
-                    options_short_engine.configure_sticky_models(
-                        state_path=roster_path,
-                        provider=chosen_prov,
-                        model=chosen_model,
-                        agent_id=choice,
-                    )
+            while True:
+                print("\nChoose AI Provider / Subscription to Connect (or Agent Seat):")
+                print("  [1] OpenAI / Codex      (ChatGPT Plus/Pro/Team Subscription or API Key)  -> gpt-5.4, gpt-5.3-codex, o3-pro")
+                print("  [2] Grok (xAI)          (SuperGrok Subscription or XAI_API_KEY)          -> grok-4, grok-4-fast, grok-3-mini")
+                print("  [3] DeepSeek            (DeepSeek API Key)                               -> deepseek-r1, deepseek-chat")
+                print("  [4] GLM (Zhipu AI)      (GLM API Key)                                    -> glm-5, glm-4-plus")
+                print("  [5] OpenRouter          (OpenRouter Multi-Model API Key)                 -> kimi-k2.7-code, deepseek-v4.1-flash")
+                print("  [6] Google Gemini       (Gemini Subscription or GEMINI_API_KEY)          -> gemini-2.5-pro, gemini-2.5-flash")
+                print("  [7] Local (Free)        (Ollama / vLLM on localhost:11434 — No key)      -> qwen3-coder-30b, deepseek-r1-distill")
+                print("  [A] Pick by Agent Seat  (Assign different models to Agent 1..6)")
+                print("  [R] Reset All Models    (Restore default non-Anthropic stack)")
+                print("  [Enter] Done & Continue")
+
+                choice = input("\nPress [1-7] to connect provider/subscription (or comma-separated like 1,2,5) | [A] Agent | [R] Reset | [Enter] Done: ").strip()
+                if not choice or choice.lower() in ('q', 'done', 'exit', 'n', 'no'):
+                    break
+                if choice.lower() == 'r':
+                    options_short_engine.configure_sticky_models(state_path=roster_path, reset=True)
                     _sync_adw_state_quietly(output_dir=output_dir)
-                    print(f"\n[OK] Saved sticky model {chosen_prov}:{chosen_model} for agent '{choice}':\n")
+                    print("\n[OK] Reset all Agentic Traders to default non-Anthropic models:\n")
                     print(options_short_engine.render_model_and_keys_cli())
-            except EOFError:
-                pass
+                    continue
+                if choice.lower() == 'a':
+                    ag_num = input("Choose Agent Seat [1=Jev Router, 2=Scout, 3=Price Trader, 4=Theta Trader, 5=Risk, 6=Fleet, A=All]: ").strip() or 'traders'
+                    p_pick = input("Choose Provider for this Agent [1=OpenAI/Codex, 2=Grok, 3=DeepSeek, 4=GLM, 5=OpenRouter, 6=Gemini, 7=Local]: ").strip() or '1'
+                    _connect_provider_and_pick_model_interactive(
+                        p_pick,
+                        roster_path=roster_path,
+                        keys_path=keys_path,
+                        output_dir=output_dir,
+                        target_agent_override=ag_num,
+                    )
+                else:
+                    tokens = [t.strip() for t in choice.split(',') if t.strip()]
+                    for tok in tokens:
+                        _connect_provider_and_pick_model_interactive(
+                            tok,
+                            roster_path=roster_path,
+                            keys_path=keys_path,
+                            output_dir=output_dir,
+                        )
+
+                print(options_short_engine.render_model_and_keys_cli())
+                again = input("\nConnect another AI model or subscription? [y/N, Enter = Done]: ").strip().lower()
+                if again not in ('y', 'yes'):
+                    break
+        except EOFError:
+            pass
 
     return {'roster': options_short_engine.load_sticky_model_roster(roster_path), 'provider_connections': options_short_engine.load_provider_connections(keys_path)}
 

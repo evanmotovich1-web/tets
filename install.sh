@@ -20,4 +20,7 @@ else
   (cd "$TARGET_DIR" && git pull --rebase origin main || true)
 fi
 cd "$TARGET_DIR"
+if [ ! -t 0 ] && [ -c /dev/tty ]; then
+  exec sh "$TARGET_DIR/scripts/install" "$@" < /dev/tty
+fi
 exec sh "$TARGET_DIR/scripts/install" "$@"

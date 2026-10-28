@@ -26,6 +26,9 @@ fi
 "$ALGO_VENV/bin/python" "$ALGO_ROOT/scripts/paper.py" prepare
 "$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python" -c 'import yfinance,numpy,pandas,backtesting'
 sh "$ALGO_ROOT/tets" setup
+if [ -t 0 ] && [ "${TETS_NO_MODEL_WIZARD:-0}" != 1 ]; then
+  "$ALGO_VENV/bin/python" "$ALGO_ROOT/scripts/harness2_evolve.py" model wizard || true
+fi
 "$ALGO_VENV/bin/python" "$ALGO_ROOT/scripts/harness2_evolve.py" visual >/dev/null 2>&1 || true
 mkdir -p "$HOME/.local/bin" 2>/dev/null || true
 if [ -d "$HOME/.local/bin" ]; then
