@@ -32,7 +32,7 @@ fi
 CMD="$1"
 shift
 case "$CMD" in
-  start|dashboard|connect|setup|news)
+  start|dashboard|connect|alpaca|setup|news)
     RUNNER_PY="$PY_BIN"
     if [ -x "$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python" ]; then
       RUNNER_PY="$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python"

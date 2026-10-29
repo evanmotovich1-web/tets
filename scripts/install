@@ -15,6 +15,9 @@ ALGO_VENV="$ALGO_ROOT/desk/backtest/.venv"
 [ ! -L "$ALGO_VENV" ] || { echo 'Existing Python symlink refused.' >&2; exit 2; }
 if [ ! -e "$ALGO_VENV" ]; then uv venv --python 3.14 "$ALGO_VENV"; fi
 "$ALGO_VENV/bin/python" -c 'import sys;assert sys.version_info[:2]==(3,14)'
+if [ "$ALGO_PLATFORM:$ALGO_ARCH" = Darwin:x86_64 ] || [ "$TETS_PROFILE" = mac2017 ]; then
+  echo "Detected Intel Mac (x86_64 / $TETS_PROFILE profile): configuring 2017 Intel Mac native wheels & bounded memory limits."
+fi
 if [ "$ALGO_PLATFORM:$ALGO_ARCH" = Darwin:x86_64 ]; then
   uv pip sync --python "$ALGO_VENV/bin/python" --python-platform x86_64-apple-darwin --reinstall "$ALGO_ROOT/desk/requirements.lock"
 else

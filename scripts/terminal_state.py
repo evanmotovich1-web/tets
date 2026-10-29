@@ -134,9 +134,9 @@ def save_broker(value):
 def alpaca_paper():
     cred_path = STATE / 'paper/credentials.json'
     has_keys = False
-    key_hint = 'PK••••PAPER'
+    key_hint = None
     try:
-        if cred_path.is_file() and not cred_path.is_symlink():
+        if cred_path.is_file() and not cred_path.is_symlink() and not (cred_path.stat().st_mode & 0o077):
             raw = json.loads(cred_path.read_text())
             if isinstance(raw, dict) and raw.get('api_key') and raw.get('secret_key'):
                 has_keys = True
@@ -144,19 +144,27 @@ def alpaca_paper():
                 key_hint = (k[:4] + '••••' + k[-2:]) if len(k) >= 6 else 'PK••••'
     except (OSError, ValueError):
         pass
-    saved = read(STATE / 'harness2/alpaca_paper_state.json') or {}
+    conn = read(STATE / 'tets/paper-connection.json') or (read(STATE / 'tets/connections.json') or {}).get('alpaca_paper') or {}
+    act = read(STATE / 'tets/activity.json') or {}
+    acct = act.get('account') if isinstance(act.get('account'), dict) else {}
+    perf = act.get('performance') if isinstance(act.get('performance'), dict) else {}
+    cfg = read(STATE / 'tets/config.json') or {}
+    state = conn.get('state') if has_keys else 'not_connected'
+    if has_keys and not state:
+        state = 'connected' if acct else 'keys_saved'
     return dict(
-        state='connected',
+        state=state or 'not_connected',
+        mode=cfg.get('mode') or 'shadow',
         broker='alpaca_paper',
         endpoint='https://paper-api.alpaca.markets',
         data_endpoint='https://data.alpaca.markets',
         has_api_keys=has_keys,
         key_hint=key_hint,
-        account_id=str(saved.get('account_id') or 'PA38910482-PAPER'),
-        equity_usd=float(saved.get('equity_usd') or 100342.80),
-        cash_usd=float(saved.get('cash_usd') or 81490.20),
-        buying_power_usd=float(saved.get('buying_power_usd') or 162980.40),
-        today_pnl_usd=float(saved.get('today_pnl_usd') or 342.80),
+        checked_at=conn.get('checked_at'),
+        equity_usd=acct.get('equity') or conn.get('equity'),
+        cash_usd=acct.get('cash') or conn.get('cash'),
+        buying_power_usd=acct.get('buying_power') or conn.get('buying_power'),
+        today_pnl_usd=perf.get('strategy_price_pnl_usd'),
         live_orders=False,
     )
 
@@ -166,32 +174,41 @@ def save_alpaca_paper(value):
         raise ValueError('Expected Alpaca paper settings')
     api_key = str(value.get('api_key') or '').strip()
     secret_key = str(value.get('secret_key') or '').strip()
+    mode = value.get('mode')
+    if mode is not None and mode not in ('shadow', 'paper'):
+        raise ValueError('Mode must be shadow or paper')
+    if not api_key and not secret_key and mode is None:
+        raise ValueError('Provide Alpaca paper API keys or mode')
     with MODEL_LOCK:
-        if api_key and secret_key:
-            if len(api_key) > 160 or len(secret_key) > 160:
-                raise ValueError('Invalid Alpaca paper key length')
+        if api_key or secret_key:
+            if not (api_key and secret_key):
+                raise ValueError('Both Alpaca paper API key and secret key are required')
+            if len(api_key) > 160 or len(secret_key) > 160 or any(ord(c) < 33 for c in api_key + secret_key):
+                raise ValueError('Invalid Alpaca paper key format')
             cred_path = STATE / 'paper/credentials.json'
             cred_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
             if cred_path.is_symlink():
                 raise ValueError('Invalid credentials file')
-            fd = os.open(cred_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+            tmp_path = cred_path.with_suffix('.tmp')
+            fd = os.open(tmp_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
             with os.fdopen(fd, 'w') as stream:
                 json.dump({'api_key': api_key, 'secret_key': secret_key}, stream, indent=2)
                 stream.write('\n')
-        state_path = STATE / 'harness2/alpaca_paper_state.json'
-        state_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-        cur = read(state_path) or {}
-        if 'account_id' in value and str(value['account_id']).strip():
-            cur['account_id'] = str(value['account_id']).strip()[:64]
-        if 'equity_usd' in value:
-            cur['equity_usd'] = max(100.0, min(10000000.0, float(value['equity_usd'])))
-        if 'cash_usd' in value:
-            cur['cash_usd'] = max(0.0, min(10000000.0, float(value['cash_usd'])))
-        if 'buying_power_usd' in value:
-            cur['buying_power_usd'] = max(0.0, min(20000000.0, float(value['buying_power_usd'])))
-        if 'today_pnl_usd' in value:
-            cur['today_pnl_usd'] = float(value['today_pnl_usd'])
-        state_path.write_text(json.dumps(cur, indent=2) + '\n')
+            tmp_path.replace(cred_path)
+            try:
+                import runner
+                conn = runner.check_paper({'api_key': api_key, 'secret_key': secret_key})
+                conn_path = STATE / 'tets/paper-connection.json'
+                conn_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+                conn_path.write_text(json.dumps(conn, indent=2) + '\n')
+            except Exception:
+                pass
+        if mode in ('shadow', 'paper'):
+            cfg_path = STATE / 'tets/config.json'
+            cfg_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+            cur_cfg = read(cfg_path) or {'mode': 'shadow', 'watchlist': ['SPY', 'AAPL', 'MSFT'], 'news_sources': ['yahoo_finance', 'yahoo_finance_rss', 'bbc_business_rss', 'alpaca_news_when_connected']}
+            cur_cfg['mode'] = mode
+            cfg_path.write_text(json.dumps(cur_cfg, indent=2) + '\n')
     return alpaca_paper()
 
 

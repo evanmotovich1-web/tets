@@ -95,6 +95,8 @@ def setup():
         symbols = shadow.watchlist(symbols, profile['symbol'])
     shadow.save(CONFIG,dict(mode=mode,watchlist=symbols,news_sources=['yahoo_finance','yahoo_finance_rss','bbc_business_rss','alpaca_news_when_connected']))
     if mode == 'paper': connect()
+    elif sys.stdin.isatty() and os.environ.get('TETS_NO_ALPACA_WIZARD') != '1' and not paper.credentials():
+        connect()
     print(f'Saved {mode} mode. Yahoo prices/news need no API key. Alpaca news reuses local paper keys when available.')
 
 
@@ -109,7 +111,11 @@ def check_paper(creds=None, opener=urlopen):
             if len(raw)>65536: raise ValueError('oversized_account')
             account=json.loads(raw)
         if account.get('status')!='ACTIVE': return dict(source='alpaca_paper',state='account_not_active',live_orders=False)
-        return dict(source='alpaca_paper',state='connected',live_orders=False,checked_at=stamp())
+        res = dict(source='alpaca_paper',state='connected',live_orders=False,checked_at=stamp())
+        for k in ('equity','cash','buying_power'):
+            if account.get(k) is not None:
+                res[k] = str(account.get(k))
+        return res
     except Exception as error:
         return dict(source='alpaca_paper',state='unavailable',error_type=type(error).__name__,live_orders=False)
 
@@ -284,19 +290,11 @@ def start(seconds, open_browser=True):
                             started_at=stamp(),run_dir=str(run_dir),url=f'http://127.0.0.1:{port}',live_orders=False))
                 url=f'http://127.0.0.1:{port}'
                 ap=terminal_state.alpaca_paper()
+                ap_state=ap.get('state','not_connected')
+                eq_str=f"${ap['equity_usd']:,.2f}" if ap.get('equity_usd') is not None else 'not connected'
+                cash_str=f"${ap['cash_usd']:,.2f}" if ap.get('cash_usd') is not None else 'not connected'
                 print(f'Tets {mode}: {url}\nLogs: {STATE}/algo.log\nCtrl-C stops this test run.',flush=True)
-                print(f'╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗',flush=True)
-                print(f'║ 🟢 LIVE PAPER ACCOUNT & ALGO SYSTEM ACTIVE · {url:<54} ║',flush=True)
-                print(f'║ 🦙 ALPACA PAPER ({ap["endpoint"]}) · Account {ap["account_id"]} · Equity ${ap["equity_usd"]:,.2f} · Cash ${ap["cash_usd"]:,.2f} ║',flush=True)
-                print(f'║ 📰 NEWS SYSTEM: Yahoo Finance + RSS + Alpaca News -> Stage 0 Jev Router (0.4s Catalyst Filter)      ║',flush=True)
-                print(f'║ 📊 LIVE ALGO DECISIONS (BUY / HOLD / SELL) & PLACED PAPER STOCK ORDERS STREAMING BELOW:             ║',flush=True)
-                print(f'╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝',flush=True)
-                print(f'  [09:35:00 ET] [NEWS · JEV 0.96] Core CPI Disinflation +0.2% MoM & Semi CapEx Beat -> BULLISH_BUY',flush=True)
-                print(f'  [09:48:00 ET] [BUY  · ORDER PLACED] SPY  · Bought 15 sh @ $528.90 ($7,933.50) · Alpaca/Shadow Paper FILLED -> Now $530.50 (+$24.00)',flush=True)
-                print(f'  [09:52:00 ET] [BUY  · ORDER PLACED] NVDA · Bought 40 sh @ $124.20 ($4,968.00) · Alpaca/Shadow Paper FILLED -> Now $126.90 (+$108.00)',flush=True)
-                print(f'  [10:15:00 ET] [HOLD · POSITION HELD] AAPL · Holding 25 sh @ $226.40 ($5,660.00) · Above VWAP $227.10 -> Now $228.40 (+$50.00)',flush=True)
-                print(f'  [10:35:00 ET] [BUY  · ORDER PLACED] META · Bought  8 sh @ $510.20 ($4,081.60) · Alpaca/Shadow Paper FILLED -> Now $516.80 (+$52.80)',flush=True)
-                print(f'  [11:45:00 ET] [SELL · ORDER PLACED] TSLA · Sold   20 sh @ $248.60 ($4,972.00) · Alpaca/Shadow Paper FILLED -> Realized +$74.00',flush=True)
+                print(f'Alpaca Paper ({ap.get("endpoint","https://paper-api.alpaca.markets")}): state={ap_state} · equity={eq_str} · cash={cash_str}',flush=True)
                 if open_browser: webbrowser.open(url)
                 deadline=time.monotonic()+seconds
                 seen_events=set()
@@ -344,7 +342,7 @@ def self_test():
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('action',choices=['setup','connect','doctor','news','start','dashboard','status','self-test','verify-hardware','evolve','adw','visual','model','models','keys','tests','test'])
+    p.add_argument('action',choices=['setup','connect','alpaca','doctor','news','start','dashboard','status','self-test','verify-hardware','evolve','adw','visual','model','models','keys','tests','test'])
     p.add_argument('positional',nargs='*')
     p.add_argument('--seconds',type=int,default=28800)
     p.add_argument('--no-open',action='store_true')
@@ -359,7 +357,7 @@ def main():
     args=p.parse_args()
     if not 1<=args.seconds<=28800: p.error('seconds must be between 1 and 28800')
     if args.action=='setup':setup()
-    elif args.action=='connect':connect()
+    elif args.action in ('connect','alpaca'):connect()
     elif args.action=='doctor':doctor(not args.offline)
     elif args.action=='news':print(json.dumps(collect_news(),indent=2))
     elif args.action=='start':start(args.seconds,not args.no_open and os.environ.get('TETS_NO_OPEN')!='1')

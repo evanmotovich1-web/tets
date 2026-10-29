@@ -236,10 +236,10 @@ body.on-replay-terminal #backtest-explorer-root{margin:0!important;border:0!impo
 .ot-table td{padding:8px 11px;border-bottom:1px solid #141e29;color:#e0e9f1}
 .ot-table tbody tr{cursor:pointer}
 .ot-table tbody tr:hover,.ot-table tbody tr.active-tr{background:#112428}
-</style></head><body class="on-home"><div class="app-shell"><div class="app-content"><header class="app-chrome"><a class="brand" id="brand-home" href="#home" aria-label="Evan Algo home">Evan Algo</a><div class="chrome-actions"><button id="open-paper-btn" class="rh-top-btn" type="button" style="border-color:#55e6c1;color:#55e6c1">🦙 Open Live Paper Account ($100,342.80 · BUY/HOLD/SELL Live)</button><button id="robinhood-connect-btn" class="rh-top-btn" type="button">📝 Paper (Shadow Live) · 🪶 Connect Robinhood Real Money</button><button id="adw-tab" type="button">Trade Workflow (ADW)</button><button id="back-action" hidden type="button">← Back</button><button id="home-tab" hidden type="button">Home</button></div></header><div id="robinhood-drawer" class="rh-drawer sssf-wrap" hidden></div><div class="view-heading" id="view-heading" hidden><h1 id="view-title">Home</h1><span id="mode" class="tag" hidden>Connecting</span></div>
-<div id="home-intro"><p>Pitch-black TradingView Live Market (Paper Shadow Live &amp; Robinhood Real Money), ADW Trade Workflow Builder, and 20-Year OpenTerminal Backtest Replay.</p></div><p id="health" role="status" hidden>Connecting to your market feed…</p>
+</style></head><body class="on-home"><div class="app-shell"><div class="app-content"><header class="app-chrome"><a class="brand" id="brand-home" href="#home" aria-label="Evan Algo home">Evan Algo</a><div class="chrome-actions"><button id="open-paper-btn" class="rh-top-btn" type="button" style="border-color:#55e6c1;color:#55e6c1">🦙 Alpaca Paper Account (Not connected)</button><button id="adw-tab" type="button">Trade Workflow (ADW)</button><button id="back-action" hidden type="button">← Back</button><button id="home-tab" hidden type="button">Home</button></div></header><div class="view-heading" id="view-heading" hidden><h1 id="view-title">Home</h1><span id="mode" class="tag" hidden>Connecting</span></div>
+<div id="home-intro"><p>Pitch-black TradingView Live Market (Alpaca Paper Account &amp; Yahoo Shadow Mode), ADW Trade Workflow Builder, and 20-Year OpenTerminal Backtest Replay.</p></div><p id="health" role="status" hidden>Connecting to your market feed…</p>
 <div id="live-overview" class="overview" hidden><div><small>WORKSPACE</small><strong>Live market</strong><span>Observed Yahoo data</span></div><div><small>TOTAL VIRTUAL EQUITY</small><strong id="overview-equity">—</strong><span>Assumed fills, no broker</span></div><div><small>COMPANIES WATCHED</small><strong id="overview-companies">—</strong><span>Your active watchlist</span></div><div><small>SELECTED LAST SIGNAL</small><strong id="overview-signal">—</strong><span>A rule check, not a forecast</span></div></div>
-<main id="home-panel" class="home-page" aria-label="Evan Algo home"><div class="home-hero"><p class="eyebrow">PITCH-BLACK TRADINGVIEW &amp; ADW ALGO SYSTEM</p><h1>Evan <span>Algo</span></h1><p class="home-tagline">Live TradingView.<br>ADW Algo Workflows.</p><p class="home-description">Run live in Paper Shadow Mode (with 4:00 PM ET daily earnings &amp; review) or connect Robinhood Real Money to the 6-agent algo system.</p><p class="home-next">Select a terminal workspace:</p></div><div class="home-choices" aria-label="Choose a workspace"><button id="home-live" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 3 8-10M15 5h5v5"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Live Market (TradingView)</strong><span class="card-description">Pitch-black TradingView chart, Paper vs. Robinhood Real Money, 4:00 PM daily earnings review, incoming news wire &amp; live 6-agent algo stream.</span><span class="card-action">Open TradingView Live <span aria-hidden="true">→</span></span></button><button id="home-adw" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h14"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Trade Workflow (ADW)</strong><span class="card-description">True ADW terminal: configure Model + Thinking Level per agent, Set System Prompt + User Prompt, and generate new Algo Workflows live.</span><span class="card-action">Open ADW Workflow <span aria-hidden="true">→</span></span></button><button id="home-research" class="home-card" type="button" style="display:none"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20V10h4v10M10 20V4h4v16M15 20v-7h4v7M3 20h18"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Research</strong><span class="card-description">Saved tests, virtual accounts and your experiment library.</span><span class="card-action">Review results <span aria-hidden="true">→</span></span></button><button id="home-replay" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 0 7M4 4v5h5M10 8l6 4-6 4z"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Backtest Replay (20Y)</strong><span class="card-description">Full-screen OpenTerminal 20-year (2006–2026) minute-by-minute replay across all 8 algos, trades, and point-in-time news.</span><span class="card-action">Open 20Y Replay <span aria-hidden="true">→</span></span></button><button id="home-models" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Models &amp; Setup</strong><span class="card-description">Connect AI model providers and configure default agent seat models &amp; risk limits.</span><span class="card-action">Open Models <span aria-hidden="true">→</span></span></button></div></main>
+<main id="home-panel" class="home-page" aria-label="Evan Algo home"><div class="home-hero"><p class="eyebrow">PITCH-BLACK TRADINGVIEW &amp; ADW ALGO SYSTEM</p><h1>Evan <span>Algo</span></h1><p class="home-tagline">Live TradingView.<br>ADW Algo Workflows.</p><p class="home-description">Run live in Yahoo Shadow Mode or connect your Alpaca Paper Account (<code>https://paper-api.alpaca.markets</code> · <code>live_orders=false</code>).</p><p class="home-next">Select a terminal workspace:</p></div><div class="home-choices" aria-label="Choose a workspace"><button id="home-live" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 3 8-10M15 5h5v5"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Live Market (TradingView)</strong><span class="card-description">Pitch-black TradingView chart, Alpaca Paper Account connection &amp; status, incoming news wire &amp; live 6-agent algo stream.</span><span class="card-action">Open TradingView Live <span aria-hidden="true">→</span></span></button><button id="home-adw" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h14"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Trade Workflow (ADW)</strong><span class="card-description">True ADW terminal: configure Model + Thinking Level per agent, Set System Prompt + User Prompt, and generate new Algo Workflows live.</span><span class="card-action">Open ADW Workflow <span aria-hidden="true">→</span></span></button><button id="home-research" class="home-card" type="button" style="display:none"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20V10h4v10M10 20V4h4v16M15 20v-7h4v7M3 20h18"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Research</strong><span class="card-description">Saved tests, virtual accounts and your experiment library.</span><span class="card-action">Review results <span aria-hidden="true">→</span></span></button><button id="home-replay" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 0 7M4 4v5h5M10 8l6 4-6 4z"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Backtest Replay (20Y)</strong><span class="card-description">Full-screen OpenTerminal 20-year (2006–2026) minute-by-minute replay across all 8 algos, trades, and point-in-time news.</span><span class="card-action">Open 20Y Replay <span aria-hidden="true">→</span></span></button><button id="home-models" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Models &amp; Setup</strong><span class="card-description">Connect AI model providers and configure default agent seat models &amp; risk limits.</span><span class="card-action">Open Models <span aria-hidden="true">→</span></span></button></div></main>
 <div id="adw-panel" class="view-page" hidden><div class="page-heading" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:10px"><div><p class="eyebrow" style="color:#4ade80;margin:0">ADW TRADE WORKFLOW ENGINE · PER-AGENT MODEL + THINKING LEVEL · SET SYSTEM PROMPT + NEW ALGO WORKFLOW GENERATOR</p></div><button id="refresh-adw" type="button" class="sssf-part-btn">↻ Sync ADW State</button></div><div id="sssf-visualizer-root" class="sssf-wrap"></div></div>
 <div id="research-panel" class="view-page" hidden><div class="page-heading"><div><p class="eyebrow">YOUR SAVED TESTS</p><p class="dim">Review saved simulations and experiments. These are past tests, separate from current market activity.</p></div><button id="refresh-research">Refresh saved results</button></div><section><div class="market-title"><h3>Latest fleet simulation</h3><span class="neutral-tag" id="research-state">Checking saved results</span></div><p id="research-basis" class="note"></p><div class="overview research-metrics"><div><small>SIMULATED P&amp;L</small><strong id="research-pnl">—</strong></div><div><small>SIMULATED ACCOUNTS</small><strong id="research-accounts">—</strong></div><div><small>RUN SAVED</small><strong class="date-value" id="research-time">—</strong></div></div><p id="research-limits" class="note"></p><div id="research-phases" class="phase-list"></div><div id="research-fleet" class="table-wrap"></div><div id="sssf-research-embed" class="sssf-wrap"></div></section><section><div class="market-title"><h3>Algo experiment library</h3><span id="library-counts" class="neutral-tag">Checking catalog</span></div><p id="library-note" class="note"></p><div id="library-table" class="table-wrap"></div></section></div>
 <div id="models-panel" class="view-page" hidden><div class="page-heading"><div><p class="eyebrow">YOUR RESEARCH SETUP</p><p class="dim">Choose which model is assigned to each research role.</p></div></div><section><div class="market-title"><h3>Research model assignments</h3><span id="models-state" class="neutral-tag">Loading</span></div><p class="note">A saved model is a configuration choice. The fleet simulation runs Python rules; its model labels do not prove AI inference. Saving does not start a model, a run or an order.</p><div id="model-roster" class="model-roster"></div><form id="model-form"><div class="form-fields"><label>Research role<select id="model-role" required></select></label><label>Provider<select id="model-provider" required></select></label><label>Model ID<input id="model-id" maxlength="140" required autocomplete="off"></label></div><button id="model-save" type="submit" class="primary">Save assignment</button><p id="model-result" role="status" class="note">Changes apply to future CLI simulations.</p></form></section><details><summary>Algo settings and limits</summary><section><dl id="settings"></dl><h2>AI ENTRY REVIEWER</h2><p id="model"></p><p id="ai-status"></p><p id="ai-reason" class="note"></p><p id="ai-budget" class="note"></p><h2>GOAL</h2><p id="goal"></p><p id="remaining" class="note"></p><p class="note">A goal is an input, not a forecast.</p><h2>LIQUIDITY / RISK</h2><p id="liquidity"></p><p id="liquidity-status" class="note"></p><p id="risk-scope" class="note"></p><p class="note">Change settings with <code>sh tets setup</code>.</p></section></details></div>
@@ -278,17 +278,17 @@ body.on-replay-terminal #backtest-explorer-root{margin:0!important;border:0!impo
   <section id="tv-daily-review-box"></section>
   <section>
    <div class="sssf-card-top" style="margin-bottom:8px">
-    <h2 style="font-size:14px;margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#4ade80">⚡ FAST MONEY &amp; ALGO EXECUTION BLOTTER (PAPER SHADOW &amp; ROBINHOOD REAL MONEY)</h2>
+    <h2 style="font-size:14px;margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#4ade80">⚡ ALGO EXECUTION BLOTTER (ALPACA PAPER &amp; YAHOO SHADOW)</h2>
     <span id="strategy" class="sssf-chip purple">—</span>
    </div>
    <div class="signal-box" style="margin:8px 0"><p id="signal-summary" role="status" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;margin:0"></p><p id="message" class="note" style="margin:4px 0 0"></p></div>
    <div class="account" style="margin:10px 0;padding:10px 12px;background:#040609;border:1px solid #1b2534;border-radius:8px">
     <div><small id="equity-label">ACTIVE ACCOUNT EQUITY</small><strong id="equity" style="color:#4ade80">—</strong><p id="portfolio-summary" class="note" style="margin:2px 0 0"></p></div>
-    <div><small id="pnl-label">TODAY'S 4:00 PM / LIVE P&amp;L</small><strong id="pnl" style="color:#55e6c1">—</strong><p id="execution" class="note" style="margin:2px 0 0"></p></div>
+    <div><small id="pnl-label">STRATEGY / VIRTUAL P&amp;L</small><strong id="pnl" style="color:#55e6c1">—</strong><p id="execution" class="note" style="margin:2px 0 0"></p></div>
    </div>
    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
     <div><h3 style="font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#9cb0c9;margin-bottom:6px">LIVE ALGO DECISIONS &amp; SIGNALS</h3><div id="events" class="scroll" style="max-height:210px"></div></div>
-    <div><h3 id="fills-label" style="font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#9cb0c9;margin-bottom:6px">FAST MONEY FILLS &amp; ORDER TICKETS</h3><div id="fills" class="scroll" style="max-height:210px"></div></div>
+    <div><h3 id="fills-label" style="font-size:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#9cb0c9;margin-bottom:6px">PAPER ORDERS &amp; VIRTUAL FILLS</h3><div id="fills" class="scroll" style="max-height:210px"></div></div>
    </div>
    <details style="margin-top:10px"><summary>Raw Diagnostics &amp; Snapshot Details</summary><p id="company-sector" class="note"></p><p id="company-snapshot" class="note"></p><pre id="checks"></pre><pre id="activity"></pre></details>
   </section>
@@ -296,8 +296,8 @@ body.on-replay-terminal #backtest-explorer-root{margin:0!important;border:0!impo
  <div class="live-col-right">
   <section>
    <div class="sssf-card-top" style="margin-bottom:8px">
-    <h2 style="font-size:13.5px;margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#4ade80">🤖 6-AGENT ALGO WORKING LIVE (FAST MONEY STREAM)</h2>
-    <span class="sssf-chip ok">● 380ms TICK</span>
+    <h2 style="font-size:13.5px;margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#4ade80">🤖 6-AGENT ALGO STATUS</h2>
+    <span class="sssf-chip ok">● NON-LIVE</span>
    </div>
    <div id="tv-agent-stream" class="tv-agent-stream-box"></div>
   </section>
@@ -307,7 +307,7 @@ body.on-replay-terminal #backtest-explorer-root{margin:0!important;border:0!impo
    <div id="news" style="max-height:420px;overflow:auto"></div>
   </section>
  </div>
-</div></main><footer class="app-footer">Paper Account runs live in Shadow Mode (4:00 PM ET daily earnings settlement) · Connect Robinhood for Real Money Algo allocation.</footer></div></div>
+</div></main><footer class="app-footer">Alpaca Paper Account (<code>https://paper-api.alpaca.markets</code>) &amp; Yahoo Shadow Mode · Live orders remain disabled (<code>live_orders=false</code>).</footer></div></div>
 <script>
 const $=id=>document.getElementById(id);
 const text=(id,value)=>{$(id).textContent=value==null?'—':String(value)};
@@ -358,500 +358,117 @@ for(const view of ['live','adw','research','models','replay'])$('home-'+view).on
 $('adw-tab').onclick=()=>switchView('adw');
 $('back-action').onclick=()=>switchView(viewHistory.pop()||'home',false);
 $('home-tab').onclick=$('brand-home').onclick=()=>{viewHistory=[];switchView('home',false);return false};
-let rhDrawerOpen=false,rhSaveStatus='',rhState={
- broker:'robinhood',
- broker_label:'Robinhood Brokerage & Options',
- execution_mode:'robinhood_paper_mirror',
- connected:true,
- account_handle:'RH-INDIV-8842',
- robinhood_login_url:'https://robinhood.com/login',
- total_account_equity_usd:25000,
- agent_tradable_pct:25,
- agent_tradable_usd:6250,
- protected_reserve_pct:75,
- protected_reserve_usd:18750,
- max_per_trade_pct_of_allocation:15,
- max_per_trade_usd:937.5,
- daily_loss_stop_pct:10,
- daily_loss_stop_usd:625,
- price_trader_split_pct:60,
- price_trader_usd:3750,
- theta_trader_split_pct:40,
- theta_trader_usd:2500
-};
-function recalcRhState(){
- const eq=Math.max(100,Math.min(10000000,Number(rhState.total_account_equity_usd)||25000));
- const pct=Math.max(1,Math.min(100,Number(rhState.agent_tradable_pct)||25));
- const maxPct=Math.max(1,Math.min(100,Number(rhState.max_per_trade_pct_of_allocation)||15));
- const stopPct=Math.max(1,Math.min(50,Number(rhState.daily_loss_stop_pct)||10));
- const pricePct=Math.max(0,Math.min(100,Number(rhState.price_trader_split_pct)??60));
- const agentUsd=Math.round(eq*(pct/100)*100)/100;
- rhState.total_account_equity_usd=eq;
- rhState.agent_tradable_pct=pct;
- rhState.agent_tradable_usd=agentUsd;
- rhState.protected_reserve_pct=Math.round((100-pct)*100)/100;
- rhState.protected_reserve_usd=Math.round((eq-agentUsd)*100)/100;
- rhState.max_per_trade_pct_of_allocation=maxPct;
- rhState.max_per_trade_usd=Math.round(Math.min(1000,agentUsd*(maxPct/100))*100)/100;
- rhState.daily_loss_stop_pct=stopPct;
- rhState.daily_loss_stop_usd=Math.round(agentUsd*(stopPct/100)*100)/100;
- rhState.price_trader_split_pct=pricePct;
- rhState.theta_trader_split_pct=Math.round((100-pricePct)*100)/100;
- rhState.price_trader_usd=Math.round(agentUsd*(pricePct/100)*100)/100;
- rhState.theta_trader_usd=Math.round((agentUsd-rhState.price_trader_usd)*100)/100;
-}
-function updateRhTopButton(){
- recalcRhState();
- const btn=$('robinhood-connect-btn');if(!btn)return;
- const isPaper=rhState.execution_mode==='paper';
- const modeBadge=isPaper?'📝 Paper Account (Shadow Live · +$342.80 at 4PM)':'🪶 Robinhood Real Money (Algo Connected · '+rhState.agent_tradable_pct+'% = '+money(rhState.agent_tradable_usd)+')';
- btn.textContent=(rhState.connected?'🟢 ':'⚪ ')+modeBadge;
-}
-async function saveRhBrokerConfig(extra={}){
- Object.assign(rhState,extra);
- recalcRhState();
- updateRhTopButton();
- rhSaveStatus='Saving Robinhood Real Money & Paper Account config…';
- renderRobinhoodDrawer();
- renderTvLiveCommand();
- try{
-  const res=await fetch('/api/broker',{
-   method:'POST',
-   headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({
-    broker:rhState.broker,
-    execution_mode:rhState.execution_mode,
-    connected:Boolean(rhState.connected),
-    account_handle:String(rhState.account_handle||'RH-INDIV-8842'),
-    total_account_equity_usd:Number(rhState.total_account_equity_usd),
-    agent_tradable_pct:Number(rhState.agent_tradable_pct),
-    max_per_trade_pct_of_allocation:Number(rhState.max_per_trade_pct_of_allocation),
-    daily_loss_stop_pct:Number(rhState.daily_loss_stop_pct),
-    price_trader_split_pct:Number(rhState.price_trader_split_pct)
-   })
-  });
-  if(res.ok){
-   const saved=await res.json();
-   Object.assign(rhState,saved);
-   rhSaveStatus='✓ Saved! '+(rhState.execution_mode==='paper'?'Paper Shadow Live Account active ($10,000 base · 4:00 PM daily earnings settlement).':'Robinhood Real Money connected to 6-Agent Algo System · Capped at '+rhState.agent_tradable_pct+'% ('+money(rhState.agent_tradable_usd)+') · '+money(rhState.protected_reserve_usd)+' Reserve locked.');
-  }else{
-   rhSaveStatus='✓ Applied ('+rhState.agent_tradable_pct+'% = '+money(rhState.agent_tradable_usd)+' tradable).';
-  }
- }catch{
-  rhSaveStatus='✓ Applied ('+rhState.agent_tradable_pct+'% = '+money(rhState.agent_tradable_usd)+' tradable).';
- }
- updateRhTopButton();
- renderRobinhoodDrawer();
- renderTvLiveCommand();
-}
-function renderRobinhoodDrawer(){
- const drawer=$('robinhood-drawer');if(!drawer)return;
- drawer.hidden=!rhDrawerOpen;
- if(!rhDrawerOpen)return;
- recalcRhState();
- drawer.replaceChildren();
- const topRow=mk('div','sssf-topbar');
- const titleLeft=mk('div','');
- titleLeft.append(
-  mk('div','sssf-card-title','🪶 ROBINHOOD REAL MONEY (CONNECTED TO ALGO SYSTEM) vs. 📝 PAPER ACCOUNT (SHADOW LIVE MODE)'),
-  mk('div','sssf-card-trig','We already have built-in Paper Trading (Shadow Live with 4:00 PM ET daily earnings). Connect Robinhood here for REAL MONEY connected directly to our 6-Agent Algo System, and control the exact % of your Robinhood balance the Algo is allowed to trade.')
- );
- const closeBtn=mk('button','sssf-part-btn','✕ Close Panel');
- closeBtn.type='button';
- closeBtn.onclick=()=>{rhDrawerOpen=false;drawer.hidden=true};
- topRow.append(titleLeft,closeBtn);
- drawer.append(topRow);
-
- const grid=mk('div','rh-grid');
-
- // COLUMN 1: Paper Account (Shadow Live) vs. Robinhood Real Money (Connected to Algo System)
- const col1=mk('div','sssf-sec');
- col1.append(mk('div','sssf-sec-hd','1. CHOOSE PAPER SHADOW ACCOUNT OR ROBINHOOD REAL MONEY (ALGO CONNECTED)'));
- const bd1=mk('div','sssf-sec-bd');
- const statusRow=mk('div','sssf-run-stats');
- statusRow.append(
-  mk('span','sssf-chip '+(rhState.connected?'ok':'warn'),rhState.connected?'● ALGO LINKED ('+rhState.account_handle+')':'○ NOT LINKED'),
-  mk('span','sssf-chip cyan',rhState.execution_mode==='paper'?'📝 PAPER ACCOUNT (SHADOW LIVE)':'🪶 ROBINHOOD REAL MONEY (ALGO CONNECTED)'),
-  mk('span','sssf-chip ok','10% STOP GUARD ARMED')
- );
- bd1.append(statusRow);
-
- const redirectLink=mk('a','rh-redirect-btn','↗ Connect Robinhood Real Money Account to Algo System (Robinhood.com)');
- redirectLink.href='/api/broker/robinhood-redirect';
- redirectLink.target='_blank';
- redirectLink.rel='noopener noreferrer';
- redirectLink.onclick=()=>{
-  saveRhBrokerConfig({broker:'robinhood',execution_mode:'robinhood_staged',connected:true});
- };
- bd1.append(redirectLink);
- bd1.append(mk('div','sssf-card-trig','Redirects to Robinhood login and connects your Robinhood Real Money account to the 6-Agent Algo System under your % allocation cap.'));
-
- bd1.append(mk('div','sssf-card-trig','SWITCH ACTIVE ACCOUNT MODE IN 1 CLICK:'));
- const modeBtns=mk('div','sssf-col');
- for(const [mId,mTitle,mDesc] of [
-  ['paper','📝 Paper Account (Shadow Live Mode · 4:00 PM Daily Earnings)','Built-in Paper Trading during the live market day · tracks real-time fast money & settles Paper Account Earnings every day at 4:00 PM ET'],
-  ['robinhood_staged','🪶 Robinhood Real Money (Connected to Algo System)','Connects your Robinhood Real Money account to the 6-Agent Algo System · trades only your allocated % ('+rhState.agent_tradable_pct+'% = '+money(rhState.agent_tradable_usd)+')'],
-  ['robinhood_paper_mirror','🪶 Robinhood Real-Balance Mirror (Test Algo on Your Exact RH Balance)','Mirrors your real Robinhood equity ('+money(rhState.total_account_equity_usd)+') & options chain in shadow mode before flipping to Real Money']
- ]){
-  const mb=mk('button','sssf-preset-btn'+(rhState.execution_mode===mId?' active':''));
-  mb.type='button';
-  mb.append(mk('div','sssf-card-title',mTitle),mk('div','sssf-card-trig',mDesc));
-  mb.onclick=()=>{
-   saveRhBrokerConfig({
-    execution_mode:mId,
-    broker:mId==='paper'?'alpaca_paper':'robinhood',
-    connected:true
-   });
-  };
-  modeBtns.append(mb);
- }
- bd1.append(modeBtns);
-
- const handleWrap=mk('div','sssf-model-box');
- handleWrap.append(mk('div','sssf-card-trig','ROBINHOOD / PAPER ACCOUNT HANDLE'));
- const handleInp=mk('input','rh-input');
- handleInp.value=rhState.account_handle||'RH-INDIV-8842';
- handleInp.onchange=e=>{rhState.account_handle=e.target.value.trim()||'RH-INDIV-8842'};
- handleWrap.append(handleInp);
- bd1.append(handleWrap);
- col1.append(bd1);
-
- // COLUMN 2: Configure How Much of the Robinhood Real Money Account the Algo Can Trade
- const col2=mk('div','sssf-sec');
- col2.append(mk('div','sssf-sec-hd','2. ROBINHOOD REAL MONEY ALGO ALLOCATION (% & $)'));
- const bd2=mk('div','sssf-sec-bd');
-
- const eqBox=mk('div','sssf-model-box');
- eqBox.append(mk('div','sssf-card-trig','TOTAL ROBINHOOD REAL MONEY / PAPER BALANCE ($)'));
- const eqInput=mk('input','rh-input');
- eqInput.type='number';
- eqInput.value=String(rhState.total_account_equity_usd);
- eqInput.onchange=e=>{
-  rhState.total_account_equity_usd=Math.max(100,Number(e.target.value)||25000);
-  recalcRhState();
-  renderRobinhoodDrawer();
-  updateRhTopButton();
-  renderTvLiveCommand();
- };
- eqBox.append(eqInput);
- const eqPills=mk('div','sssf-run-stats');
- for(const presetEq of [5000,10000,25000,50000,100000]){
-  const pb=mk('button','sssf-part-btn'+(Number(rhState.total_account_equity_usd)===presetEq?' active':''),money(presetEq));
-  pb.type='button';
-  pb.onclick=()=>{
-   rhState.total_account_equity_usd=presetEq;
-   recalcRhState();
-   renderRobinhoodDrawer();
-   updateRhTopButton();
-   renderTvLiveCommand();
-  };
-  eqPills.append(pb);
- }
- eqBox.append(eqPills);
- bd2.append(eqBox);
-
- const allocBox=mk('div','sssf-model-box');
- const allocHead=mk('div','sssf-card-top');
- allocHead.append(
-  mk('span','sssf-card-title','ALGO TRADABLE SHARE: '+rhState.agent_tradable_pct+'%'),
-  mk('span','sssf-chip ok','ALGO CAN TRADE: '+money(rhState.agent_tradable_usd))
- );
- allocBox.append(allocHead);
-
- const slider=mk('input','rh-slider');
- slider.type='range';
- slider.setAttribute('min','1');
- slider.setAttribute('max','100');
- slider.setAttribute('step','1');
- slider.value=String(rhState.agent_tradable_pct);
- slider.onchange=e=>{
-  rhState.agent_tradable_pct=Number(e.target.value)||25;
-  recalcRhState();
-  renderRobinhoodDrawer();
-  updateRhTopButton();
-  renderTvLiveCommand();
- };
- allocBox.append(slider);
-
- const pctPills=mk('div','sssf-run-stats');
- for(const pVal of [10,20,25,50,75,100]){
-  const pBtn=mk('button','sssf-part-btn'+(Math.round(rhState.agent_tradable_pct)===pVal?' active':''),pVal+'% ('+money(rhState.total_account_equity_usd*(pVal/100))+')');
-  pBtn.type='button';
-  pBtn.onclick=()=>{
-   rhState.agent_tradable_pct=pVal;
-   recalcRhState();
-   renderRobinhoodDrawer();
-   updateRhTopButton();
-   renderTvLiveCommand();
-  };
-  pctPills.append(pBtn);
- }
- allocBox.append(pctPills);
-
- const usdDirectRow=mk('div','sssf-kv');
- usdDirectRow.append(mk('span','','Exact $ Algo Can Trade'));
- const usdInp=mk('input','rh-input');
- usdInp.type='number';
- usdInp.value=String(rhState.agent_tradable_usd);
- usdInp.onchange=e=>{
-  const desiredUsd=Math.max(1,Math.min(rhState.total_account_equity_usd,Number(e.target.value)||1000));
-  rhState.agent_tradable_pct=Math.round((desiredUsd/rhState.total_account_equity_usd)*10000)/100;
-  recalcRhState();
-  renderRobinhoodDrawer();
-  updateRhTopButton();
-  renderTvLiveCommand();
- };
- usdDirectRow.append(usdInp);
- allocBox.append(usdDirectRow);
-
- const barWrap=mk('div','rh-alloc-bar');
- const barAgent=mk('div','rh-alloc-agent','ALGO: '+rhState.agent_tradable_pct+'% ('+money(rhState.agent_tradable_usd)+')');
- barAgent.setAttribute('style','width:'+Math.max(8,rhState.agent_tradable_pct)+'%');
- const barRes=mk('div','rh-alloc-reserve','🔒 RESERVE: '+rhState.protected_reserve_pct+'% ('+money(rhState.protected_reserve_usd)+')');
- barRes.setAttribute('style','width:'+Math.max(0,100-rhState.agent_tradable_pct)+'%');
- barWrap.append(barAgent,barRes);
- allocBox.append(barWrap);
-
- const summaryKv1=mk('div','sssf-kv');
- summaryKv1.append(mk('span','','🟢 Algo Tradable Capital'),mk('span','',money(rhState.agent_tradable_usd)+' ('+rhState.agent_tradable_pct+'% connected to 6-Agent Algo)'));
- const summaryKv2=mk('div','sssf-kv');
- summaryKv2.append(mk('span','','🔒 Untouchable Reserve'),mk('span','',money(rhState.protected_reserve_usd)+' ('+rhState.protected_reserve_pct+'% locked · Algo cannot touch)'));
- allocBox.append(summaryKv1,summaryKv2);
- bd2.append(allocBox);
- col2.append(bd2);
-
- // COLUMN 3: Daily Stop-Loss, Per-Trade Cap & Agent Split + Save Button
- const col3=mk('div','sssf-sec');
- col3.append(mk('div','sssf-sec-hd','3. ALGO RISK CAPS, 10% STOP-LOSS & 4:00 PM SETTLEMENT'));
- const bd3=mk('div','sssf-sec-bd');
-
- const stopBox=mk('div','sssf-model-box');
- stopBox.append(mk('div','sssf-card-trig','DAILY STOP-LOSS ON ALGO ALLOCATION (%)'));
- const stopPills=mk('div','sssf-run-stats');
- for(const sPct of [5,10,15,20]){
-  const sb=mk('button','sssf-part-btn'+(Math.round(rhState.daily_loss_stop_pct)===sPct?' active':''),sPct+'% (-'+money(rhState.agent_tradable_usd*(sPct/100))+')');
-  sb.type='button';
-  sb.onclick=()=>{rhState.daily_loss_stop_pct=sPct;recalcRhState();renderRobinhoodDrawer();renderTvLiveCommand()};
-  stopPills.append(sb);
- }
- stopBox.append(stopPills);
- stopBox.append(mk('div','sssf-card-trig','If the algo loses '+rhState.daily_loss_stop_pct+'% ('+money(rhState.daily_loss_stop_usd)+') in a day, trading halts immediately. Your '+money(rhState.protected_reserve_usd)+' reserve is never touched.'));
- bd3.append(stopBox);
-
- const orderBox=mk('div','sssf-model-box');
- orderBox.append(mk('div','sssf-card-trig','MAX SINGLE ORDER SIZE (% OF ALGO ALLOCATION)'));
- const orderPills=mk('div','sssf-run-stats');
- for(const oPct of [5,10,15,25,50]){
-  const ob=mk('button','sssf-part-btn'+(Math.round(rhState.max_per_trade_pct_of_allocation)===oPct?' active':''),oPct+'% ('+money(Math.min(1000,rhState.agent_tradable_usd*(oPct/100)))+')');
-  ob.type='button';
-  ob.onclick=()=>{rhState.max_per_trade_pct_of_allocation=oPct;recalcRhState();renderRobinhoodDrawer();renderTvLiveCommand()};
-  orderPills.append(ob);
- }
- orderBox.append(orderPills);
- orderBox.append(mk('div','sssf-card-trig','Max per order: '+money(rhState.max_per_trade_usd)+' (also bounded by 0.1% median 1m bar volume cap = $1,000 max).'));
- bd3.append(orderBox);
-
- const splitBox=mk('div','sssf-model-box');
- splitBox.append(mk('div','sssf-card-trig','ALGO CAPITAL SPLIT ACROSS THE 2 TRADER AGENTS'));
- const splitKv1=mk('div','sssf-kv');
- splitKv1.append(mk('span','','03 Price Structure ('+rhState.price_trader_split_pct+'%)'),mk('span','',money(rhState.price_trader_usd)+' (Equity & Long Call/Put)'));
- const splitKv2=mk('div','sssf-kv');
- splitKv2.append(mk('span','','04 Theta & Greeks ('+rhState.theta_trader_split_pct+'%)'),mk('span','',money(rhState.theta_trader_usd)+' (100% Cash-Secured Short Options)'));
- splitBox.append(splitKv1,splitKv2);
- bd3.append(splitBox);
-
- const saveBtn=mk('button','sssf-run-btn','💾 Save Robinhood Real Money & Paper Algo Config ('+money(rhState.agent_tradable_usd)+' Tradable)');
- saveBtn.type='button';
- saveBtn.onclick=()=>saveRhBrokerConfig({});
- bd3.append(saveBtn);
- if(rhSaveStatus){
-  bd3.append(mk('div','sssf-chip ok',rhSaveStatus));
- }
- col3.append(bd3);
-
- grid.append(col1,col2,col3);
- drawer.append(grid);
-}
-$('robinhood-connect-btn').onclick=()=>{
- rhDrawerOpen=!rhDrawerOpen;
- renderRobinhoodDrawer();
-};
-let alpacaKeysFormOpen=false,alpacaSaveStatus='',alpacaPaperState={
- state:'connected',
+let alpacaKeysFormOpen=true,alpacaSaveStatus='',alpacaPaperState={
+ state:'not_connected',
  broker:'alpaca_paper',
+ mode:'shadow',
  endpoint:'https://paper-api.alpaca.markets',
  data_endpoint:'https://data.alpaca.markets',
  has_api_keys:false,
- key_hint:'PK••••PAPER',
- account_id:'PA38910482-PAPER',
- equity_usd:100342.80,
- cash_usd:81490.20,
- buying_power_usd:162980.40,
- today_pnl_usd:342.80,
+ key_hint:null,
+ equity_usd:null,
+ cash_usd:null,
+ buying_power_usd:null,
+ today_pnl_usd:null,
  live_orders:false
 };
-const LIVE_PAPER_WATCH_STOCKS=[
- {symbol:'SPY',name:'SPDR S&P 500 ETF',price:530.50,prev:526.80,signal:'BUY',qty:15,entry:528.90,smaFast:529.85,smaSlow:528.10,vwap:529.40,stop:523.60,target:536.00,agent:'03 Price Trader (codex:gpt-5.4)',rule:'Fast SMA9 ($529.85) > Slow SMA21 ($528.10) + 5m ORB Breakout above VWAP ($529.40)',news:'Core CPI Disinflation +0.2% MoM & Semi CapEx Beat',jev:0.96,orderStatus:'ORDER PLACED & FILLED (15 sh @ $528.90)'},
- {symbol:'NVDA',name:'NVIDIA Corporation',price:126.90,prev:121.40,signal:'BUY',qty:40,entry:124.20,smaFast:125.80,smaSlow:123.40,vwap:125.10,stop:121.00,target:132.50,agent:'03 Price Trader (codex:gpt-5.4)',rule:'Fast SMA9 ($125.80) > Slow SMA21 ($123.40) + AI GPU Volume Surge 2.4x',news:'AI Data Center GPU CapEx Guidance Surge +38% YoY',jev:0.98,orderStatus:'ORDER PLACED & FILLED (40 sh @ $124.20)'},
- {symbol:'AAPL',name:'Apple Inc.',price:228.40,prev:226.10,signal:'HOLD',qty:25,entry:226.40,smaFast:228.10,smaSlow:227.20,vwap:227.65,stop:224.00,target:233.00,agent:'04 Theta Trader (kimi-k2.7-code)',rule:'Holding Long Position above VWAP ($227.65) · Trend intact, trailing stop armed',news:'On-Device Apple Intelligence Upgrade Cycle Note',jev:0.89,orderStatus:'HOLDING POSITION (25 sh bought @ $226.40)'},
- {symbol:'META',name:'Meta Platforms, Inc.',price:516.80,prev:509.20,signal:'BUY',qty:8,entry:510.20,smaFast:515.10,smaSlow:511.80,vwap:513.90,stop:504.00,target:528.00,agent:'03 Price Trader (codex:gpt-5.4)',rule:'Fast SMA9 ($515.10) > Slow SMA21 ($511.80) + Bull Score 82/100',news:'Reels AI Ad-Pricing Breakout & Impression Growth',jev:0.94,orderStatus:'ORDER PLACED & FILLED (8 sh @ $510.20)'},
- {symbol:'QQQ',name:'Invesco QQQ Trust',price:458.20,prev:454.10,signal:'HOLD',qty:10,entry:455.50,smaFast:457.80,smaSlow:456.20,vwap:457.10,stop:451.00,target:464.00,agent:'06 Fleet Dispatcher (kimi-k2.7-code)',rule:'Holding Nasdaq-100 Core Long · Price above Fast SMA9 ($457.80)',news:'Mega-Cap Tech MOC Institutional Buy Imbalance +$1.8B',jev:0.91,orderStatus:'HOLDING POSITION (10 sh bought @ $455.50)'},
- {symbol:'TSLA',name:'Tesla, Inc.',price:248.60,prev:244.90,signal:'SELL',qty:0,entry:244.90,smaFast:248.10,smaSlow:248.45,vwap:248.55,stop:242.00,target:248.60,agent:'05 Risk Auditor (codex:gpt-5.4)',rule:'Take-Profit Target Reached ($248.60) & Fast SMA9 crossed Slow SMA21 -> Sold 20 sh',news:'Autonomous Fleet Catalyst Profit Harvest at Resistance',jev:0.90,orderStatus:'SELL ORDER PLACED & FILLED (Sold 20 sh @ $248.60 · +$74.00)'},
- {symbol:'MSFT',name:'Microsoft Corporation',price:431.90,prev:428.00,signal:'HOLD',qty:0,entry:431.90,smaFast:431.20,smaSlow:431.05,vwap:431.40,stop:427.00,target:438.00,agent:'02 Scout Recon (deepseek-v4.1-flash)',rule:'Flat in Cash · Watching for 1m Volume Breakout above $432.20',news:'Azure AI Enterprise Copilot Seat Expansion',jev:0.87,orderStatus:'WAITING IN CASH · HOLD / WATCHING'},
- {symbol:'AMD',name:'Advanced Micro Devices',price:160.88,prev:156.40,signal:'BUY',qty:15,entry:158.40,smaFast:160.10,smaSlow:158.80,vwap:159.50,stop:155.00,target:166.00,agent:'03 Price Trader (codex:gpt-5.4)',rule:'Fast SMA9 ($160.10) > Slow SMA21 ($158.80) + MI350 Volume Breakout',news:'MI350 Rack Deployment Catalyst + Datacenter Order Beat',jev:0.95,orderStatus:'ORDER PLACED & FILLED (15 sh @ $158.40)'}
-];
-const LIVE_PAPER_PLACED_ORDERS=[
- {time:'09:48:02 ET',id:'ALPACA-PAPER-9041',sym:'SPY',side:'BUY',qty:15,price:528.90,notional:7933.50,status:'FILLED (Alpaca Paper IEX / Shadow)',agent:'03 Price Trader (codex:gpt-5.4)',news:'Core CPI +0.2% MoM Disinflation (Jev 0.96)'},
- {time:'09:52:14 ET',id:'ALPACA-PAPER-9042',sym:'NVDA',side:'BUY',qty:40,price:124.20,notional:4968.00,status:'FILLED (Alpaca Paper IEX / Shadow)',agent:'03 Price Trader (codex:gpt-5.4)',news:'AI Data Center GPU CapEx Beat (Jev 0.98)'},
- {time:'10:04:30 ET',id:'ALPACA-PAPER-9043',sym:'AAPL',side:'BUY',qty:25,price:226.40,notional:5660.00,status:'FILLED -> NOW HOLDING (+$50.00)',agent:'04 Theta Trader (kimi-k2.7-code)',news:'VWAP Band Reclaim + Apple AI Note (Jev 0.89)'},
- {time:'10:18:11 ET',id:'ALPACA-PAPER-9044',sym:'QQQ',side:'BUY',qty:10,price:455.50,notional:4555.00,status:'FILLED -> NOW HOLDING (+$27.00)',agent:'06 Fleet Dispatcher (kimi-k2.7-code)',news:'Nasdaq-100 5m ORB Continuation (Jev 0.91)'},
- {time:'10:35:08 ET',id:'ALPACA-PAPER-9045',sym:'META',side:'BUY',qty:8,price:510.20,notional:4081.60,status:'FILLED (Alpaca Paper IEX / Shadow)',agent:'03 Price Trader (codex:gpt-5.4)',news:'Reels AI Ad-Pricing Breakout (Jev 0.94)'},
- {time:'11:12:44 ET',id:'ALPACA-PAPER-9046',sym:'AMD',side:'BUY',qty:15,price:158.40,notional:2376.00,status:'FILLED (Alpaca Paper IEX / Shadow)',agent:'03 Price Trader (codex:gpt-5.4)',news:'MI350 Rack Deployment Beat (Jev 0.95)'},
- {time:'11:45:19 ET',id:'ALPACA-PAPER-9047',sym:'TSLA',side:'SELL',qty:20,price:248.60,notional:4972.00,status:'FILLED · PROFIT LOCKED (+$74.00)',agent:'05 Risk Auditor (codex:gpt-5.4)',news:'Autonomous Fleet Target Reached (Jev 0.90)'}
-];
-function recalcLivePaperMoney(){
- let deployed=0,unrealized=0;
- for(const st of LIVE_PAPER_WATCH_STOCKS){
-  if(st.qty>0){
-   deployed+=st.qty*st.price;
-   unrealized+=st.qty*(st.price-st.entry);
-  }
- }
- const baseCash=100000;
- const realized=74.00;
- alpacaPaperState.today_pnl_usd=Number((unrealized+realized).toFixed(2));
- alpacaPaperState.equity_usd=Number((baseCash+alpacaPaperState.today_pnl_usd).toFixed(2));
- alpacaPaperState.cash_usd=Number(Math.max(0,alpacaPaperState.equity_usd-deployed).toFixed(2));
- alpacaPaperState.buying_power_usd=Number((alpacaPaperState.cash_usd*2).toFixed(2));
- if($('open-paper-btn')){
-  $('open-paper-btn').textContent=`🦙 Open Live Paper Account (${money(alpacaPaperState.equity_usd)} · ${alpacaPaperState.today_pnl_usd>=0?'+':'-'}${money(Math.abs(alpacaPaperState.today_pnl_usd))} · BUY/HOLD/SELL Live)`;
+function updatePaperTopButton(){
+ const btn=$('open-paper-btn');if(!btn)return;
+ const connected=alpacaPaperState.state==='connected';
+ const eq=alpacaPaperState.equity_usd!=null?money(alpacaPaperState.equity_usd):'Not connected';
+ if(connected){
+  btn.textContent=`🦙 Alpaca Paper (${eq} · Connected)`;
+ }else if(alpacaPaperState.has_api_keys){
+  btn.textContent=`🦙 Alpaca Paper (${alpacaPaperState.key_hint||'Keys saved'} · ${alpacaPaperState.state})`;
+ }else{
+  btn.textContent='🦙 Alpaca Paper Account (Not connected)';
  }
 }
-function triggerLivePaperStockAction(symbol,actionSide){
- const st=LIVE_PAPER_WATCH_STOCKS.find(s=>s.symbol===symbol);if(!st)return;
- const nowStr=new Date().toLocaleTimeString('en-US',{timeZone:'America/New_York',hour12:false})+' ET';
- const ordId='ALPACA-PAPER-'+(9048+LIVE_PAPER_PLACED_ORDERS.length);
- if(actionSide==='BUY'){
-  const addQty=st.price>300?5:15;
-  const prevCost=st.qty*st.entry;
-  st.qty+=addQty;
-  st.entry=Number(((prevCost+addQty*st.price)/st.qty).toFixed(2));
-  st.signal='BUY';
-  st.orderStatus=`ORDER PLACED & FILLED (Bought +${addQty} sh @ $${st.price.toFixed(2)} · Total ${st.qty} sh)`;
-  LIVE_PAPER_PLACED_ORDERS.unshift({
-   time:nowStr,id:ordId,sym:st.symbol,side:'BUY',qty:addQty,price:st.price,notional:Number((addQty*st.price).toFixed(2)),
-   status:'FILLED (Alpaca Paper IEX & Shadow Ledger)',agent:st.agent,news:st.news+' (Jev '+st.jev.toFixed(2)+')'
-  });
- }else if(actionSide==='HOLD'){
-  st.signal='HOLD';
-  st.orderStatus=st.qty>0?`HOLDING POSITION (${st.qty} sh @ $${st.entry.toFixed(2)} · Live $${st.price.toFixed(2)})`:'HOLD / WATCHING IN CASH';
-  LIVE_PAPER_PLACED_ORDERS.unshift({
-   time:nowStr,id:ordId,sym:st.symbol,side:'HOLD',qty:st.qty,price:st.price,notional:Number((st.qty*st.price).toFixed(2)),
-   status:'HOLD CONFIRMED (Stop & VWAP Guard Active)',agent:st.agent,news:st.news+' (Jev '+st.jev.toFixed(2)+')'
-  });
- }else if(actionSide==='SELL'){
-  const soldQty=st.qty>0?st.qty:10;
-  const pnl=Number((soldQty*(st.price-st.entry)).toFixed(2));
-  st.qty=0;
-  st.signal='SELL';
-  st.orderStatus=`SELL ORDER PLACED & FILLED (Sold ${soldQty} sh @ $${st.price.toFixed(2)} · Realized ${pnl>=0?'+$':'-$'}${Math.abs(pnl).toFixed(2)})`;
-  LIVE_PAPER_PLACED_ORDERS.unshift({
-   time:nowStr,id:ordId,sym:st.symbol,side:'SELL',qty:soldQty,price:st.price,notional:Number((soldQty*st.price).toFixed(2)),
-   status:`FILLED · CLOSED (${pnl>=0?'+$':'-$'}${Math.abs(pnl).toFixed(2)} Realized)`,agent:'05 Risk Auditor (codex:gpt-5.4)',news:st.news+' (Jev '+st.jev.toFixed(2)+')'
-  });
- }
- recalcLivePaperMoney();
- renderTvLiveCommand();
- renderLivePaperAccountDesk();
-}
-function stepLiveAlgoCycle(){
- for(const st of LIVE_PAPER_WATCH_STOCKS){
-  const delta=Number(((Math.random()-0.42)*st.price*0.0035).toFixed(2));
-  st.price=Number(Math.max(10,st.price+delta).toFixed(2));
-  st.smaFast=Number((st.price*0.9985).toFixed(2));
-  st.vwap=Number((st.price*0.9978).toFixed(2));
- }
- const pick=LIVE_PAPER_WATCH_STOCKS[Math.floor(Math.random()*LIVE_PAPER_WATCH_STOCKS.length)];
- if(pick.qty===0)triggerLivePaperStockAction(pick.symbol,'BUY');
- else if(pick.price>pick.entry*1.018)triggerLivePaperStockAction(pick.symbol,'HOLD');
- else triggerLivePaperStockAction(pick.symbol,'BUY');
-}
-async function saveAlpacaPaperKeys(apiKey,secretKey){
- alpacaSaveStatus='Connecting to Alpaca Paper Account (https://paper-api.alpaca.markets)…';
+async function saveAlpacaPaperKeys(apiKey,secretKey,mode){
+ alpacaSaveStatus='Verifying with backend (/api/alpaca-paper)…';
  renderLivePaperAccountDesk();
  try{
+  const payload={};
+  if(apiKey)payload.api_key=apiKey;
+  if(secretKey)payload.secret_key=secretKey;
+  if(mode)payload.mode=mode;
   const res=await fetch('/api/alpaca-paper',{
    method:'POST',
    headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({api_key:apiKey,secret_key:secretKey,equity_usd:alpacaPaperState.equity_usd,cash_usd:alpacaPaperState.cash_usd})
+   body:JSON.stringify(payload)
   });
   if(res.ok){
    const data=await res.json();
    Object.assign(alpacaPaperState,data);
-   alpacaSaveStatus='✓ Connected Alpaca Paper Account ('+alpacaPaperState.account_id+' · Key '+alpacaPaperState.key_hint+') to Live Algo System!';
+   alpacaSaveStatus=`Backend state: ${data.state||'updated'}${data.key_hint?' · Key '+data.key_hint:''} · Mode: ${data.mode||'shadow'} (live_orders=false)`;
   }else{
-   alpacaPaperState.has_api_keys=Boolean(apiKey);
-   alpacaSaveStatus='✓ Saved Alpaca Paper credentials locally (chmod 600 · live_orders=false).';
+   alpacaSaveStatus='Backend rejected request (HTTP '+res.status+'). Check API key and secret key.';
   }
  }catch{
-  alpacaPaperState.has_api_keys=Boolean(apiKey);
-  alpacaSaveStatus='✓ Connected in local Paper Account mode ('+money(alpacaPaperState.equity_usd)+' Equity).';
+  alpacaSaveStatus='Backend unavailable; credentials were not saved.';
  }
+ updatePaperTopButton();
+ renderTvLiveCommand();
  renderLivePaperAccountDesk();
 }
 function renderLivePaperAccountDesk(){
  const box=$('tv-paper-account-desk');if(!box)return;
- recalcLivePaperMoney();
  box.replaceChildren();
- const deployedUsd=Number((alpacaPaperState.equity_usd-alpacaPaperState.cash_usd).toFixed(2));
- const openPositions=LIVE_PAPER_WATCH_STOCKS.filter(s=>s.qty>0);
+ const d=lastResponse||{};
+ const act=d.activity||null;
+ const ap=d.alpaca_paper||alpacaPaperState;
+ const isConnected=ap.state==='connected';
+ const runnerMode=d?.runner?.mode||ap.mode||'shadow';
+ const eqVal=act?.account?.equity??ap.equity_usd;
+ const cashVal=act?.account?.cash??ap.cash_usd;
+ const bpVal=act?.account?.buying_power??ap.buying_power_usd;
+ const pnlVal=act?.performance?.strategy_price_pnl_usd??ap.today_pnl_usd;
+ const shadowEq=act?.portfolio?.virtual_equity??act?.virtual_equity;
 
- // 1. Top Header: Open Live Paper Account + Alpaca Paper Connection + algo start Live Status
  const top=mk('div','sssf-card-top');
  const titleBox=mk('div','');
  titleBox.append(
-  mk('h2','sssf-card-title','🦙 LIVE PAPER ACCOUNT (ALPACA PAPER & SHADOW LIVE) · LIVE ALGO BUY / HOLD / SELL & PLACED STOCK ORDERS'),
-  mk('div','sssf-card-trig','Connected to `algo start` in terminal + Alpaca Paper (`https://paper-api.alpaca.markets`) + Live News System (`Stage 0 Jev Router`). When the Algo triggers a BUY, the stock order is immediately placed and tracked below.')
+  mk('h2','sssf-card-title','🦙 ALPACA PAPER TRADING SYSTEM & CONNECTION STATUS'),
+  mk('div','sssf-card-trig','Endpoint: '+(ap.endpoint||'https://paper-api.alpaca.markets')+' · Credentials stored privately in desk/runtime/.state/paper/credentials.json (chmod 600) · live_orders=false.')
  );
  const topBtns=mk('div','sssf-run-stats');
- const stepBtn=mk('button','sssf-run-btn','⚡ Step Live Algo Bar (Auto-Run News + BUY / HOLD / SELL)');
- stepBtn.type='button';
- stepBtn.onclick=()=>stepLiveAlgoCycle();
- const keyBtn=mk('button','sssf-part-btn'+(alpacaKeysFormOpen?' active':''),'🔑 '+(alpacaPaperState.has_api_keys?'Alpaca Paper Keys Connected ('+alpacaPaperState.key_hint+')':'Connect Alpaca Paper API Keys'));
+ const statusChip=mk('span','sssf-chip '+(isConnected?'ok':ap.has_api_keys?'cyan':'warn'),isConnected?'● CONNECTED (ACTIVE)':ap.has_api_keys?'● '+String(ap.state||'keys_saved').toUpperCase():'○ NOT CONNECTED');
+ const keyBtn=mk('button','sssf-part-btn'+(alpacaKeysFormOpen?' active':''),'🔑 '+(ap.has_api_keys?'Alpaca Paper Keys ('+(ap.key_hint||'saved')+')':'Connect Alpaca Paper API Key'));
  keyBtn.type='button';
  keyBtn.onclick=()=>{alpacaKeysFormOpen=!alpacaKeysFormOpen;renderLivePaperAccountDesk()};
- topBtns.append(stepBtn,keyBtn);
+ topBtns.append(statusChip,keyBtn);
  top.append(titleBox,topBtns);
  box.append(top);
 
- // Optional Expandable Alpaca Paper API Key Connection Form
  if(alpacaKeysFormOpen){
   const kBox=mk('div','sssf-studio');if(kBox.style)kBox.style.marginTop='8px';
   kBox.append(
-   mk('div','sssf-card-title','🦙 CONNECT YOUR ALPACA PAPER ACCOUNT (`https://paper-api.alpaca.markets` · 100% PAPER MONEY)'),
-   mk('div','sssf-card-trig','Enter your Alpaca Paper API Key ID (PK...) and Secret Key (or click Instant Demo Connect). Keys are stored privately in `desk/runtime/.state/paper/credentials.json` (chmod 600) and never leave your machine.')
+   mk('div','sssf-card-title','🦙 CONNECT ALPACA PAPER ACCOUNT (`https://paper-api.alpaca.markets` · `sh tets connect`)'),
+   mk('div','sssf-card-trig','Paste your Alpaca Paper API Key ID and Secret Key (or run `sh tets setup` / `sh tets connect` in terminal, which uses getpass and writes chmod 600 credentials.json). Keys are never committed to git.')
   );
   const kRow=mk('div','ot-transport-btns');
-  const inpKey=mk('input','rh-input');inpKey.placeholder='Alpaca Paper API Key ID (e.g. PK89A2...)';if(inpKey.style)inpKey.style.maxWidth='280px';
-  const inpSec=mk('input','rh-input');inpSec.type='password';inpSec.placeholder='Alpaca Paper Secret Key';if(inpSec.style)inpSec.style.maxWidth='280px';
-  const btnSaveKey=mk('button','sssf-run-btn','✓ Save & Connect Alpaca Paper Account');btnSaveKey.type='button';
-  btnSaveKey.onclick=()=>saveAlpacaPaperKeys(inpKey.value.trim()||'PKLIVEPAPER8842',inpSec.value.trim()||'sk_paper_connected_secret');
-  const btnDemoKey=mk('button','sssf-part-btn active','⚡ Instant Connect $100,000 Alpaca Paper Sandbox');btnDemoKey.type='button';
-  btnDemoKey.onclick=()=>saveAlpacaPaperKeys('PKALPACA9941PAPER','sk_alpaca_paper_sandbox_verified');
-  kRow.append(inpKey,inpSec,btnSaveKey,btnDemoKey);
+  const inpKey=mk('input','rh-input');inpKey.type='password';inpKey.placeholder='Paper API key (PK...)';if(inpKey.style)inpKey.style.maxWidth='240px';
+  const inpSec=mk('input','rh-input');inpSec.type='password';inpSec.placeholder='Paper secret key';if(inpSec.style)inpSec.style.maxWidth='240px';
+  const modeSel=mk('select','ot-btn');
+  for(const [mVal,mTxt] of [['paper','Mode: Alpaca Paper'],['shadow','Mode: Yahoo Shadow']]){
+   const o=mk('option','',mTxt);o.value=mVal;if(mVal===runnerMode)o.selected=true;
+   modeSel.append(o);
+  }
+  const btnSaveKey=mk('button','sssf-run-btn','Save & Verify Alpaca Paper Key');btnSaveKey.type='button';
+  btnSaveKey.onclick=()=>saveAlpacaPaperKeys(inpKey.value.trim(),inpSec.value.trim(),modeSel.value);
+  kRow.append(inpKey,inpSec,modeSel,btnSaveKey);
   kBox.append(kRow);
-  if(alpacaSaveStatus)kBox.append(mk('div','sssf-chip ok',alpacaSaveStatus));
+  if(alpacaSaveStatus)kBox.append(mk('div','sssf-chip cyan',alpacaSaveStatus));
   box.append(kBox);
  }
 
- // 2. Paper Account Money Strip (5 Cards: Paper Equity, Available Cash, Capital in Bought Stocks, Buying Power, Today's Live P&L)
  const moneyGrid=mk('div','paper-money-grid');
  for(const [lbl,val,sub,cls] of [
-  ['PAPER ACCOUNT MONEY (EQUITY)',money(alpacaPaperState.equity_usd),'Alpaca Paper ('+alpacaPaperState.account_id+') & Shadow Live','positive'],
-  ['AVAILABLE PAPER CASH',money(alpacaPaperState.cash_usd),'Ready to place new stock BUY orders',''],
-  ['STOCKS BOUGHT & HELD VALUE',money(deployedUsd),openPositions.length+' stocks currently held in Paper Account','cyan'],
-  ['PAPER BUYING POWER (2X REG-T)',money(alpacaPaperState.buying_power_usd),' Endpoint: paper-api.alpaca.markets',''],
-  ['TODAY LIVE PAPER P&L (4:00 PM TRACK)',(alpacaPaperState.today_pnl_usd>=0?'+':'-')+money(Math.abs(alpacaPaperState.today_pnl_usd)),'Realized + Unrealized across placed orders',alpacaPaperState.today_pnl_usd>=0?'positive':'negative']
+  ['ALPACA PAPER EQUITY',eqVal!=null?money(eqVal):'Not connected',isConnected?'Reported by paper-api.alpaca.markets':'Connect Paper API keys to view account equity',eqVal!=null?'positive':''],
+  ['ALPACA PAPER CASH',cashVal!=null?money(cashVal):'Not connected',isConnected?'Reported by paper-api.alpaca.markets':'No paper account cash reported',''],
+  ['ALPACA BUYING POWER',bpVal!=null?money(bpVal):'Not connected','Endpoint: paper-api.alpaca.markets',''],
+  ['STRATEGY PRICE P&L',pnlVal!=null?money(pnlVal):'Not connected',pnlVal!=null?'Observed strategy P&L':'No paper strategy P&L recorded yet',Number(pnlVal)>0?'positive':Number(pnlVal)<0?'negative':''],
+  ['SHADOW VIRTUAL EQUITY',shadowEq!=null?money(shadowEq):'—','Yahoo shadow virtual portfolio','cyan']
  ]){
   const c=mk('div','paper-money-card');
   c.append(mk('small','',lbl),mk('strong',cls||'',val),mk('small','',sub));
@@ -859,125 +476,13 @@ function renderLivePaperAccountDesk(){
  }
  box.append(moneyGrid);
 
- // 3. All Watched Stocks Live BUY / HOLD / SELL + News System + Instant Order Placement Table
- const watchHd=mk('div','sssf-card-top');if(watchHd.style)watchHd.style.margin='10px 0 6px';
- watchHd.append(
-  mk('strong','','📊 LIVE ALGO SYSTEM (`algo start`) · REAL-TIME STOCK BUY / HOLD / SELL DECISIONS, NEWS CATALYSTS & ORDER PLACEMENT'),
-  mk('span','sssf-chip ok','Click [🟢 BUY], [🟡 HOLD], or [🔴 SELL] on any stock to test placing a live Paper Order')
- );
- box.append(watchHd);
-
- const wWrap=mk('div','ot-table-wrap');
- const wTbl=mk('table','ot-table');
- const wHead=mk('tr');
- for(const h of ['STOCK','LIVE PRICE','ALGO SIGNAL','SHARES BOUGHT / POSITION','UNREALIZED P&L','ALGO RULE & SMA/VWAP CHECK','LIVE NEWS CATALYST USED (JEV SCORE)','PLACE PAPER ORDER NOW']){
-  wHead.append(mk('th','',h));
- }
- wTbl.append(wHead);
- const wBody=mk('tbody');
- for(const st of LIVE_PAPER_WATCH_STOCKS){
-  const tr=mk('tr',st.symbol===selectedSymbol?'active-tr':'');
-  const uPnl=st.qty>0?Number((st.qty*(st.price-st.entry)).toFixed(2)):0;
-  const tdSym=mk('td','');
-  tdSym.append(mk('strong','positive',st.symbol),mk('span','dim',' · '+st.name));
-  const tdPx=mk('td','',money(st.price));
-  const tdSig=mk('td','');
-  tdSig.append(mk('span','sig-pill '+st.signal.toLowerCase(),st.signal==='BUY'?'🟢 BUY (ORDER PLACED)':st.signal==='HOLD'?'🟡 HOLD (IN POSITION)':'🔴 SELL (EXITED)'));
-  const tdPos=mk('td','',st.qty>0?`${st.qty} sh @ ${money(st.entry)} (${money(st.qty*st.price)})`:st.orderStatus);
-  const tdPnl=mk('td',uPnl>0?'positive':uPnl<0?'negative':'',st.qty>0?(uPnl>=0?'+':'-')+money(Math.abs(uPnl)):'Flat ($0.00)');
-  const tdRule=mk('td','',st.rule);
-  const tdNews=mk('td','',[mk('span','sssf-chip cyan','Jev '+st.jev.toFixed(2)+' ')][0]);
-  tdNews.textContent=`[Jev ${st.jev.toFixed(2)}] ${st.news}`;
-  const tdAct=mk('td','');
-  const actRow=mk('div','ot-transport-btns');
-  const bBuy=mk('button','sssf-think-btn active','🟢 BUY');bBuy.type='button';
-  bBuy.onclick=e=>{e.stopPropagation();triggerLivePaperStockAction(st.symbol,'BUY')};
-  const bHold=mk('button','sssf-think-btn','🟡 HOLD');bHold.type='button';
-  bHold.onclick=e=>{e.stopPropagation();triggerLivePaperStockAction(st.symbol,'HOLD')};
-  const bSell=mk('button','sssf-think-btn','🔴 SELL');bSell.type='button';
-  bSell.onclick=e=>{e.stopPropagation();triggerLivePaperStockAction(st.symbol,'SELL')};
-  actRow.append(bBuy,bHold,bSell);
-  tdAct.append(actRow);
-  tr.append(tdSym,tdPx,tdSig,tdPos,tdPnl,tdRule,tdNews,tdAct);
-  tr.onclick=()=>{selectedSymbol=st.symbol;if(lastResponse)render(lastResponse)};
-  wBody.append(tr);
- }
- wTbl.append(wBody);
- wWrap.append(wTbl);
- box.append(wWrap);
-
- // 4. Two-Column Live Blotter: [LEFT: Stocks Currently Bought & Held in Paper Account] | [RIGHT: Placed Paper Stock Orders Log]
- const splitGrid=mk('div','sssf-detail-grid');if(splitGrid.style)splitGrid.style.marginTop='10px';
- const posCol=mk('div','ot-panel'),ordCol=mk('div','ot-panel');
- const posHd=mk('div','ot-panel-hd');
- posHd.append(mk('h3','','📦 STOCKS BOUGHT & CURRENTLY HELD IN PAPER ACCOUNT ('+openPositions.length+' ACTIVE)'),mk('span','sssf-chip ok','Total Value: '+money(deployedUsd)));
- posCol.append(posHd);
- const posWrap=mk('div','ot-table-wrap');
- const posTbl=mk('table','ot-table');
- const posTh=mk('tr');
- for(const h of ['STOCK','STATE','SHARES','AVG BUY PX','LIVE PX','MARKET VALUE','LIVE P&L','STOP / TARGET','SELL'])posTh.append(mk('th','',h));
- posTbl.append(posTh);
- const posTb=mk('tbody');
- for(const st of openPositions){
-  const uPnl=Number((st.qty*(st.price-st.entry)).toFixed(2));
-  const r=mk('tr','');
-  const closeBtn=mk('button','sssf-think-btn','🔴 Sell All');closeBtn.type='button';
-  closeBtn.onclick=()=>triggerLivePaperStockAction(st.symbol,'SELL');
-  const tdC=mk('td','');tdC.append(closeBtn);
-  r.append(
-   mk('td','positive',st.symbol),
-   mk('td','',st.signal==='BUY'?'🟢 BOUGHT':'🟡 HOLDING'),
-   mk('td','',st.qty+' sh'),
-   mk('td','',money(st.entry)),
-   mk('td','',money(st.price)),
-   mk('td','',money(st.qty*st.price)),
-   mk('td',uPnl>=0?'positive':'negative',(uPnl>=0?'+':'-')+money(Math.abs(uPnl))),
-   mk('td','',money(st.stop)+' / '+money(st.target)),
-   tdC
-  );
-  posTb.append(r);
- }
- posTbl.append(posTb);
- posWrap.append(posTbl);
- posCol.append(posWrap);
-
- const ordHd=mk('div','ot-panel-hd');
- ordHd.append(mk('h3','','🧾 PLACED PAPER STOCK ORDERS LOG (WHEN A BUY / HOLD / SELL IS PLACED)'),mk('span','sssf-chip cyan',LIVE_PAPER_PLACED_ORDERS.length+' Orders Recorded'));
- ordCol.append(ordHd);
- const ordWrap=mk('div','ot-table-wrap');
- const ordTbl=mk('table','ot-table');
- const ordTh=mk('tr');
- for(const h of ['TIME (ET)','ORDER ID','STOCK','SIDE','SHARES','FILL PRICE','ORDER VALUE','PAPER BROKER STATUS','AGENT & NEWS REASON'])ordTh.append(mk('th','',h));
- ordTbl.append(ordTh);
- const ordTb=mk('tbody');
- for(const o of LIVE_PAPER_PLACED_ORDERS.slice(0,20)){
-  const r=mk('tr','');
-  r.append(
-   mk('td','',o.time),
-   mk('td','',o.id),
-   mk('td','positive',o.sym),
-   mk('td',o.side==='SELL'?'negative':o.side==='BUY'?'positive':'',o.side),
-   mk('td','',o.qty+' sh'),
-   mk('td','',money(o.price)),
-   mk('td','',money(o.notional)),
-   mk('td','positive',o.status),
-   mk('td','',o.agent+' · '+o.news)
-  );
-  ordTb.append(r);
- }
- ordTbl.append(ordTb);
- ordWrap.append(ordTbl);
- ordCol.append(ordWrap);
-
- splitGrid.append(posCol,ordCol);
- box.append(splitGrid);
+ const pos=act?.position;
+ const posNote=mk('p','note',pos&&Number(pos.qty||pos.quantity||0)!==0?`Observed Open Position: ${pos.symbol||act?.symbol||''} · Qty ${pos.qty||pos.quantity} · Avg Entry ${money(pos.avg_entry_price||pos.entry_price)}`:'Open paper position: '+(isConnected?'Flat (0 shares)':'Not connected'));
+ box.append(posNote);
 }
 if($('open-paper-btn')){
  $('open-paper-btn').onclick=()=>{
-  rhState.execution_mode='paper';
-  rhState.broker='alpaca_paper';
-  rhState.connected=true;
-  updateRhTopButton();
+  alpacaKeysFormOpen=true;
   switchView('live');
   renderTvLiveCommand();
   renderLivePaperAccountDesk();
@@ -985,146 +490,61 @@ if($('open-paper-btn')){
  };
 }
 
-// TradingView Pro Live Market State: Daily 4:00 PM System Review, Paper vs Robinhood Real Money & Fast Money Stream
-let tvSelectedReviewDayIdx=0,tvTickCounter=0;
-const TV_DAILY_4PM_REVIEWS=[
- {day_id:'today_4pm',label:'🟢 Today Live · 4:00 PM ET',date:'Today (Live Session → 4:00 PM ET Close)',paper_start:10000,paper_close:10342.80,paper_pnl:342.80,paper_pct:3.43,rh_pnl_pct:3.43,trades_count:5,win_rate:'80.0% (4W / 1L)',headline_used:'Core CPI +0.2% MoM Disinflation & Q1 AI CapEx Expansion Above 30-Bar Resistance ($529.80)',jev_score:0.96,summary:'Shadow Mode Paper Account & Robinhood Algo ran live from 09:30 ET → 16:00 ET (4:00 PM Close): captured 09:36 ET 5m ORB Call Blitz on SPY/NVDA, harvested midday theta on AAPL, and settled flat at 15:55 ET before the 4:00 PM bell.',trades:[
-  {time:'09:36:00 ET',sym:'SPY',side:'BUY CALL (530C)',qty:'4 contracts',px:'$2.45 → $3.18',agent:'03 Price Trader (codex:gpt-5.4)',news:'Core CPI +0.2% MoM Beat (Jev 0.96)',pnl:'+$146.00'},
-  {time:'10:04:00 ET',sym:'NVDA',side:'BUY EQUITY',qty:'12 shares',px:'$118.40 → $126.90',agent:'03 Price Trader (codex:gpt-5.4)',news:'AI Data Center GPU CapEx Beat (Jev 0.98)',pnl:'+$102.00'},
-  {time:'11:20:00 ET',sym:'AAPL',side:'SELL PUT (225P CSP)',qty:'2 contracts',px:'$1.62 → $1.10',agent:'04 Theta Trader (kimi-k2.7-code)',news:'Midday IV Compression RSI 52.1 (Jev 0.88)',pnl:'+$52.00'},
-  {time:'13:15:00 ET',sym:'TSLA',side:'BUY PUT (245P)',qty:'2 contracts',px:'$3.10 → $2.96',agent:'05 Risk Auditor Stop Trim',news:'Midday VWAP Whip Tight Stop (-0.4%)',pnl:'-$28.00'},
-  {time:'14:22:00 ET → 15:55 ET',sym:'QQQ',side:'BUY CALL (455C)',qty:'3 contracts',px:'$2.15 → $2.86',agent:'06 Fleet Dispatcher EOD Settle',news:'Afternoon Tech MOC Imbalance +$1.8B Buy',pnl:'+$70.80'}
- ]},
- {day_id:'yest_4pm',label:'Yesterday · 4:00 PM ET (+$284.50)',date:'Yesterday · Settled at 4:00 PM ET Close',paper_start:10000,paper_close:10284.50,paper_pnl:284.50,paper_pct:2.85,rh_pnl_pct:2.85,trades_count:6,win_rate:'83.3% (5W / 1L)',headline_used:'ISM Services 51.4 Expansion & Treasury 10Y Auction Strong Indirect Bid at 13:00 ET',jev_score:0.93,summary:'4:00 PM ET Daily Audit: Algo avoided the 09:30 ET opening whip, entered on the 09:48 ET VWAP reclaim, and banked +$284.50 (+2.85%) in Paper Account (+$177.81 on $6,250 Robinhood Real Money allocation).',trades:[
-  {time:'09:48:00 ET',sym:'SPY',side:'BUY EQUITY',qty:'18 shares',px:'$526.10 → $530.40',agent:'03 Price Trader (codex:gpt-5.4)',news:'09:48 ET VWAP Reclaim + ISM 51.4',pnl:'+$77.40'},
-  {time:'10:18:00 ET',sym:'META',side:'BUY CALL (510C)',qty:'3 contracts',px:'$3.40 → $4.55',agent:'03 Price Trader (codex:gpt-5.4)',news:'Ad-Reels AI Monetization Note (Jev 0.94)',pnl:'+$115.00'},
-  {time:'13:05:00 ET → 15:55 ET',sym:'SPY',side:'SELL PUT (525P CSP)',qty:'3 contracts',px:'$1.85 → $0.93',agent:'04 Theta Trader (kimi-k2.7-code)',news:'10Y Treasury Auction Yield Drop',pnl:'+$92.10'}
- ]},
- {day_id:'d2_4pm',label:'2D Ago · 4:00 PM ET (+$412.10)',date:'2 Days Ago · Settled at 4:00 PM ET Close',paper_start:10000,paper_close:10412.10,paper_pnl:412.10,paper_pct:4.12,rh_pnl_pct:4.12,trades_count:5,win_rate:'100.0% (5W / 0L)',headline_used:'Semiconductor Export Guidance Clarification & Mega-Cap Cloud Orders Surge +38%',jev_score:0.97,summary:'4:00 PM ET Daily Audit: Cleanest 5m ORB trend day of the week. Stage 0 Jev Router scored semi news at 0.97 in 360ms; Price & Theta traders captured +$412.10 (+4.12%) by 4:00 PM ET.',trades:[
-  {time:'09:35:00 ET',sym:'NVDA',side:'BUY CALL (120C)',qty:'5 contracts',px:'$2.10 → $3.95',agent:'03 Price Trader (codex:gpt-5.4)',news:'Cloud GPU Order Surge +38% (Jev 0.97)',pnl:'+$245.00'},
-  {time:'10:30:00 ET',sym:'AMD',side:'BUY EQUITY',qty:'25 shares',px:'$154.20 → $160.88',agent:'03 Price Trader (codex:gpt-5.4)',news:'MI350 Rack Deployment Beat',pnl:'+$167.10'}
- ]},
- {day_id:'d3_4pm',label:'3D Ago · 4:00 PM ET (-$64.20 · Guard)',date:'3 Days Ago · Settled at 4:00 PM ET Close',paper_start:10000,paper_close:9935.80,paper_pnl:-64.20,paper_pct:-0.64,rh_pnl_pct:-0.64,trades_count:3,win_rate:'33.3% (1W / 2L · Stop Guard Held)',headline_used:'Hawkish Fed Speaker Remarks Trigger Intraday 2Y Yield Spike & Chop Regime',jev_score:0.89,summary:'4:00 PM ET Daily Audit: Choppy bond-yield whip day. Agent 05 Risk Auditor cut losing morning long entries at -0.64% (-$64.20), far inside the -10.0% daily stop-loss collar, preserving 99.36% of capital.',trades:[
-  {time:'09:42:00 ET',sym:'SPY',side:'BUY CALL (528C)',qty:'2 contracts',px:'$2.20 → $1.72',agent:'05 Risk Auditor Cut (-0.48%)',news:'2Y Yield Spike Reversal Veto',pnl:'-$48.00'},
-  {time:'11:15:00 ET',sym:'QQQ',side:'SELL CALL (458C)',qty:'2 contracts',px:'$1.40 → $1.56',agent:'05 Risk Auditor Flat Exit',news:'Chop Regime Protection Gate',pnl:'-$16.20'}
- ]},
- {day_id:'d4_4pm',label:'4D Ago · 4:00 PM ET (+$518.90)',date:'4 Days Ago · Settled at 4:00 PM ET Close',paper_start:10000,paper_close:10518.90,paper_pnl:518.90,paper_pct:5.19,rh_pnl_pct:5.19,trades_count:7,win_rate:'85.7% (6W / 1L)',headline_used:'BLS Nonfarm Payrolls +272k & Wage Moderation Spark Broad S&P 500 Breakout',jev_score:0.99,summary:'4:00 PM ET Daily Audit: Macro breakout session. Jev Router processed 08:30 ET BLS NFP in 340ms; all 6 agents coordinated across Long Calls, Long Equity, and Cash-Secured Puts for +$518.90 at the 4:00 PM bell.',trades:[
-  {time:'09:35:00 ET',sym:'SPY',side:'BUY CALL (525C)',qty:'6 contracts',px:'$1.95 → $3.85',agent:'03 Price Trader (codex:gpt-5.4)',news:'BLS NFP Soft-Landing Beat (Jev 0.99)',pnl:'+$310.00'},
-  {time:'10:12:00 ET → 15:55 ET',sym:'MSFT',side:'BUY EQUITY',qty:'15 shares',px:'$418.00 → $431.92',agent:'06 Fleet Dispatcher EOD Settle',news:'Enterprise Copilot Seat Expansion',pnl:'+$208.90'}
- ]}
-];
-
 function renderTvLiveCommand(){
  const box=$('tv-top-command');if(!box)return;
- recalcRhState();
  box.replaceChildren();
- const isPaper=rhState.execution_mode==='paper';
- const rev=TV_DAILY_4PM_REVIEWS[tvSelectedReviewDayIdx]||TV_DAILY_4PM_REVIEWS[0];
- const rhDayPnl=Number((rhState.agent_tradable_usd*(rev.rh_pnl_pct/100)).toFixed(2));
- const activeDayPnl=isPaper?rev.paper_pnl:rhDayPnl;
- const activeBaseEq=isPaper?rev.paper_start:rhState.agent_tradable_usd;
- const activeEndEq=Number((activeBaseEq+activeDayPnl).toFixed(2));
+ const d=lastResponse||{};
+ const ap=d.alpaca_paper||alpacaPaperState;
+ const runnerMode=d?.runner?.mode||ap.mode||'shadow';
+ const isPaper=runnerMode==='paper';
+ const isConnected=ap.state==='connected';
+ const eqVal=d?.activity?.account?.equity??ap.equity_usd;
+ const pnlVal=isPaper?d?.activity?.performance?.strategy_price_pnl_usd:d?.activity?.virtual_realized_pnl;
 
- // Row 1: Account Mode Toggle (Paper Account Shadow Live vs Robinhood Real Money Connected to Algo) + 4:00 PM Earnings Strip
  const acctBar=mk('div','tv-acct-bar');
  const modeSwitch=mk('div','tv-mode-switch');
- modeSwitch.append(mk('span','sssf-chip purple','ACCOUNT MODE:'));
- const btnPaper=mk('button','tv-mode-btn'+(isPaper?' active-paper':''),'📝 PAPER ACCOUNT (SHADOW LIVE · $10,000 BASE)');
+ modeSwitch.append(mk('span','sssf-chip purple','RUNNER MODE:'));
+ const btnShadow=mk('button','tv-mode-btn'+(!isPaper?' active-paper':''),'📝 YAHOO SHADOW MODE (VIRTUAL FILLS)');
+ btnShadow.type='button';
+ btnShadow.onclick=()=>saveAlpacaPaperKeys('','','shadow');
+ const btnPaper=mk('button','tv-mode-btn'+(isPaper?' active-real':''),'🦙 ALPACA PAPER MODE ('+(isConnected?'CONNECTED':ap.has_api_keys?ap.state:'NOT CONNECTED')+')');
  btnPaper.type='button';
- btnPaper.onclick=()=>saveRhBrokerConfig({execution_mode:'paper',broker:'alpaca_paper',connected:true});
- const btnReal=mk('button','tv-mode-btn'+(!isPaper?' active-real':''),'🪶 ROBINHOOD REAL MONEY (CONNECTED TO ALGO · '+rhState.agent_tradable_pct+'% = '+money(rhState.agent_tradable_usd)+')');
- btnReal.type='button';
- btnReal.onclick=()=>saveRhBrokerConfig({execution_mode:'robinhood_staged',broker:'robinhood',connected:true});
- const btnCfg=mk('button','sssf-part-btn','⚙ Configure Robinhood % Cap & Reserve ('+money(rhState.protected_reserve_usd)+' Locked)');
- btnCfg.type='button';
- btnCfg.onclick=()=>{rhDrawerOpen=!rhDrawerOpen;renderRobinhoodDrawer()};
- modeSwitch.append(btnPaper,btnReal,btnCfg);
+ btnPaper.onclick=()=>saveAlpacaPaperKeys('','','paper');
+ modeSwitch.append(btnShadow,btnPaper);
 
  const earnStrip=mk('div','tv-earnings-strip');
  const boxMode=mk('div','tv-earn-box');
- boxMode.append(mk('span','dim',isPaper?'ACTIVE PAPER ACCOUNT:':'ROBINHOOD ALGO CAPITAL:'),mk('strong','positive',money(activeEndEq)));
- const box4pm=mk('div','tv-earn-box highlight');
- box4pm.append(
-  mk('span','dim',(isPaper?'PAPER ACCOUNT EARNINGS':'ROBINHOOD ALGO EARNINGS')+' AT 4:00 PM ET:'),
-  mk('strong',activeDayPnl>=0?'positive':'negative',(activeDayPnl>=0?'+':'-')+money(Math.abs(activeDayPnl))+' ('+(rev.paper_pct>=0?'+':'')+rev.paper_pct.toFixed(2)+'%)')
+ boxMode.append(mk('span','dim','ALPACA PAPER EQUITY:'),mk('strong',eqVal!=null?'positive':'',eqVal!=null?money(eqVal):'Not connected'));
+ const boxPnl=mk('div','tv-earn-box highlight');
+ boxPnl.append(
+  mk('span','dim',isPaper?'PAPER STRATEGY P&L:':'SHADOW VIRTUAL P&L:'),
+  mk('strong',Number(pnlVal)>0?'positive':Number(pnlVal)<0?'negative':'',pnlVal!=null?money(pnlVal):'—')
  );
- const boxFast=mk('div','tv-earn-box');
- boxFast.append(mk('span','dim','FAST MONEY STATUS:'),mk('span','sssf-chip ok','⚡ 6 AGENTS LIVE · '+rev.win_rate));
- earnStrip.append(boxMode,box4pm,boxFast);
+ const boxState=mk('div','tv-earn-box');
+ boxState.append(mk('span','dim','BROKER CONNECTION:'),mk('span','sssf-chip '+(isConnected?'ok':'warn'),isConnected?'● ALPACA PAPER CONNECTED':'○ '+(ap.state||'not_connected').toUpperCase()));
+ earnStrip.append(boxMode,boxPnl,boxState);
  acctBar.append(modeSwitch,earnStrip);
  box.append(acctBar);
-
- // Row 2: Daily 4:00 PM System Review Bar ("review all the system every day at 4pm")
- const revBar=mk('div','tv-review-bar');
- const revLeft=mk('div','tv-day-pills');
- revLeft.append(mk('span','sssf-chip cyan','🕓 DAILY 4:00 PM ET SYSTEM REVIEW:'));
- TV_DAILY_4PM_REVIEWS.forEach((dItem,idx)=>{
-  const db=mk('button','tv-day-btn'+(idx===tvSelectedReviewDayIdx?' active':''),dItem.label);
-  db.type='button';
-  db.onclick=()=>{tvSelectedReviewDayIdx=idx;renderTvLiveCommand();renderTvDailyReview()};
-  revLeft.append(db);
- });
- const revRight=mk('span','sssf-chip','5-Day Cumulative Paper Earnings at 4:00 PM ET: +$1,494.10 (+14.94%) · Robinhood Algo (25% Cap): +$933.81');
- revBar.append(revLeft,revRight);
- box.append(revBar);
 }
 
 function renderTvDailyReview(){
  const box=$('tv-daily-review-box');if(!box)return;
  box.replaceChildren();
- const isPaper=rhState.execution_mode==='paper';
- const rev=TV_DAILY_4PM_REVIEWS[tvSelectedReviewDayIdx]||TV_DAILY_4PM_REVIEWS[0];
- const rhDayPnl=Number((rhState.agent_tradable_usd*(rev.rh_pnl_pct/100)).toFixed(2));
- const top=mk('div','sssf-card-top'),topStats=mk('div','sssf-run-stats');
- topStats.append(
-  mk('span','sssf-chip ok','Paper 4:00 PM Earnings: '+(rev.paper_pnl>=0?'+':'-')+money(Math.abs(rev.paper_pnl))+' ('+(rev.paper_pct>=0?'+':'')+rev.paper_pct.toFixed(2)+'%)'),
-  mk('span','sssf-chip cyan','Robinhood Real Money ('+rhState.agent_tradable_pct+'% Cap) 4:00 PM Earnings: '+(rhDayPnl>=0?'+':'-')+money(Math.abs(rhDayPnl))),
-  mk('span','sssf-chip purple',rev.win_rate+' · Jev Score '+rev.jev_score)
- );
- top.append(
-  mk('h2','sssf-card-title','🕓 4:00 PM ET DAILY SYSTEM REVIEW · '+rev.date.toUpperCase()),
-  topStats
- );
- box.append(top);
- const desc=mk('p','note',rev.summary+' · Primary News Catalyst Used: "'+rev.headline_used+'"');
- box.append(desc);
- const tblWrap=mk('div','ot-table-wrap');
- const tbl=mk('table','ot-table');
- const thead=mk('tr');
- for(const h of ['TIME (ET)','SYMBOL','ALGO ACTION / CONTRACT','QTY','ENTRY → 4:00 PM EXIT','EXECUTING AGENT & MODEL','NEWS CATALYST USED','4:00 PM REALIZED P&L']){
-  thead.append(mk('th','',h));
- }
- tbl.append(thead);
- const tbody=mk('tbody');
- for(const t of rev.trades){
-  const tr=mk('tr');
-  for(const v of [t.time,t.sym,t.side,t.qty,t.px,t.agent,t.news,t.pnl]){
-   const td=mk('td','',v);
-   if(v===t.pnl)td.className=String(v).startsWith('+')?'positive':'negative';
-   tr.append(td);
-  }
-  tbody.append(tr);
- }
- tbl.append(tbody);
- tblWrap.append(tbl);
- box.append(tblWrap);
 }
 
 function renderTvAgentStream(sym,company){
  const box=$('tv-agent-stream');if(!box)return;
  box.replaceChildren();
- tvTickCounter++;
  const sName=sym||selectedSymbol||'SPY';
- const px=company?.quote?.price||530.50;
- const isPaper=rhState.execution_mode==='paper';
- const modeTag=isPaper?'PAPER SHADOW LIVE':'ROBINHOOD REAL MONEY ('+rhState.agent_tradable_pct+'% CAP)';
+ const px=company?.quote?.price;
+ const ap=lastResponse?.alpaca_paper||alpacaPaperState;
  const rows=[
-  ['01 stage_0_jev_router · typesafe:jev-router-v1 (thinking: low · 380ms)','Screened live '+sName+' news wire: 0 prompt injections · Top catalyst scored 0.96 BULLISH_CONTINUATION.'],
-  ['02 phase_1_scout_recon · deepseek-v4.1-flash (thinking: medium · 92ms)',sName+' spot '+money(px)+' · 1m bar vol $39.3M >= $1M floor · 0.1% bar cap ($1,000 max) · VWAP reclaim confirmed.'],
-  ['03 trader_price_structure · codex:gpt-5.4 (thinking: xhigh · 140ms)','Synthesized '+sName+' 5m ORB Long Call + Long Equity ticket · +4.0 bps slippage modeled · Bull Score 78/100.'],
-  ['04 trader_theta_mean_reversion · kimi-k2.7-code (thinking: high · 118ms)','Priced 0.25-delta Cash-Secured Short Put on '+sName+' · 100.0% collateral locked · harvesting intraday theta.'],
-  ['05 phase_3_risk_auditor · codex:gpt-5.4 (thinking: xhigh · 64ms)','Verified -10.0% daily stop-loss collar & '+modeTag+' allocation boundary ('+money(rhState.agent_tradable_usd)+' tradable).'],
-  ['06 phase_4_fleet_dispatcher · kimi-k2.7-code (thinking: high · 85ms)','Routing fast-money fills to '+modeTag+' · Today 4:00 PM ET projected earnings: +$342.80 (+3.43%).']
+  ['01 stage_0_jev_router · typesafe:jev-router-v1','Screens incoming '+sName+' headlines and filters adversarial prompt injections.'],
+  ['02 phase_1_scout_recon · deepseek-v4.1-flash',sName+' latest observed quote: '+(px!=null?money(px):'waiting for quote')+' · checks bar liquidity floor.'],
+  ['03 trader_price_structure · codex:gpt-5.4','Evaluates directional equity & call/put rules on completed bars.'],
+  ['04 trader_theta_mean_reversion · kimi-k2.7-code','Evaluates cash-secured mean-reversion candidates.'],
+  ['05 phase_3_risk_auditor · codex:gpt-5.4','Enforces loss-stop collar and live_orders=false execution gate.'],
+  ['06 phase_4_fleet_dispatcher · kimi-k2.7-code','Alpaca paper state: '+(ap.state||'not_connected')+' · live_orders=false.']
  ];
  for(const [hd,bd] of rows){
   const r=mk('div','tv-agent-row');
@@ -1133,78 +553,8 @@ function renderTvAgentStream(sym,company){
  }
 }
 
-function buildLiveShadowFallback(){
- const nowMs=Date.now();
- const syms=[
-  ['SPY','SPDR S&P 500 ETF Trust',530.50,526.80,'ETF',520000000000,48200000,'orb_breakout_multi_asset','buy','5m ORB breakout above $529.80 resistance + Jev 0.96 CPI disinflation catalyst'],
-  ['NVDA','NVIDIA Corporation',126.90,121.40,'EQUITY',3120000000000,64900000,'orb_breakout_multi_asset','buy','AI Data Center GPU CapEx surge + 1m volume expansion >= $1M floor'],
-  ['AAPL','Apple Inc.',228.40,226.10,'EQUITY',3480000000000,39100000,'theta_credit_harvest','buy','VWAP band reclaim + 100% cash-secured 225P theta harvest'],
-  ['QQQ','Invesco QQQ Trust',458.20,454.10,'ETF',285000000000,34800000,'orb_breakout_multi_asset','buy','Nasdaq-100 5m opening range breakout + MOC tech inflow'],
-  ['TSLA','Tesla, Inc.',248.60,244.90,'EQUITY',785000000000,52400000,'jev_catalyst_convexity','buy','Autonomous fleet catalyst + OTM Call convexity sweep'],
-  ['MSFT','Microsoft Corporation',431.90,428.00,'EQUITY',3210000000000,21900000,'orb_breakout_multi_asset','buy','Azure AI enterprise seat expansion above 21-bar SMA'],
-  ['META','Meta Platforms, Inc.',516.80,509.20,'EQUITY',1310000000000,18400000,'orb_breakout_multi_asset','buy','Reels AI ad-pricing breakout + Bull Score 82'],
-  ['AMD','Advanced Micro Devices',160.88,156.40,'EQUITY',260000000000,31200000,'orb_breakout_multi_asset','buy','MI350 rack deployment catalyst + VWAP continuation']
- ];
- const companies=[],marketCompanies=[],newsCompanies=[];
- for(const [sym,name,basePx,prevClose,qType,mCap,dayVol,fam,sigSide,sigReason] of syms){
-  const bars=[],quotes=[];
-  for(let i=60;i>=0;i--){
-   const tIso=new Date(nowMs-i*60000).toISOString();
-   const prog=(60-i)/60;
-   const wave=Math.sin(i/4)*0.0025+Math.cos(i/3)*0.0012;
-   const c=Number((prevClose+(basePx-prevClose)*prog+basePx*wave).toFixed(2));
-   const o=Number((c*(1+(i%2===0?-0.0014:0.0011))).toFixed(2));
-   const h=Number((Math.max(o,c)*1.0016).toFixed(2));
-   const l=Number((Math.min(o,c)*0.9984).toFixed(2));
-   bars.push({bar_close_at:tIso,open:String(o),high:String(h),low:String(l),close:String(c),volume:String(185000+i*1200)});
-   quotes.push({at:tIso,price:String(c)});
-  }
-  const latestBar=bars[bars.length-1];
-  const buyBar=bars[Math.max(0,bars.length-14)];
-  const sellBar=bars[Math.max(0,bars.length-4)];
-  companies.push({
-   symbol:sym,timeframe:'1m',family:fam,state:'shadow_watching',feed_status:'fresh_indicative',
-   observed_at:latestBar.bar_close_at,last_bar_at:latestBar.bar_close_at,last_checked_at:latestBar.bar_close_at,
-   quote:{price:latestBar.close,quote_at:latestBar.bar_close_at},
-   quote_history:quotes,chart_bars:bars,
-   virtual_equity:'10342.80',virtual_realized_pnl:'342.80',
-   decisions:[
-    {side:'buy',decision_at:buyBar.bar_close_at,bar_close_at:buyBar.bar_close_at,reason:sigReason},
-    {side:sigSide,decision_at:sellBar.bar_close_at,bar_close_at:sellBar.bar_close_at,reason:'4:00 PM ET Fast Money Target Track · +$342.80 Intraday P&L'}
-   ],
-   fills:[
-    {side:'BUY',qty:'15',price:buyBar.close,status:'Shadow Paper & RH Algo Fill (+4.0bps slip)'},
-    {side:'BUY CALL',qty:'4 contracts',price:'2.45',status:'4:00 PM ET Target +$342.80 (+3.43%)'}
-   ]
-  });
-  marketCompanies.push({
-   symbol:sym,name,quote_type:qType,shares_outstanding:qType==='EQUITY'?String(Math.round(mCap/basePx)):'0',
-   fund_assets:qType==='ETF'?String(mCap):undefined,reported_market_cap:String(mCap),
-   previous_close:String(prevClose),day_volume:String(dayVol),sector:'Live TradingView Algo Watchlist',state:'live_shadow',observed_at:latestBar.bar_close_at
-  });
-  newsCompanies.push({
-   symbol:sym,
-   sources:[{source:'yahoo_finance',state:'connected',items:[
-    {title:`[LIVE WIRE · ${sym}] Stage 0 Jev Router (0.96): ${sigReason}`,url:`https://finance.yahoo.com/quote/${sym}`,source:'yahoo_finance',published_at:latestBar.bar_close_at},
-    {title:`[MAVERICK-MCP · ${sym}] 1m Bar Volume $39.3M >= $1M Floor · 0.1% Bar Participation Cap Verified`,url:`https://finance.yahoo.com/quote/${sym}/options`,source:'yahoo_finance_rss',published_at:buyBar.bar_close_at},
-    {title:`[4:00 PM ET EARNINGS TRACK · ${sym}] Paper Account Shadow P&L +$342.80 (+3.43%) · 10% Stop Guard Armed`,url:`https://finance.yahoo.com/quote/${sym}/news`,source:'bbc_business_rss',published_at:sellBar.bar_close_at}
-   ]}]
-  });
- }
- return {
-  activity:{
-   companies,
-   scanner:{active_symbol:'SPY',last_scanned_at:new Date(nowMs).toISOString()},
-   portfolio:{initial_cash:'10000',virtual_equity:'10342.80'},
-   events:companies.flatMap(c=>c.decisions.map(dec=>({at:dec.decision_at,symbol:c.symbol,side:dec.side,message:dec.reason})))
-  },
-  market:{companies:marketCompanies},
-  news:{observed_at:new Date(nowMs).toISOString(),companies:newsCompanies,broad_sources:[]}
- };
-}
-
 let selectedSymbol=null,lastShadow=null,lastNewsKey=null,lastResponse=null;
-updateRhTopButton();
+updatePaperTopButton();
 renderTvLiveCommand();
 renderLivePaperAccountDesk();
 renderTvDailyReview();
@@ -1277,22 +627,18 @@ function newsList(data,symbol){const key=(symbol||'')+'|'+(data?.observed_at||'u
  items.sort((a,b)=>(Date.parse(b.published_at)||0)-(Date.parse(a.published_at)||0));for(const item of items.slice(0,25)){let url;try{url=new URL(item.url)}catch{continue}if(url.protocol!=='https:')continue;const div=document.createElement('div');div.className='news-item';const a=document.createElement('a');a.textContent=item.title;a.href=url.href;a.target='_blank';a.rel='noopener noreferrer';const time=document.createElement('small');time.textContent=sourceName(item.source)+' · published '+when(item.published_at);div.append(a,time);box.append(div)}if(!items.length){const empty=document.createElement('p');empty.textContent='Sources returned no company headlines. No articles have been fabricated.';box.append(empty)}}
 function render(d){
  const paper=d?.runner?.mode==='paper';
- if(!paper&&(!d?.activity||!d?.activity?.companies?.length)){
-  const fb=buildLiveShadowFallback();
-  d={...d,activity:fb.activity,market:d?.market?.companies?.length?d.market:fb.market,news:d?.news?.companies?.length?d.news:fb.news};
- }
- lastResponse=d;if(d.broker&&!rhDrawerOpen){Object.assign(rhState,d.broker);updateRhTopButton()}if(d.alpaca_paper){Object.assign(alpacaPaperState,d.alpaca_paper)}renderLivePaperAccountDesk();const s=d.settings||{},a=renderScan(d.activity,paper);const stale=a&&Date.now()-Date.parse(a.observed_at)>45000&&d.runner.state==='running';
+ lastResponse=d;if(d.alpaca_paper){Object.assign(alpacaPaperState,d.alpaca_paper);updatePaperTopButton()}renderTvLiveCommand();renderLivePaperAccountDesk();const s=d.settings||{},a=renderScan(d.activity,paper);const stale=a&&Date.now()-Date.parse(a.observed_at)>45000&&d.runner.state==='running';
 text('overview-equity',money(d.activity?.portfolio?.virtual_equity??d.activity?.account?.equity));text('overview-companies',d.activity?.companies?.length??(d.activity?1:0));text('overview-signal',(a?.decisions||[]).slice(-1)[0]?.side?.toUpperCase()||'Waiting');text('mode',paper?'Alpaca paper account':'Yahoo market data · virtual trades');text('health',(d.observer==='active_writer'?'Market observer connected':stateLabel(d.runner.state))+' · '+(stale?'Last observation is old':stateLabel(a?.state))+' · Updated '+when(a?.observed_at||d.observed_at));
-text('strategy',(a?.symbol||s.symbol||'—')+' / '+(a?.timeframe||s.timeframe||'—')+' / '+(a?.family||s.family||'').replaceAll('_',' '));text('price',money(paper?a?.price:a?.quote?.price));text('equity-label',paper?'PAPER ACCOUNT EQUITY':'SELECTED SYMBOL VIRTUAL EQUITY');text('equity',money(paper?a?.account?.equity:(a?.virtual_equity||d.activity?.portfolio?.virtual_equity)));text('pnl-label',paper?'STRATEGY PRICE P&L':'TODAY 4:00 PM / VIRTUAL P&L');text('pnl',money(paper?a?.performance?.strategy_price_pnl_usd:(a?.virtual_realized_pnl??342.80)));text('message',a?.state==='bar_revision_paused'?'Shadow trades paused because Yahoo revised a previously observed candle. The live price feed is still running.':a?.message||a?.last_error||'Live Shadow Paper Account & Robinhood Algo Engine active · Settling daily earnings at 4:00 PM ET.');text('feed',paper?(a?.feed||'Broker connection required'):a?.feed_note);text('activity',JSON.stringify(a||{state:'waiting_for_runner_data'},null,2));text('checks',JSON.stringify(d.connections||{state:'not_checked'},null,2));renderMarket(d,a);
+text('strategy',(a?.symbol||s.symbol||'—')+' / '+(a?.timeframe||s.timeframe||'—')+' / '+(a?.family||s.family||'').replaceAll('_',' '));text('price',money(paper?a?.price:a?.quote?.price));text('equity-label',paper?'PAPER ACCOUNT EQUITY':'SELECTED SYMBOL VIRTUAL EQUITY');text('equity',money(paper?a?.account?.equity:(a?.virtual_equity||d.activity?.portfolio?.virtual_equity)));text('pnl-label',paper?'STRATEGY PRICE P&L':'VIRTUAL REALIZED P&L');text('pnl',money(paper?a?.performance?.strategy_price_pnl_usd:a?.virtual_realized_pnl));text('message',a?.state==='bar_revision_paused'?'Shadow trades paused because Yahoo revised a previously observed candle. The live price feed is still running.':a?.message||a?.last_error||'Start a test with sh tets start when you want live observations.');text('feed',paper?(a?.feed||'Broker connection required'):a?.feed_note);text('activity',JSON.stringify(a||{state:'waiting_for_runner_data'},null,2));text('checks',JSON.stringify(d.connections||{state:'not_checked'},null,2));renderMarket(d,a);
 const settings=$('settings');settings.replaceChildren();for(const [label,value] of [['STRATEGY',s.family?.replaceAll('_',' ')],['SYMBOL / BARS',(s.symbol||'—')+' / '+(s.timeframe||'—')],['ALLOCATED CAPITAL',money(s.capital_usd)],['MAX ENTRY',money(s.order_budget_usd)],['NEW-ENTRY LOSS STOP',money(s.loss_stop_usd)]]){const item=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value||'—';item.append(dt,dd);settings.append(item)}
 const ai=s.ai||{};text('model',ai.provider==='none'?'Rule-based only':(ai.provider||'unselected').toUpperCase()+' / '+(ai.model||'CLI default'));text('ai-status',!paper?'PAPER MODE ONLY':ai.provider==='none'||!ai.consent?'OFF':(a?.ai?.status||'not started').replaceAll('_',' ').toUpperCase());text('ai-reason',!paper?'AI reviews are configured for paper entries; they are not running in Yahoo shadow.':a?.ai?.reason||'Waiting for broker connection and a valid entry.');text('ai-budget',a?.ai?.calls_today==null?'Daily request cap: '+(ai.daily_call_limit??'—'):'Calls today: '+a.ai.calls_today+' / '+ai.daily_call_limit);
-text('goal',Number(s.profit_target_usd)?money(s.profit_target_usd)+' / strategy run':'No profit target');text('remaining',a?.performance?.target_remaining_usd!=null?'Remaining: '+money(a.performance.target_remaining_usd):'');text('liquidity',(s.liquidity||'unselected').toUpperCase());text('liquidity-status',paper?a?.liquidity_check?.reason||'Awaiting fresh IEX quote and completed bars.':'Liquidity gating and loss-stop controls apply in paper mode.');text('risk-scope',paper?'Capital, entry budget and liquidity gate new buys. The loss stop halts new entries and does not liquidate positions.':'Shadow uses the selected rules, capital and entry budget with assumed fills.');text('execution',paper?'Broker-reported paper orders and fills. No real money.':'Indicative Yahoo prices and assumed virtual fills · Paper 4:00 PM ET & Robinhood Real Money Algo ready.');eventList(d.activity?.events||a?.decisions);text('fills-label',paper?'PAPER ORDERS / BROKER FILL STATUS':'ASSUMED VIRTUAL FILLS');table(paper?a?.orders:a?.fills,paper);newsList(d.news,a?.symbol||s.symbol);if(d.adw_fleet?.sssf_trace)renderSssfAll(d.adw_fleet.sssf_trace,null)}
+text('goal',Number(s.profit_target_usd)?money(s.profit_target_usd)+' / strategy run':'No profit target');text('remaining',a?.performance?.target_remaining_usd!=null?'Remaining: '+money(a.performance.target_remaining_usd):'');text('liquidity',(s.liquidity||'unselected').toUpperCase());text('liquidity-status',paper?a?.liquidity_check?.reason||'Awaiting fresh IEX quote and completed bars.':'Liquidity gating and loss-stop controls apply in paper mode.');text('risk-scope',paper?'Capital, entry budget and liquidity gate new buys. The loss stop halts new entries and does not liquidate positions.':'Shadow uses the selected rules, capital and entry budget with assumed fills.');text('execution',paper?'Broker-reported paper orders and fills. No real money.':'Indicative Yahoo prices and assumed virtual fills. No broker orders.');eventList(d.activity?.events||a?.decisions);text('fills-label',paper?'PAPER ORDERS / BROKER FILL STATUS':'ASSUMED VIRTUAL FILLS');table(paper?a?.orders:a?.fills,paper);newsList(d.news,a?.symbol||s.symbol);if(d.adw_fleet?.sssf_trace)renderSssfAll(d.adw_fleet.sssf_trace,null)}
 
 let terminalData=null,modelBusy=false;
 const roleNames={stage_0_jev_router:'Catalyst router',phase_1_scout_recon:'Market scout',trader_price_structure:'Price & momentum',trader_theta_mean_reversion:'Options & mean reversion',phase_3_risk_auditor:'Risk reviewer',phase_4_fleet_dispatcher:'Fleet coordinator'};
 function dataTable(id,headings,rows){const box=$(id);box.replaceChildren();if(!rows.length){box.textContent='No saved rows available.';return}const table=document.createElement('table'),head=document.createElement('tr');for(const title of headings){const th=document.createElement('th');th.textContent=title;head.append(th)}table.append(head);for(const row of rows){const tr=document.createElement('tr');for(const value of row){const td=document.createElement('td');td.textContent=value==null?'—':String(value);tr.append(td)}table.append(tr)}box.append(table)}
 function renderTerminal(d){
- terminalData=d;if(d.broker&&!rhDrawerOpen){Object.assign(rhState,d.broker);updateRhTopButton()}const r=d.research||{},l=d.library||{};
+ terminalData=d;if(d.alpaca_paper){Object.assign(alpacaPaperState,d.alpaca_paper);updatePaperTopButton()}const r=d.research||{},l=d.library||{};
  text('research-state',r.state==='saved_simulation'?'SAVED SIMULATION':'NO SAVED RUN');text('research-basis',(r.symbol?r.symbol+' · ':'')+(r.data_basis||r.message||'Results unavailable.'));
  text('research-pnl',money(r.net_pnl));$('research-pnl').className=Number(r.net_pnl)<0?'negative':r.net_pnl!=null?'positive':'';
  text('research-accounts',r.state==='saved_simulation'?r.accounts?.length:0);text('research-time',r.created_at?when(r.created_at):'Not recorded');
@@ -1308,7 +654,7 @@ let sssfSelectedAdwId=null,sssfSelectedPhaseSeq=1,sssfSelectedPart='harness',sss
 let sssfSelectedPresetId='preset_01_morning_prep',sssfPromptTargetSeat='orchestrator',sssfCustomSysPrompt='',sssfAgentSysPrompts={},sssfCustomUserPrompt='',sssfModelOverrides={},sssfRunState='idle',sssfRunStep=0,sssfRunTimer=null;
 let sssfThinkingOverrides={stage_0_jev_router:'low',phase_1_scout_recon:'medium',trader_price_structure:'xhigh',trader_theta_mean_reversion:'high',phase_3_risk_auditor:'xhigh',phase_4_fleet_dispatcher:'high'};
 let sssfGeneratedWorkflows=[],sssfCliLog=[];
-const CANONICAL_SET_SYSTEM_PROMPT='[SET MASTER ADW SYSTEM PROMPT · ALWAYS ACTIVE · harness2/systemprompt.md]\n1. SYNCED TRIAD LOCK: Enforce all 11 bound Python tools in strict sequence across all 6 agents.\n2. LIQUIDITY & BAR CAP: Reject any symbol with median 1m bar volume < $1,000,000; cap single order <= 0.1% of bar volume ($1,000 max).\n3. RISK & STOP COLLAR: Enforce -10.0% daily stop-loss across Paper Shadow (4:00 PM ET settlement) & Robinhood Real Money Algo allocation.\n4. WORKFLOW SYNTHESIS: Use the Set System Prompt + User Prompt + Per-Agent Models & Thinking Levels to synthesize and execute new Algo Workflows.';
+const CANONICAL_SET_SYSTEM_PROMPT='[SET MASTER ADW SYSTEM PROMPT · ALWAYS ACTIVE · harness2/systemprompt.md]\n1. SYNCED TRIAD LOCK: Enforce all 11 bound Python tools in strict sequence across all 6 agents.\n2. LIQUIDITY & BAR CAP: Reject any symbol with median 1m bar volume < $1,000,000; cap single order <= 0.1% of bar volume ($1,000 max).\n3. RISK & STOP COLLAR: Enforce -10.0% daily stop-loss across Alpaca Paper & Yahoo Shadow accounts (live_orders=false).\n4. WORKFLOW SYNTHESIS: Use the Set System Prompt + User Prompt + Per-Agent Models & Thinking Levels to synthesize and execute new Algo Workflows.';
 let btSelectedRunId='bt_01_orb_breakout_10d',btSelectedDayNum=1,btSelectedDecisionIdx=1;
 const DEFAULT_ADW_MODELS=['codex:gpt-5.4','codex:gpt-5.3-codex','openai:gpt-5.4','openai:o3-pro','grok:grok-4','grok:grok-4-fast','deepseek:deepseek-r1','deepseek:deepseek-chat','glm:glm-5','glm:glm-4-plus','openrouter:kimi-k2.7-code','openrouter:deepseek/deepseek-v4.1-flash','openrouter:qwen/qwen3-32b-fast','gemini:gemini-2.5-pro','gemini:gemini-2.5-flash','typesafe:jev-router-v1','local:qwen3-coder-30b'];
 const FALLBACK_LANGGRAPH={
@@ -1365,12 +711,12 @@ function buildDefaultAgentPrompts(title,ms){
  };
 }
 const FALLBACK_PRESETS=[
- {preset_id:'preset_01_morning_prep',title:'ADW 01 · Morning Pre-Market Shadow & Liquidity Sweep',category:'Pre-Market & Daily Setup',case_id:'case_01_orb_breakout',description:'Scans watchlist for >= $1M median bar volume, runs Jev 0.4s catalyst rerank, pulls Maverick-MCP RSI/MACD/S&R, and arms Paper Shadow & Robinhood Algo accounts with 10.0% daily stop loss.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'openrouter:deepseek/deepseek-v4.1-flash',trader_price_structure:'codex:gpt-5.4',trader_theta_mean_reversion:'openrouter:kimi-k2.7-code',phase_3_risk_auditor:'codex:gpt-5.4',phase_4_fleet_dispatcher:'openrouter:kimi-k2.7-code'},thinking_stack:{stage_0_jev_router:'low',phase_1_scout_recon:'medium',trader_price_structure:'xhigh',trader_theta_mean_reversion:'high',phase_3_risk_auditor:'xhigh',phase_4_fleet_dispatcher:'high'},system_prompt:'You are the Harness² ADW Trade Workflow Orchestrator (Morning Pre-Market Sweep).\nEnforce the Synced Triad across all 11 required tools in strict order.\nReject any symbol with median 1m bar volume < $1,000,000 or bar participation > 0.1%.\nArm all 12 Shadow Accounts (6 Intraday 1D + 6 Swing 1W) and Robinhood Real Money allocation with daily_loss_stop_pct = 10.0%.',user_prompt:'Run Morning Pre-Market Sweep on SPY & NVDA: screen macro/earnings catalysts via Jev 0.4s, compute Maverick-MCP RSI/MACD/Support-Resistance, and build a new intraday ORB + Theta Algo Workflow.'},
- {preset_id:'preset_02_orb_momentum_blitz',title:'ADW 02 · 5m Opening Range Breakout (ORB) + Long Call Blitz',category:'Intraday Fast Money',case_id:'case_01_orb_breakout',description:'High-conviction 5m breakout ADW for Long Equity and OTM Long Call (2 DTE / 7 DTE) entries with Grok-4-Fast scout + GPT-5.4 (xhigh thinking) price trader + o3-pro risk auditor.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'grok:grok-4-fast',trader_price_structure:'codex:gpt-5.4',trader_theta_mean_reversion:'glm:glm-5',phase_3_risk_auditor:'openai:o3-pro',phase_4_fleet_dispatcher:'codex:gpt-5.4'},thinking_stack:{stage_0_jev_router:'low',phase_1_scout_recon:'medium',trader_price_structure:'xhigh',trader_theta_mean_reversion:'high',phase_3_risk_auditor:'xhigh',phase_4_fleet_dispatcher:'high'},system_prompt:'You are the Harness² ORB Momentum Blitz ADW.\nPrioritize `trader_price_structure` for directional `long_equity` and `long_call` breakouts when 5m move >= +12 bps and Bull Score >= 60.\nEnforce 0.1% max bar participation ($1,000 cap) and 10.0% daily stop loss.',user_prompt:'Execute 5m Opening Range Breakout blitz on SPY: verify volume expansion >= $1M/bar, price 0.35-delta Long Calls and Long Equity, and deploy to Paper Shadow & Robinhood Algo.'},
+ {preset_id:'preset_01_morning_prep',title:'ADW 01 · Morning Pre-Market Shadow & Liquidity Sweep',category:'Pre-Market & Daily Setup',case_id:'case_01_orb_breakout',description:'Scans watchlist for >= $1M median bar volume, runs Jev 0.4s catalyst rerank, pulls Maverick-MCP RSI/MACD/S&R, and arms Alpaca Paper & Yahoo Shadow accounts with 10.0% daily stop loss.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'openrouter:deepseek/deepseek-v4.1-flash',trader_price_structure:'codex:gpt-5.4',trader_theta_mean_reversion:'openrouter:kimi-k2.7-code',phase_3_risk_auditor:'codex:gpt-5.4',phase_4_fleet_dispatcher:'openrouter:kimi-k2.7-code'},thinking_stack:{stage_0_jev_router:'low',phase_1_scout_recon:'medium',trader_price_structure:'xhigh',trader_theta_mean_reversion:'high',phase_3_risk_auditor:'xhigh',phase_4_fleet_dispatcher:'high'},system_prompt:'You are the Harness² ADW Trade Workflow Orchestrator (Morning Pre-Market Sweep).\nEnforce the Synced Triad across all 11 required tools in strict order.\nReject any symbol with median 1m bar volume < $1,000,000 or bar participation > 0.1%.\nArm all 12 Shadow Accounts (6 Intraday 1D + 6 Swing 1W) and Alpaca Paper preview with daily_loss_stop_pct = 10.0%.',user_prompt:'Run Morning Pre-Market Sweep on SPY & NVDA: screen macro/earnings catalysts via Jev 0.4s, compute Maverick-MCP RSI/MACD/Support-Resistance, and build a new intraday ORB + Theta Algo Workflow.'},
+ {preset_id:'preset_02_orb_momentum_blitz',title:'ADW 02 · 5m Opening Range Breakout (ORB) + Long Call Blitz',category:'Intraday Fast Money',case_id:'case_01_orb_breakout',description:'High-conviction 5m breakout ADW for Long Equity and OTM Long Call (2 DTE / 7 DTE) entries with Grok-4-Fast scout + GPT-5.4 (xhigh thinking) price trader + o3-pro risk auditor.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'grok:grok-4-fast',trader_price_structure:'codex:gpt-5.4',trader_theta_mean_reversion:'glm:glm-5',phase_3_risk_auditor:'openai:o3-pro',phase_4_fleet_dispatcher:'codex:gpt-5.4'},thinking_stack:{stage_0_jev_router:'low',phase_1_scout_recon:'medium',trader_price_structure:'xhigh',trader_theta_mean_reversion:'high',phase_3_risk_auditor:'xhigh',phase_4_fleet_dispatcher:'high'},system_prompt:'You are the Harness² ORB Momentum Blitz ADW.\nPrioritize `trader_price_structure` for directional `long_equity` and `long_call` breakouts when 5m move >= +12 bps and Bull Score >= 60.\nEnforce 0.1% max bar participation ($1,000 cap) and 10.0% daily stop loss.',user_prompt:'Execute 5m Opening Range Breakout blitz on SPY: verify volume expansion >= $1M/bar, price 0.35-delta Long Calls and Long Equity, and deploy to Alpaca Paper & Yahoo Shadow.'},
  {preset_id:'preset_03_theta_iv_harvest',title:'ADW 03 · High-IV Range Compression & Theta Credit Harvest',category:'Options Theta & Income',case_id:'case_02_theta_mean_reversion',description:'Harvests intraday & weekly option time decay via Short Calls and 100% Cash-Secured Short Puts when RSI-14 is inside [35, 65] using Kimi-K2.7 + DeepSeek-R1.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'deepseek:deepseek-chat',trader_price_structure:'gemini:gemini-2.5-pro',trader_theta_mean_reversion:'openrouter:kimi-k2.7-code',phase_3_risk_auditor:'deepseek:deepseek-r1',phase_4_fleet_dispatcher:'openrouter:kimi-k2.7-code'},thinking_stack:{stage_0_jev_router:'low',phase_1_scout_recon:'high',trader_price_structure:'high',trader_theta_mean_reversion:'xhigh',phase_3_risk_auditor:'xhigh',phase_4_fleet_dispatcher:'medium'},system_prompt:'You are the Harness² Theta Credit Harvest ADW.\nPrioritize `trader_theta_mean_reversion` on neutral RSI [35, 65] regimes.\nSelect OTM Short Call and Short Put strikes (delta <= 0.30) with 100.0% cash/underlying collateral reservation.',user_prompt:'Harvest option theta decay on SPY & AAPL: price Covered Short Calls and Cash-Secured Short Puts across 1D and 1W accounts with 100% collateral lock.'},
  {preset_id:'preset_04_bearish_put_hedge',title:'ADW 04 · Bearish MACD Roll-Over & Downside Put/Short Hedge',category:'Downside Protection & Short',case_id:'case_03_macd_bearish_hedge',description:'Deploys protective Long Puts, Short Equity, and Short Call hedges when MACD crosses bearish and resistance rejects price.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'grok:grok-4',trader_price_structure:'deepseek:deepseek-r1',trader_theta_mean_reversion:'glm:glm-5',phase_3_risk_auditor:'codex:gpt-5.4',phase_4_fleet_dispatcher:'codex:gpt-5.4'},thinking_stack:{stage_0_jev_router:'low',phase_1_scout_recon:'high',trader_price_structure:'xhigh',trader_theta_mean_reversion:'high',phase_3_risk_auditor:'xhigh',phase_4_fleet_dispatcher:'high'},system_prompt:'You are the Harness² Bearish Downside Hedge ADW.\nSynthesize `short_equity`, `long_put`, and `short_call` protection when MACD state is bearish.\nVerify 100% short/option collateral lock and 10.0% daily stop loss.',user_prompt:'Run Bearish MACD Hedge workflow on SPY: evaluate resistance rejection, price protective Long Puts and Short Equity, and update the 12-account fleet.'},
- {preset_id:'preset_05_losing_day_audit',title:'ADW 05 · 4:00 PM ET Daily System Review & Gate Optimizer',category:'4:00 PM Daily Audit & Tuning',case_id:'case_05_stop_loss_guardian',description:'Reviews 4:00 PM ET settled Paper & Robinhood Algo trades against 1-minute bars and tightens pre-entry RSI/VWAP gates.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'gemini:gemini-2.5-flash',trader_price_structure:'openai:o3-pro',trader_theta_mean_reversion:'deepseek:deepseek-r1',phase_3_risk_auditor:'codex:gpt-5.4',phase_4_fleet_dispatcher:'glm:glm-5'},thinking_stack:{stage_0_jev_router:'low',phase_1_scout_recon:'medium',trader_price_structure:'xhigh',trader_theta_mean_reversion:'xhigh',phase_3_risk_auditor:'xhigh',phase_4_fleet_dispatcher:'high'},system_prompt:'You are the Harness² 4:00 PM Daily System Review & Gate Optimizer ADW.\nAudit every trade entry against 1m bar extension, classify fade-buy-extreme vs clean-continuation, and tighten pre-trade gates while preserving the 10.0% daily stop loss.',user_prompt:'Run 4:00 PM ET Daily System Review on SPY: audit 1m bars, verify Paper Account (+$342.80) and Robinhood Real Money allocation, and generate a tightened ORB continuation workflow.'},
- {preset_id:'preset_06_harness2_self_evolve',title:'ADW 06 · Harness² Self-Evolution (Synthesize New Algo Workflows)',category:'Self-Evolving ADW Builder',case_id:'case_04_jev_catalyst_blitz',description:'Uses the Set System Prompt + your User Prompt to synthesize new algorithmic feature extractors in tools.py and register new Algo Workflows.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'deepseek:deepseek-chat',trader_price_structure:'codex:gpt-5.4',trader_theta_mean_reversion:'openrouter:kimi-k2.7-code',phase_3_risk_auditor:'deepseek:deepseek-r1',phase_4_fleet_dispatcher:'codex:gpt-5.4'},thinking_stack:{stage_0_jev_router:'medium',phase_1_scout_recon:'high',trader_price_structure:'xhigh',trader_theta_mean_reversion:'xhigh',phase_3_risk_auditor:'xhigh',phase_4_fleet_dispatcher:'high'},system_prompt:'You are the Harness² Self-Evolution ADW Builder.\nMutate `systemprompt.md`, `tools.py`, and `tool_guidance.md` in lockstep (Synced Triad = 11/11 tools).\nSynthesize new Algo Workflows from the Set System Prompt + User Prompt and promote winning workflows to Live TradingView & Robinhood Algo.',user_prompt:'Create a new Fast-Money VWAP + Jev News Breakout Algo Workflow for NVDA & SPY with 0.30-delta Calls, 100% cash-secured Puts, and 4:00 PM ET auto-settlement.'}
+ {preset_id:'preset_05_losing_day_audit',title:'ADW 05 · Daily System Review & Gate Optimizer',category:'Daily Audit & Tuning',case_id:'case_05_stop_loss_guardian',description:'Reviews settled Paper & Shadow Algo trades against 1-minute bars and tightens pre-entry RSI/VWAP gates.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'gemini:gemini-2.5-flash',trader_price_structure:'openai:o3-pro',trader_theta_mean_reversion:'deepseek:deepseek-r1',phase_3_risk_auditor:'codex:gpt-5.4',phase_4_fleet_dispatcher:'glm:glm-5'},thinking_stack:{stage_0_jev_router:'low',phase_1_scout_recon:'medium',trader_price_structure:'xhigh',trader_theta_mean_reversion:'xhigh',phase_3_risk_auditor:'xhigh',phase_4_fleet_dispatcher:'high'},system_prompt:'You are the Harness² Daily System Review & Gate Optimizer ADW.\nAudit every trade entry against 1m bar extension, classify fade-buy-extreme vs clean-continuation, and tighten pre-trade gates while preserving the 10.0% daily stop loss.',user_prompt:'Run Daily System Review on SPY: audit 1m bars, verify Paper Account & Shadow risk gates, and generate a tightened ORB continuation workflow.'},
+ {preset_id:'preset_06_harness2_self_evolve',title:'ADW 06 · Harness² Self-Evolution (Synthesize New Algo Workflows)',category:'Self-Evolving ADW Builder',case_id:'case_04_jev_catalyst_blitz',description:'Uses the Set System Prompt + your User Prompt to synthesize new algorithmic feature extractors in tools.py and register new Algo Workflows.',model_stack:{stage_0_jev_router:'typesafe:jev-router-v1',phase_1_scout_recon:'deepseek:deepseek-chat',trader_price_structure:'codex:gpt-5.4',trader_theta_mean_reversion:'openrouter:kimi-k2.7-code',phase_3_risk_auditor:'deepseek:deepseek-r1',phase_4_fleet_dispatcher:'codex:gpt-5.4'},thinking_stack:{stage_0_jev_router:'medium',phase_1_scout_recon:'high',trader_price_structure:'xhigh',trader_theta_mean_reversion:'xhigh',phase_3_risk_auditor:'xhigh',phase_4_fleet_dispatcher:'high'},system_prompt:'You are the Harness² Self-Evolution ADW Builder.\nMutate `systemprompt.md`, `tools.py`, and `tool_guidance.md` in lockstep (Synced Triad = 11/11 tools).\nSynthesize new Algo Workflows from the Set System Prompt + User Prompt and promote winning workflows to Alpaca Paper & Yahoo Shadow.',user_prompt:'Create a new Fast-Money VWAP + Jev News Breakout Algo Workflow for NVDA & SPY with 0.30-delta Calls and 100% cash-secured Puts.'}
 ];
 function mk(tag,cls,txt){const n=document.createElement(tag);if(cls)n.className=cls;if(txt!=null)n.textContent=String(txt);return n}
 async function persistModelMap(assignments){
@@ -1413,7 +759,7 @@ function launchLiveWorkflow(trace,researchMeta,synthesizeNew=false){
    title:'⚡ Generated ADW 0'+wfNum+' · '+promptSnippet,
    category:'Synthesized Algo Workflow',
    case_id:'case_01_orb_breakout',
-   description:'Synthesized from Set System Prompt + User Prompt · Models: '+(sssfModelOverrides.trader_price_structure||'codex:gpt-5.4')+' (thinking: '+(sssfThinkingOverrides.trader_price_structure||'xhigh')+') · Armed for Paper 4:00 PM & Robinhood Real Money.',
+   description:'Synthesized from Set System Prompt + User Prompt · Models: '+(sssfModelOverrides.trader_price_structure||'codex:gpt-5.4')+' (thinking: '+(sssfThinkingOverrides.trader_price_structure||'xhigh')+') · Armed for Alpaca Paper & Yahoo Shadow.',
    model_stack:{...sssfModelOverrides},
    thinking_stack:{...sssfThinkingOverrides},
    system_prompt:sssfCustomSysPrompt||CANONICAL_SET_SYSTEM_PROMPT,
@@ -1426,7 +772,7 @@ function launchLiveWorkflow(trace,researchMeta,synthesizeNew=false){
  persistModelMap(sssfModelOverrides);
  sssfRunState='running';sssfRunStep=1;sssfSelectedPhaseSeq=1;sssfSelectedPart='harness';
  sssfCliLog=[
-  `$ adw run --workflow ${sssfSelectedPresetId} --set-system-prompt harness2/systemprompt.md --account-mode ${rhState.execution_mode}`,
+  `$ adw run --workflow ${sssfSelectedPresetId} --set-system-prompt harness2/systemprompt.md --account-mode ${alpacaPaperState.mode||'shadow'}`,
   `[00:00.08] Loaded Set Master System Prompt + 6 Per-Agent Prompts (11/11 Synced Triad tools verified)`,
   `[00:00.38] ▶ Agent 01 stage_0_jev_router (${sssfModelOverrides.stage_0_jev_router||'typesafe:jev-router-v1'} · thinking=${sssfThinkingOverrides.stage_0_jev_router||'low'}) → JevCatalystEnvelope PASS`
  ];
@@ -1441,7 +787,7 @@ function launchLiveWorkflow(trace,researchMeta,synthesizeNew=false){
   }else{
    clearInterval(sssfRunTimer);sssfRunTimer=null;
    sssfRunState='complete';
-   sssfCliLog.push(`[00:03.42] ✓ ADW Workflow Complete · New Algo Workflow registered & armed for Live TradingView (Paper 4:00 PM ET & Robinhood Real Money ${rhState.agent_tradable_pct}% Cap).`);
+   sssfCliLog.push(`[00:03.42] ✓ ADW Workflow Complete · New Algo Workflow registered & armed for Alpaca Paper & Yahoo Shadow (live_orders=false).`);
    renderSssfAll(trace,researchMeta);
   }
  },450);
@@ -1620,7 +966,7 @@ function renderSssfInto(containerId,trace,researchMeta){
  usrCol.append(mk('div','sssf-card-trig','STEP 3B · TYPE YOUR USER PROMPT (OR USE THE SET PROMPT) TO MAKE MORE ALGO WORKFLOWS:'));
  const usrTa=mk('textarea','sssf-textarea');
  usrTa.value=sssfCustomUserPrompt;
- usrTa.placeholder='Type what you want the 6 agents to build or trade (or leave the set prompt) — e.g. "Build a fast-money NVDA & SPY 5m ORB Call + Cash-Secured Put workflow for Paper 4:00 PM & Robinhood Real Money"…';
+ usrTa.placeholder='Type what you want the 6 agents to build or trade (or leave the set prompt) — e.g. "Build a fast-money NVDA & SPY 5m ORB Call + Cash-Secured Put workflow for Alpaca Paper & Yahoo Shadow"…';
  usrTa.oninput=()=>{sssfCustomUserPrompt=usrTa.value};
  usrCol.append(usrTa);
  if(sssfCliLog.length){

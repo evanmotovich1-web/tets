@@ -99,6 +99,13 @@ class TerminalTests(unittest.TestCase):
                     self.assertEqual(b_res['protected_reserve_usd'],28000.0)
                     self.assertEqual(b_res['daily_loss_stop_usd'],1200.0)
                     self.assertFalse(b_res['live_orders'])
+                with urlopen(base+'/api/alpaca-paper')as response:
+                    ap_res=json.load(response)
+                    self.assertEqual(ap_res['state'],'not_connected')
+                    self.assertFalse(ap_res['has_api_keys'])
+                    self.assertIsNone(ap_res['equity_usd'])
+                    self.assertIsNone(ap_res['today_pnl_usd'])
+                    self.assertFalse(ap_res['live_orders'])
             finally:server.shutdown();server.server_close();thread.join()
 
 

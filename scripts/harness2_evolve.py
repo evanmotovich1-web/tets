@@ -2188,7 +2188,7 @@ def run_model_cli(
         try:
             if install_wizard:
                 print("\n╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗")
-                print("║  HERMES-STYLE AI MODEL & SUBSCRIPTION INSTALL WIZARD · CONNECT MODELS & SUBSCRIPTIONS FOR YOUR 6 TRADING AGENTS  ║")
+                print("║  🤖 HERMES-STYLE AI MODEL & SUBSCRIPTION WIZARD · CONNECT MODELS FOR YOUR 6 TRADING AGENTS                       ║")
                 print("╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝")
                 want = input("Do you want to connect an AI model or subscription in the terminal now? [Y/n, Enter = Yes]: ").strip().lower()
                 if want in ('n', 'no', 'skip', 'q'):
@@ -2207,7 +2207,7 @@ def run_model_cli(
                 print("  [R] Reset All Models    (Restore default non-Anthropic stack)")
                 print("  [Enter] Done & Continue")
 
-                choice = input("\nPress [1-7] to connect provider/subscription (or comma-separated like 1,2,5) | [A] Agent | [R] Reset | [Enter] Done: ").strip()
+                choice = input("\nPress [1-7] Provider | [A] Agent | [R] Reset | [Enter] Done: ").strip()
                 if not choice or choice.lower() in ('q', 'done', 'exit', 'n', 'no'):
                     break
                 if choice.lower() == 'r':
