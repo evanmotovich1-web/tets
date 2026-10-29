@@ -9,7 +9,7 @@ import threading
 import unittest
 from unittest.mock import patch
 from urllib.error import HTTPError
-from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, Request, build_opener, urlopen
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import options_short_engine as engine
@@ -98,7 +98,26 @@ class TerminalTests(unittest.TestCase):
                     self.assertEqual(b_res['agent_tradable_usd'],12000.0)
                     self.assertEqual(b_res['protected_reserve_usd'],28000.0)
                     self.assertEqual(b_res['daily_loss_stop_usd'],1200.0)
+                    self.assertFalse(b_res['connected'])
+                    self.assertEqual(b_res['status_message'],'Robinhood: not connected — live orders unavailable')
                     self.assertFalse(b_res['live_orders'])
+                class NoRedirect(HTTPRedirectHandler):
+                    def redirect_request(self, req, fp, code, msg, headers, newurl):
+                        return None
+                no_redirect_opener = build_opener(NoRedirect)
+                with self.assertRaises(HTTPError) as redir_err:
+                    no_redirect_opener.open(base + '/api/broker/robinhood-redirect', timeout=5)
+                self.assertEqual(redir_err.exception.code, 302)
+                self.assertEqual(redir_err.exception.headers.get('Location'), 'https://robinhood.com/login')
+                redir_err.exception.close()
+                with urlopen(base + '/api/broker') as response:
+                    rh_after = json.load(response)
+                    self.assertEqual(rh_after['broker'], 'robinhood')
+                    self.assertFalse(rh_after['connected'])
+                    self.assertEqual(rh_after['connection_status'], 'pending_login')
+                    self.assertEqual(rh_after['status_message'], 'Robinhood: not connected — live orders unavailable')
+                    self.assertFalse(rh_after['live_orders'])
+                self.assertIn('Robinhood: not connected — live orders unavailable', (runner.ROOT / 'scripts/status.html').read_text())
                 with urlopen(base+'/api/alpaca-paper')as response:
                     ap_res=json.load(response)
                     self.assertEqual(ap_res['state'],'not_connected')

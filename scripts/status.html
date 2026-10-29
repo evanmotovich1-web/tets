@@ -307,7 +307,7 @@ body.on-replay-terminal #backtest-explorer-root{margin:0!important;border:0!impo
    <div id="news" style="max-height:420px;overflow:auto"></div>
   </section>
  </div>
-</div></main><footer class="app-footer">Alpaca Paper Account (<code>https://paper-api.alpaca.markets</code>) &amp; Yahoo Shadow Mode · Live orders remain disabled (<code>live_orders=false</code>).</footer></div></div>
+</div></main><footer class="app-footer">Alpaca Paper Account (<code>https://paper-api.alpaca.markets</code>) &amp; Yahoo Shadow Mode · <span id="robinhood-status">Robinhood: not connected — live orders unavailable</span>.</footer></div></div>
 <script>
 const $=id=>document.getElementById(id);
 const text=(id,value)=>{$(id).textContent=value==null?'—':String(value)};
@@ -433,10 +433,11 @@ function renderLivePaperAccountDesk(){
  );
  const topBtns=mk('div','sssf-run-stats');
  const statusChip=mk('span','sssf-chip '+(isConnected?'ok':ap.has_api_keys?'cyan':'warn'),isConnected?'● CONNECTED (ACTIVE)':ap.has_api_keys?'● '+String(ap.state||'keys_saved').toUpperCase():'○ NOT CONNECTED');
+ const rhChip=mk('span','sssf-chip warn',d?.broker?.status_message||'Robinhood: not connected — live orders unavailable');
  const keyBtn=mk('button','sssf-part-btn'+(alpacaKeysFormOpen?' active':''),'🔑 '+(ap.has_api_keys?'Alpaca Paper Keys ('+(ap.key_hint||'saved')+')':'Connect Alpaca Paper API Key'));
  keyBtn.type='button';
  keyBtn.onclick=()=>{alpacaKeysFormOpen=!alpacaKeysFormOpen;renderLivePaperAccountDesk()};
- topBtns.append(statusChip,keyBtn);
+ topBtns.append(statusChip,rhChip,keyBtn);
  top.append(titleBox,topBtns);
  box.append(top);
 

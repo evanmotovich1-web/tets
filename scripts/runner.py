@@ -173,7 +173,7 @@ class Handler(BaseHTTPRequestHandler):
         elif self.path == '/api/broker': body=json.dumps(terminal_state.broker()).encode(); content='application/json'
         elif self.path == '/api/alpaca-paper': body=json.dumps(terminal_state.alpaca_paper()).encode(); content='application/json'
         elif self.path == '/api/broker/robinhood-redirect':
-            terminal_state.save_broker({'broker':'robinhood','connected':True})
+            terminal_state.save_broker({'broker':'robinhood','connected':False,'connection_status':'pending_login'})
             self.send_response(302)
             self.send_header('Location','https://robinhood.com/login')
             self.send_header('Cache-Control','no-store')

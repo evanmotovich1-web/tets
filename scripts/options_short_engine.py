@@ -1620,7 +1620,11 @@ def load_broker_allocation(state_path: Path | None = None) -> dict[str, Any]:
     if execution_mode not in SUPPORTED_BROKER_MODES:
         execution_mode = 'robinhood_paper_mirror'
 
-    connected = bool(saved.get('connected', True))
+    connection_status = str(saved.get('connection_status', 'not_connected')).strip().lower()
+    if connection_status not in ('not_connected', 'pending_login'):
+        connection_status = 'not_connected'
+    connected = False if broker == 'robinhood' else bool(saved.get('connected', False))
+    status_message = 'Robinhood: not connected — live orders unavailable'
     account_handle = str(saved.get('account_handle', 'RH-INDIV-8842')).strip()[:64] or 'RH-INDIV-8842'
 
     try:
@@ -1690,6 +1694,8 @@ def load_broker_allocation(state_path: Path | None = None) -> dict[str, Any]:
         'execution_mode': execution_mode,
         'execution_mode_label': mode_labels.get(execution_mode, mode_labels['robinhood_paper_mirror']),
         'connected': connected,
+        'connection_status': connection_status,
+        'status_message': status_message,
         'account_handle': account_handle,
         'robinhood_login_url': 'https://robinhood.com/login',
         'robinhood_oauth_url': 'https://robinhood.com/login?redirect_uri=http%3A%2F%2F127.0.0.1%3A8766%2F%23robinhood-connected',
@@ -1728,6 +1734,7 @@ def save_broker_allocation(
         'broker',
         'execution_mode',
         'connected',
+        'connection_status',
         'account_handle',
         'total_account_equity_usd',
         'agent_tradable_pct',
@@ -1747,6 +1754,7 @@ def save_broker_allocation(
         'broker': current['broker'],
         'execution_mode': current['execution_mode'],
         'connected': current['connected'],
+        'connection_status': current.get('connection_status', 'not_connected'),
         'account_handle': current['account_handle'],
         'total_account_equity_usd': current['total_account_equity_usd'],
         'agent_tradable_pct': current['agent_tradable_pct'],
@@ -1768,8 +1776,14 @@ def save_broker_allocation(
             raise ValueError(f'Unsupported execution_mode: {m_val}')
         merged['execution_mode'] = m_val
 
+    if 'connection_status' in updates:
+        cs_val = str(updates['connection_status'] or '').strip().lower()
+        if cs_val not in ('not_connected', 'pending_login'):
+            raise ValueError(f'Unsupported connection_status: {cs_val}')
+        merged['connection_status'] = cs_val
+
     if 'connected' in updates:
-        merged['connected'] = bool(updates['connected'])
+        merged['connected'] = False if merged['broker'] == 'robinhood' else bool(updates['connected'])
 
     if 'account_handle' in updates:
         h_val = str(updates['account_handle'] or '').strip()
