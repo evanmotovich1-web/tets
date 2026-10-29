@@ -46,7 +46,11 @@ def save(path, value):
 def install():
     venv = STATE / '.venv'
     if venv.is_symlink(): raise ValueError('shadow_environment_symlink_refused')
-    if not venv.exists(): subprocess.run(['uv', 'venv', '--python', '3.14', str(venv)], check=True, timeout=120)
+    if not (venv / 'bin/python').is_file():
+        if venv.exists():
+            import shutil
+            shutil.rmtree(venv)
+        subprocess.run(['uv', 'venv', '--python', '3.14', str(venv)], check=True, timeout=120)
     lock = ROOT / 'scripts/shadow-requirements.lock'
     digest = hashlib.sha256(lock.read_bytes()).hexdigest()
     marker = STATE / 'installed.json'

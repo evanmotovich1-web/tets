@@ -27,14 +27,18 @@ fi
 for ALGO_COMMAND in curl tar; do
   command -v "$ALGO_COMMAND" >/dev/null 2>&1 || { echo "Required OS utility missing: $ALGO_COMMAND" >&2; exit 2; }
 done
-if ! git --version >/dev/null 2>&1; then
-  if [ "$ALGO_PLATFORM" = Darwin ] && [ -t 0 ]; then
-    echo 'Git needs Apple Command Line Tools. Complete the Apple Install dialog; this command will continue.'
-    xcode-select --install || true
+if { [ "$ALGO_PLATFORM" = Darwin ] && ! xcode-select -p >/dev/null 2>&1; } || ! git --version >/dev/null 2>&1; then
+  if [ "$ALGO_PLATFORM" = Darwin ] && { [ -t 0 ] || [ -r /dev/tty ]; }; then
+    echo '==> Git needs Apple Command Line Tools. Click "Install" in the macOS popup window; this installer will continue automatically.'
+    xcode-select --install >/dev/null 2>&1 || true
+    osascript -e 'tell application "CoreServicesUIAgent" to activate' >/dev/null 2>&1 || true
     ALGO_WAIT=0
-    until git --version >/dev/null 2>&1; do
+    until xcode-select -p >/dev/null 2>&1 && git --version >/dev/null 2>&1; do
       ALGO_WAIT=$((ALGO_WAIT + 1))
-      [ "$ALGO_WAIT" -lt 1200 ] || { echo 'Apple tools are not ready. Finish their installation, then rerun sh scripts/install.' >&2; exit 2; }
+      if [ $((ALGO_WAIT % 5)) -eq 0 ]; then
+        printf '  ... waiting for Apple Command Line Tools installation (%ds elapsed — check for macOS Install popup)...\n' "$ALGO_WAIT"
+      fi
+      [ "$ALGO_WAIT" -lt 1200 ] || { echo 'Apple tools are not ready. Finish their installation, then rerun sh install.sh.' >&2; exit 2; }
       sleep 1
     done
   else
@@ -44,12 +48,16 @@ if ! git --version >/dev/null 2>&1; then
 fi
 mkdir -p "$ALGO_TOOLS"
 [ ! -L "$ALGO_TOOLS" ] || { echo 'Tool directory symlink refused.' >&2; exit 2; }
+rm -rf "$ALGO_TOOLS"/download.* 2>/dev/null || true
 algo_fetch_tool() (
   ALGO_URL=$1; ALGO_SHA=$2; ALGO_DEST=$3
-  [ ! -e "$ALGO_DEST" ] && [ ! -L "$ALGO_DEST" ] || { echo "Inspect incomplete private tool directory: $ALGO_DEST" >&2; exit 2; }
+  [ ! -L "$ALGO_DEST" ] || { echo "Tool directory symlink refused: $ALGO_DEST" >&2; exit 2; }
+  if [ -e "$ALGO_DEST" ]; then
+    rm -rf "$ALGO_DEST"
+  fi
   ALGO_STAGE=$(mktemp -d "$ALGO_TOOLS/download.XXXXXX")
   trap 'rm -rf "$ALGO_STAGE"' EXIT HUP INT TERM
-  curl --fail --location --retry 3 --connect-timeout 20 --max-time 300 --proto '=https' --tlsv1.2 "$ALGO_URL" -o "$ALGO_STAGE/tool.tar.gz"
+  curl --fail --location --progress-bar --retry 3 --connect-timeout 20 --max-time 300 --proto '=https' --tlsv1.2 "$ALGO_URL" -o "$ALGO_STAGE/tool.tar.gz"
   if command -v shasum >/dev/null 2>&1; then
     ALGO_ACTUAL=$(shasum -a 256 "$ALGO_STAGE/tool.tar.gz" | cut -d ' ' -f 1)
   else

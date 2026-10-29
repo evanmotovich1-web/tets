@@ -61,6 +61,9 @@ def check_source():
 def prepare():
     STATE.mkdir(parents=True, exist_ok=True, mode=0o700)
     target = STATE / 'AlpacaTrading'
+    if target.exists() and not target.is_symlink() and not (target / 'Alpaca/alpaca_paper.py').is_file():
+        import shutil
+        shutil.rmtree(target)
     if not target.exists():
         # A failed fetch remains visible and is never treated as an installed copy.
         run(['git', 'init', '-q', str(target)])
@@ -69,7 +72,11 @@ def prepare():
     check_source()
     venv = STATE / '.venv'
     if venv.is_symlink(): raise ValueError('Paper environment symlink refused')
-    if not venv.exists(): run(['uv', 'venv', '--python', '3.13', str(venv)])
+    if not (venv / 'bin/python').is_file():
+        if venv.exists():
+            import shutil
+            shutil.rmtree(venv)
+        run(['uv', 'venv', '--python', '3.13', str(venv)])
     # Only the upstream helper runtime is needed; no scheduler, webhook, or RSI bot.
     run(['uv', 'pip', 'sync', '--python', str(venv / 'bin/python'), *wheel_args(), '--require-hashes',
          str(ROOT / 'scripts/paper-requirements.lock')])

@@ -6,14 +6,32 @@ case "$(uname -s)" in
   Linux) case "$ALGO_ROOT" in /mnt/*) echo 'Use a native Linux filesystem.' >&2; exit 2;; esac;;
   *) echo 'macOS 12+ or native Linux required.' >&2; exit 2;;
 esac
-TETS_PROFILE=${TETS_PROFILE:-normal}
+if [ ! -t 0 ] && [ "${TETS_NONINTERACTIVE:-0}" != 1 ] && [ -r /dev/tty ]; then
+  exec < /dev/tty
+fi
+if [ -z "${TETS_PROFILE:-}" ]; then
+  TETS_PROFILE=normal
+  if [ "$(uname -s)" = Darwin ]; then
+    TETS_MEMORY=$(sysctl -n hw.memsize 2>/dev/null || printf 0)
+    case "$TETS_MEMORY" in ''|*[!0-9]*) TETS_MEMORY=0;; esac
+    if [ "$TETS_MEMORY" -gt 0 ] && [ "$TETS_MEMORY" -le 8589934592 ]; then TETS_PROFILE=mac2017; fi
+  fi
+fi
 export TETS_PROFILE
+printf '\n╔══════════════════════════════════════════════════════════════════════════════════════════════════╗\n'
+printf '║  EVAN ALGO · 1-COMMAND FULL INSTALLER (Profile: %-10s · OS: %-8s · Arch: %-8s)     ║\n' "$TETS_PROFILE" "$(uname -s)" "$(uname -m)"
+printf '╚══════════════════════════════════════════════════════════════════════════════════════════════════╝\n'
+printf '\n==> [1/8] Bootstrapping private Node 22.23.2 & uv 0.13.1 runtime...\n'
 . "$ALGO_ROOT/scripts/bootstrap"
 mkdir -p "$ALGO_ROOT/desk/runtime/.state/tets"
 printf '%s\n' "$TETS_PROFILE" > "$ALGO_ROOT/desk/runtime/.state/tets/install-profile.txt"
 ALGO_VENV="$ALGO_ROOT/desk/backtest/.venv"
 [ ! -L "$ALGO_VENV" ] || { echo 'Existing Python symlink refused.' >&2; exit 2; }
-if [ ! -e "$ALGO_VENV" ]; then uv venv --python 3.14 "$ALGO_VENV"; fi
+printf '\n==> [2/8] Setting up Python 3.14 backtest & ADW environment (%s)...\n' "$ALGO_VENV"
+if [ ! -x "$ALGO_VENV/bin/python" ]; then
+  rm -rf "$ALGO_VENV"
+  uv venv --python 3.14 "$ALGO_VENV"
+fi
 "$ALGO_VENV/bin/python" -c 'import sys;assert sys.version_info[:2]==(3,14)'
 if [ "$ALGO_PLATFORM:$ALGO_ARCH" = Darwin:x86_64 ] || [ "$TETS_PROFILE" = mac2017 ]; then
   echo "Detected Intel Mac (x86_64 / $TETS_PROFILE profile): configuring 2017 Intel Mac native wheels & bounded memory limits."
@@ -24,14 +42,19 @@ else
   uv pip sync --python "$ALGO_VENV/bin/python" "$ALGO_ROOT/desk/requirements.lock"
 fi
 "$ALGO_VENV/bin/python" -c 'import subprocess,sys;subprocess.run([sys.executable,"-c","import numpy,pandas,backtesting,rfc8785"],check=True,timeout=180)'
+printf '\n==> [3/8] Installing Node desk runtime packages (npm ci)...\n'
 (cd "$ALGO_ROOT/desk" && npm ci --ignore-scripts --no-audit --no-fund)
+printf '\n==> [4/8] Installing Yahoo Shadow live market engine (Python 3.14)...\n'
 "$ALGO_VENV/bin/python" "$ALGO_ROOT/scripts/shadow.py" install
+printf '\n==> [5/8] Preparing Alpaca Paper Trading engine (Python 3.13 · live_orders=false)...\n'
 "$ALGO_VENV/bin/python" "$ALGO_ROOT/scripts/paper.py" prepare
 "$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python" -c 'import yfinance,numpy,pandas,backtesting'
+printf '\n==> [6/8] Terminal Setup: Strategy, Alpaca Paper API Key & AI Model / Subscription Wizard...\n'
 sh "$ALGO_ROOT/tets" setup
 if [ -t 0 ] && [ "${TETS_NO_MODEL_WIZARD:-0}" != 1 ]; then
   "$ALGO_VENV/bin/python" "$ALGO_ROOT/scripts/harness2_evolve.py" model wizard || true
 fi
+printf '\n==> [7/8] Initializing Harness² 6-Agent ADW & 20-Year Backtest Replay state + CLI symlinks...\n'
 "$ALGO_VENV/bin/python" "$ALGO_ROOT/scripts/harness2_evolve.py" visual >/dev/null 2>&1 || true
 mkdir -p "$HOME/.local/bin" 2>/dev/null || true
 if [ -d "$HOME/.local/bin" ]; then
@@ -39,6 +62,7 @@ if [ -d "$HOME/.local/bin" ]; then
   ln -sf "$ALGO_ROOT/adw" "$HOME/.local/bin/adw" 2>/dev/null || true
   ln -sf "$ALGO_ROOT/tets" "$HOME/.local/bin/tets" 2>/dev/null || true
 fi
+printf '\n==> [8/8] Verifying hardware & connections, then starting Evan Algo dashboard...\n'
 sh "$ALGO_ROOT/tets" verify-hardware
 sh "$ALGO_ROOT/tets" doctor
 if [ "${TETS_NO_START:-0}" != 1 ]; then exec sh "$ALGO_ROOT/tets" start; fi
