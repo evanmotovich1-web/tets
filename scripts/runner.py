@@ -77,7 +77,7 @@ def setup():
         if choice not in ('1','2'): raise ValueError('Choose 1 or 2')
         mode = {'1':'shadow','2':'paper'}[choice]
     if mode not in ('shadow','paper'): raise ValueError('TETS_MODE must be shadow or paper')
-    onboarding.wizard(sys.stdin.isatty())
+    onboarding.wizard(sys.stdin.isatty(), mode=mode)
     profile = onboarding.load_profile()
     if mode == 'shadow' and (profile['timeframe'] == '1d' or profile['family'] == 'upstream_ema'):
         raise ValueError('Yahoo shadow supports intraday OHLCV families. Choose paper for daily bars or upstream EMA.')
@@ -166,7 +166,7 @@ def public_profile():
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path == '/': body=(ROOT/'scripts/status.html').read_bytes(); content='text/html; charset=utf-8'
+        if self.path in ('/', '/status', '/status/'): body=(ROOT/'scripts/status.html').read_bytes(); content='text/html; charset=utf-8'
         elif self.path == '/api/status': body=json.dumps(status()).encode(); content='application/json'
         elif self.path == '/api/replay': body=json.dumps(replay_bridge.status()).encode(); content='application/json'
         elif self.path == '/api/terminal': body=json.dumps(terminal_state.snapshot()).encode(); content='application/json'
@@ -255,8 +255,52 @@ def dashboard(seconds, open_browser=True):
     finally:stop.set();server.shutdown();server.server_close()
 
 
+def _cleanup_previous_runner():
+    if os.environ.get('TETS_REPLACE_RUNNING', '1') == '0':
+        return
+    prev = read(STATE / 'runner.json')
+    if not isinstance(prev, dict):
+        return
+    my_pid = os.getpid()
+    for key, use_pg in (('child_pid', True), ('pid', False)):
+        pid = prev.get(key)
+        if not isinstance(pid, int) or pid <= 1 or pid == my_pid:
+            continue
+        try:
+            if use_pg and hasattr(os, 'killpg'):
+                os.killpg(pid, signal.SIGTERM)
+            else:
+                os.kill(pid, signal.SIGTERM)
+        except (ProcessLookupError, PermissionError, OSError):
+            continue
+    for _ in range(15):
+        alive = False
+        for key in ('child_pid', 'pid'):
+            pid = prev.get(key)
+            if isinstance(pid, int) and pid > 1 and pid != my_pid:
+                try:
+                    os.kill(pid, 0)
+                    alive = True
+                except (ProcessLookupError, PermissionError, OSError):
+                    pass
+        if not alive:
+            break
+        time.sleep(0.1)
+
+
+def _open_url(url):
+    if sys.platform == 'darwin':
+        try:
+            subprocess.Popen(['open', url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            return
+        except OSError:
+            pass
+    webbrowser.open(url)
+
+
 def start(seconds, open_browser=True):
     STATE.mkdir(parents=True,exist_ok=True,mode=0o700)
+    _cleanup_previous_runner()
     with (STATE/'runner.lock').open('a') as lock:
         try: fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         except BlockingIOError: raise ValueError('Another Tets runner already owns this checkout') from None
@@ -282,7 +326,10 @@ def start(seconds, open_browser=True):
             paper.check_install()
             command=[str(paper.STATE/'.venv/bin/python'),str(ROOT/'scripts/paper.py'),'watch','--activity',activity]
         child=None
-        previous=signal.signal(signal.SIGTERM,lambda *_:(_ for _ in ()).throw(KeyboardInterrupt()))
+        def _raise_stop(*_):
+            raise KeyboardInterrupt()
+        previous=signal.signal(signal.SIGTERM,_raise_stop)
+        previous_hup=signal.signal(signal.SIGHUP,_raise_stop) if hasattr(signal,'SIGHUP') else None
         try:
             with (STATE/'algo.log').open('w') as log:
                 child=subprocess.Popen(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
@@ -293,9 +340,9 @@ def start(seconds, open_browser=True):
                 ap_state=ap.get('state','not_connected')
                 eq_str=f"${ap['equity_usd']:,.2f}" if ap.get('equity_usd') is not None else 'not connected'
                 cash_str=f"${ap['cash_usd']:,.2f}" if ap.get('cash_usd') is not None else 'not connected'
-                print(f'Tets {mode}: {url}\nLogs: {STATE}/algo.log\nCtrl-C stops this test run.',flush=True)
+                print(f'Tets {mode}: {url} (or {url}/status)\nLogs: {STATE}/algo.log\nCtrl-C stops this test run.',flush=True)
                 print(f'Alpaca Paper ({ap.get("endpoint","https://paper-api.alpaca.markets")}): state={ap_state} · equity={eq_str} · cash={cash_str}',flush=True)
-                if open_browser: webbrowser.open(url)
+                if open_browser: _open_url(url)
                 deadline=time.monotonic()+seconds
                 seen_events=set()
                 while time.monotonic()<deadline:
@@ -316,6 +363,8 @@ def start(seconds, open_browser=True):
         except KeyboardInterrupt: pass
         finally:
             signal.signal(signal.SIGTERM,previous)
+            if hasattr(signal,'SIGHUP') and previous_hup is not None:
+                signal.signal(signal.SIGHUP,previous_hup)
             if child and child.poll()is None:
                 if hasattr(os,'killpg'): os.killpg(child.pid,signal.SIGTERM)
                 else: child.terminate()
@@ -331,7 +380,7 @@ def start(seconds, open_browser=True):
 def self_test():
     directory=STATE/'self-tests'/uuid.uuid4().hex
     result=subprocess.run(['node','runtime/tick.mjs','--event-id','fixture:tets','--provider','fixture','--state-dir',str(directory)],
-        cwd=ROOT/'desk',capture_output=True,text=True,timeout=180,env={**os.environ,'TRADING_DESK_ALLOW_CLI_AUTHOR':'0',
+        cwd=ROOT/'desk',capture_output=True,text=True,timeout=300,env={**os.environ,'TRADING_DESK_ALLOW_CLI_AUTHOR':'0',
         'TRADING_DESK_ALLOW_PAID_INFERENCE':'0','ALGO_DESK_ALLOW_LIVE_ORDERS':'0'})
     lines=[json.loads(line)for line in result.stdout.splitlines()if line.startswith('{')]
     value=lines[-1]if lines else {}

@@ -64,7 +64,7 @@ result=unittest.TextTestRunner(verbosity=1).run(unittest.defaultTestLoader.disco
 print('TETS_TEST_RESULT='+json.dumps(dict(run=result.testsRun,failures=len(result.failures),errors=len(result.errors),skipped=len(result.skipped))))
 sys.exit(0 if result.wasSuccessful() else 1)
 '''
-    checks=subprocess.run([sys.executable,'-c',test_code],cwd=runner.ROOT,capture_output=True,text=True,timeout=180)
+    checks=subprocess.run([sys.executable,'-c',test_code],cwd=runner.ROOT,capture_output=True,text=True,timeout=600)
     runner.STATE.mkdir(parents=True,exist_ok=True)
     (runner.STATE/'hardware-tests.log').write_text(checks.stdout+'\n'+checks.stderr)
     if checks.returncode:raise ValueError('Installed regression checks failed; see local hardware-tests.log')

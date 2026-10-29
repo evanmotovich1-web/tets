@@ -1,7 +1,23 @@
 #!/bin/sh
 set -eu
-ALGO_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+TARGET="$0"
+while [ -L "$TARGET" ]; do
+  DIR=$(CDPATH= cd -- "$(dirname -- "$TARGET")" && pwd -P)
+  LINK=$(readlink "$TARGET")
+  case "$LINK" in /*) TARGET="$LINK" ;; *) TARGET="$DIR/$LINK" ;; esac
+done
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$TARGET")" && pwd -P)
+if [ -f "$SCRIPT_DIR/scripts/runner.py" ]; then
+  ALGO_ROOT="$SCRIPT_DIR"
+elif [ -d "$HOME/evan-algo/scripts" ]; then
+  ALGO_ROOT="$HOME/evan-algo"
+elif [ -d "$HOME/code/tets/scripts" ]; then
+  ALGO_ROOT="$HOME/code/tets"
+else
+  ALGO_ROOT="$SCRIPT_DIR"
+fi
 . "$ALGO_ROOT/scripts/env"
 TETS_PYTHON="$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python"
 [ -x "$TETS_PYTHON" ] || { echo 'Run sh install.sh or sh install-2017-mac.sh first.' >&2; exit 2; }
+if [ $# -eq 0 ]; then set -- start; fi
 exec "$TETS_PYTHON" "$ALGO_ROOT/scripts/runner.py" "$@"

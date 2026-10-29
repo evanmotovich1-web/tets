@@ -29,21 +29,22 @@ for ALGO_COMMAND in curl tar; do
 done
 if { [ "$ALGO_PLATFORM" = Darwin ] && ! xcode-select -p >/dev/null 2>&1; } || ! git --version >/dev/null 2>&1; then
   if [ "$ALGO_PLATFORM" = Darwin ] && { [ -t 0 ] || [ -r /dev/tty ]; }; then
-    echo '==> Git needs Apple Command Line Tools. Click "Install" in the macOS popup window; this installer will continue automatically.'
+    echo '==> Checking Apple Command Line Tools (if a macOS popup appears, click "Install"; otherwise this installer will continue automatically in 45s using built-in HTTPS archive fallbacks).'
     xcode-select --install >/dev/null 2>&1 || true
     osascript -e 'tell application "CoreServicesUIAgent" to activate' >/dev/null 2>&1 || true
     ALGO_WAIT=0
-    until xcode-select -p >/dev/null 2>&1 && git --version >/dev/null 2>&1; do
+    until { xcode-select -p >/dev/null 2>&1 && git --version >/dev/null 2>&1; } || [ "$ALGO_WAIT" -ge 45 ]; do
       ALGO_WAIT=$((ALGO_WAIT + 1))
       if [ $((ALGO_WAIT % 5)) -eq 0 ]; then
-        printf '  ... waiting for Apple Command Line Tools installation (%ds elapsed — check for macOS Install popup)...\n' "$ALGO_WAIT"
+        printf '  ... waiting %ds/45s for Apple Command Line Tools (will auto-continue with HTTPS archive fallback)...\n' "$ALGO_WAIT"
       fi
-      [ "$ALGO_WAIT" -lt 1200 ] || { echo 'Apple tools are not ready. Finish their installation, then rerun sh install.sh.' >&2; exit 2; }
       sleep 1
     done
+    if ! xcode-select -p >/dev/null 2>&1 || ! git --version >/dev/null 2>&1; then
+      echo '==> Continuing without Apple Command Line Tools (using built-in HTTPS archive & Mach-O verifiers).'
+    fi
   else
-    echo 'Git is required. On Mac, run this installer in Terminal to install Apple Command Line Tools.' >&2
-    exit 2
+    echo '==> Continuing without git / Apple Command Line Tools (using built-in HTTPS archive & Mach-O verifiers).'
   fi
 fi
 mkdir -p "$ALGO_TOOLS"

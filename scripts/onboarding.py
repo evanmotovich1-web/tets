@@ -103,7 +103,8 @@ def choice(label, options, current):
     return ask('Choice', default, convert)
 
 
-def wizard(interactive=True):
+def wizard(interactive=True, *, mode=None):
+    import os
     current = load_profile()
     if not interactive:
         if current is None: save_profile(defaults())
@@ -111,26 +112,34 @@ def wizard(interactive=True):
         return current or defaults()
     p = current or defaults()
     print('\nALGO SETUP · paper execution / research · live orders unavailable')
-    previous_provider = p['ai']['provider']
-    p['ai']['provider'] = choice('AI connection', [('none','Rule-based only'),('local','Local OpenAI-compatible model (Ollama / LM Studio)'),
-                                    ('codex','My signed-in Codex CLI'),('claude','My signed-in Claude CLI')], p['ai']['provider'])
-    provider = p['ai']['provider']
-    if provider != previous_provider: p['ai']['model'] = ''
-    if provider != 'none':
-        p['ai']['model'] = ask('Model ID (blank uses CLI default)', p['ai']['model'])
-        if provider == 'local':
-            while not p['ai']['model']: p['ai']['model'] = ask('Local model ID required', '')
-            p['ai']['endpoint'] = ask('Local API base URL', p['ai']['endpoint'], local_endpoint)
-        print('AI receives recent public bars plus your chosen budget/goal. CLI reviews use your AI plan.')
-        p['ai']['consent'] = ask('Enable bounded AI entry reviews? y/N', 'n', lambda text:text.lower() in ('y','yes'))
-        p['ai']['daily_call_limit'] = ask('Maximum AI calls per day (1–100)', p['ai']['daily_call_limit'],
-            lambda text:int(text) if text.isdigit() and 1 <= int(text) <= 100 else (_ for _ in ()).throw(ValueError('Enter 1–100')))
-        if provider in ('codex','claude') and not shutil.which(provider):
-            print(f'{provider} CLI is unavailable. Install/sign in yourself; the panel will report unavailable until it works.')
-    else: p['ai']['consent'] = False
-    p['family'] = choice('Algorithm type', list(zip(FAMILIES, ['Moving-average trend','Momentum','Mean reversion','Breakout','Upstream EMA demo'])), p['family'])
+    if os.environ.get('TETS_SKIP_LEGACY_AI_PROMPT') != '1':
+        previous_provider = p['ai']['provider']
+        p['ai']['provider'] = choice('AI connection', [('none','Rule-based only'),('local','Local OpenAI-compatible model (Ollama / LM Studio)'),
+                                        ('codex','My signed-in Codex CLI'),('claude','My signed-in Claude CLI')], p['ai']['provider'])
+        provider = p['ai']['provider']
+        if provider != previous_provider: p['ai']['model'] = ''
+        if provider != 'none':
+            p['ai']['model'] = ask('Model ID (blank uses CLI default)', p['ai']['model'])
+            if provider == 'local':
+                while not p['ai']['model']: p['ai']['model'] = ask('Local model ID required', '')
+                p['ai']['endpoint'] = ask('Local API base URL', p['ai']['endpoint'], local_endpoint)
+            print('AI receives recent public bars plus your chosen budget/goal. CLI reviews use your AI plan.')
+            p['ai']['consent'] = ask('Enable bounded AI entry reviews? y/N', 'n', lambda text:text.lower() in ('y','yes'))
+            p['ai']['daily_call_limit'] = ask('Maximum AI calls per day (1–100)', p['ai']['daily_call_limit'],
+                lambda text:int(text) if text.isdigit() and 1 <= int(text) <= 100 else (_ for _ in ()).throw(ValueError('Enter 1–100')))
+            if provider in ('codex','claude') and not shutil.which(provider):
+                print(f'{provider} CLI is unavailable. Install/sign in yourself; the panel will report unavailable until it works.')
+        else: p['ai']['consent'] = False
+    family_options = list(zip(FAMILIES, ['Moving-average trend','Momentum','Mean reversion','Breakout','Upstream EMA demo']))
+    timeframe_options = [(t,t) for t in ('1m','5m','15m','1h','1d')]
+    if mode == 'shadow':
+        family_options = [opt for opt in family_options if opt[0] != 'upstream_ema']
+        timeframe_options = [opt for opt in timeframe_options if opt[0] != '1d']
+        if p['family'] == 'upstream_ema': p['family'] = 'sma_cross_long'
+        if p['timeframe'] == '1d': p['timeframe'] = '1m'
+    p['family'] = choice('Algorithm type', family_options, p['family'])
     p['symbol'] = ask('US stock / ETF symbol', p['symbol'], lambda text:text.upper() if re.fullmatch(r'[A-Za-z][A-Za-z0-9]{0,4}(?:[.-][A-Za-z])?', text) else (_ for _ in ()).throw(ValueError('Enter a US stock / ETF symbol')))
-    p['timeframe'] = choice('Decision bars', [(t,t) for t in ('1m','5m','15m','1h','1d')], p['timeframe'])
+    p['timeframe'] = choice('Decision bars', timeframe_options, p['timeframe'])
     p['capital_usd'] = ask('Capital allocated to this algo in USD (no deposit)', p['capital_usd'], lambda text:amount(text,'.01'))
     cap = min(Decimal(p['capital_usd']), Decimal('1000'))
     p['order_budget_usd'] = ask('Maximum entry budget USD', str(min(cap, Decimal(p['order_budget_usd']))), lambda text:amount(text,'.01',str(cap)))

@@ -51,11 +51,54 @@ def git(*args):
 
 def check_source():
     target = STATE / 'AlpacaTrading'
-    if target.is_symlink() or git('rev-parse', 'HEAD') != REVISION:
+    if target.is_symlink() or not (target / 'Alpaca/alpaca_paper.py').is_file():
         raise ValueError('AlpacaTrading revision mismatch; files preserved')
-    if git('status', '--porcelain', '--untracked-files=no'):
-        raise ValueError('AlpacaTrading source changed; files preserved')
-    return target
+    marker = target / '.tets_revision.json'
+    if (target / '.git').is_dir():
+        try:
+            rev = git('rev-parse', 'HEAD')
+            dirty = git('status', '--porcelain', '--untracked-files=no')
+            if rev != REVISION:
+                raise ValueError('AlpacaTrading revision mismatch; files preserved')
+            if dirty:
+                raise ValueError('AlpacaTrading source changed; files preserved')
+            return target
+        except (OSError, subprocess.SubprocessError):
+            if not marker.is_file():
+                raise ValueError('AlpacaTrading revision mismatch; files preserved')
+    if marker.is_file() and not marker.is_symlink():
+        info = json.loads(marker.read_text())
+        actual_sha = hashlib.sha256((target / 'Alpaca/alpaca_paper.py').read_bytes()).hexdigest()
+        if info.get('revision') == REVISION and info.get('alpaca_paper_sha256') == actual_sha:
+            return target
+    raise ValueError('AlpacaTrading revision mismatch; files preserved')
+
+
+def _fetch_alpaca_tarball(target):
+    import io, shutil, tarfile
+    from urllib.request import urlopen
+    if target.exists():
+        shutil.rmtree(target)
+    target.mkdir(parents=True, exist_ok=True, mode=0o700)
+    tar_url = f'https://codeload.github.com/mickpletcher/AlpacaTrading/tar.gz/{REVISION}'
+    with urlopen(tar_url, timeout=120) as resp:
+        raw = resp.read()
+    with tarfile.open(fileobj=io.BytesIO(raw), mode='r:gz') as tf:
+        for member in tf.getmembers():
+            parts = Path(member.name).parts
+            if len(parts) <= 1 or '..' in parts or Path(member.name).is_absolute():
+                continue
+            rel = Path(*parts[1:])
+            dest = (target / rel).resolve()
+            if not str(dest).startswith(str(target.resolve())):
+                continue
+            if member.isdir():
+                dest.mkdir(parents=True, exist_ok=True)
+            elif member.isfile():
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                with tf.extractfile(member) as src:
+                    if src is not None:
+                        dest.write_bytes(src.read())
 
 
 def prepare():
@@ -65,10 +108,18 @@ def prepare():
         import shutil
         shutil.rmtree(target)
     if not target.exists():
-        # A failed fetch remains visible and is never treated as an installed copy.
-        run(['git', 'init', '-q', str(target)])
-        run(['git', '-C', str(target), 'fetch', '--depth=1', UPSTREAM, REVISION])
-        run(['git', '-C', str(target), 'checkout', '-q', '--detach', 'FETCH_HEAD'])
+        try:
+            # A failed fetch falls back to pinned commit tarball verification.
+            run(['git', 'init', '-q', str(target)])
+            run(['git', '-C', str(target), 'fetch', '--depth=1', UPSTREAM, REVISION])
+            run(['git', '-C', str(target), 'checkout', '-q', '--detach', 'FETCH_HEAD'])
+        except (OSError, subprocess.SubprocessError):
+            _fetch_alpaca_tarball(target)
+    if (target / 'Alpaca/alpaca_paper.py').is_file():
+        save(target / '.tets_revision.json', dict(
+            revision=REVISION,
+            alpaca_paper_sha256=hashlib.sha256((target / 'Alpaca/alpaca_paper.py').read_bytes()).hexdigest(),
+        ))
     check_source()
     venv = STATE / '.venv'
     if venv.is_symlink(): raise ValueError('Paper environment symlink refused')

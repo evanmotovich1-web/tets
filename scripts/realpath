@@ -1,5 +1,10 @@
 #!/bin/sh
 # Minimal realpath -e/-- fallback for uv on Monterey, backed by private Node.
+TOOLS_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." 2>/dev/null && pwd -P || printf '')
+if [ -n "$TOOLS_DIR" ] && [ -d "$TOOLS_DIR/node/bin" ]; then
+  PATH="$TOOLS_DIR/node/bin:$PATH"
+  export PATH
+fi
 exec node -e '
 const fs = require("node:fs");
 let args = process.argv.slice(1).filter(x => x !== "--" && x !== "-e");

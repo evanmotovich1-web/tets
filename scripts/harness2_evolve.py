@@ -1327,7 +1327,9 @@ class AlgoHarness2Adapter:
         run_dir.mkdir(parents=True, exist_ok=True)
         h_dir = harness_dir or self.base_harness()
         agent_script = h_dir / 'scripts/run_algo_agent.py'
-        python_exe = str(DESK / 'backtest/.venv/bin/python') if (DESK / 'backtest/.venv/bin/python').is_file() else sys.executable
+        shadow_py = DESK / 'runtime/.state/shadow/.venv/bin/python'
+        backtest_py = DESK / 'backtest/.venv/bin/python'
+        python_exe = str(shadow_py) if shadow_py.is_file() else str(backtest_py) if backtest_py.is_file() else sys.executable
         subprocess.run(
             [python_exe, str(agent_script), str(self.task_files(task_id)), str(run_dir)],
             capture_output=True,
@@ -2007,7 +2009,7 @@ def _sync_adw_state_quietly(output_dir: Path = HARNESS2_STATE, symbol: str = 'SP
     )
     adw_run['created_at'] = now_iso()
     save_json(output_dir / 'adw_latest_run.json', adw_run)
-    for repo_candidate in (Path('/Users/davidmotovich/code/algo'), Path('/Users/davidmotovich/code/tets')):
+    for repo_candidate in dict.fromkeys((ROOT, Path('/Users/davidmotovich/code/algo'), Path('/Users/davidmotovich/code/tets'))):
         for rel_dir in ('desk/runtime/.state/harness2', 'desk/runtime/.state/tets'):
             tdir = repo_candidate / rel_dir
             if repo_candidate.is_dir():
@@ -2061,6 +2063,24 @@ def _connect_provider_and_pick_model_interactive(
         print("│   [S] Keep existing connection status")
         auth_mode = input("│ Select [1/2/S, Enter = 1 (Subscription)]: ").strip().lower() or '1'
         if auth_mode == '1' or auth_mode.startswith('sub'):
+            cli_pkgs = {'codex': '@openai/codex', 'gemini': '@google/gemini-cli'}
+            if prov in cli_pkgs and not shutil.which(prov) and shutil.which('npm'):
+                pkg = cli_pkgs[prov]
+                ans = input(f"│   [i] '{prov}' CLI not detected. Auto-install {pkg} via private npm now? [Y/n]: ").strip().lower()
+                if ans not in ('n', 'no', 'skip'):
+                    print(f"│   ... installing {pkg} into local runtime ...")
+                    subprocess.run(['npm', 'install', '-g', '--no-audit', '--no-fund', pkg], check=False, timeout=180)
+                    node_bin = ROOT / 'desk/runtime/.state/tools/node/bin' / prov
+                    local_bin = Path.home() / '.local/bin'
+                    if node_bin.is_file():
+                        try:
+                            local_bin.mkdir(parents=True, exist_ok=True)
+                            target_link = local_bin / prov
+                            if target_link.is_symlink() or target_link.exists():
+                                target_link.unlink()
+                            target_link.symlink_to(node_bin)
+                        except OSError:
+                            pass
             saved = options_short_engine.save_provider_connection(prov, 'subscription', keys_path=keys_path)
             print(f"│ ✓ Connected {label} via Subscription -> {saved['masked_status']}")
         elif auth_mode == '2':

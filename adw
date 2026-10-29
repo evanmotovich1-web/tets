@@ -1,10 +1,14 @@
 #!/bin/sh
 set -eu
-SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+TARGET="$0"
+while [ -L "$TARGET" ]; do
+  DIR=$(CDPATH= cd -- "$(dirname -- "$TARGET")" && pwd -P)
+  LINK=$(readlink "$TARGET")
+  case "$LINK" in /*) TARGET="$LINK" ;; *) TARGET="$DIR/$LINK" ;; esac
+done
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$TARGET")" && pwd -P)
 if [ -f "$SCRIPT_DIR/scripts/harness2_evolve.py" ]; then
   ALGO_ROOT="$SCRIPT_DIR"
-elif [ -L "$0" ] && [ -f "$(CDPATH= cd -- "$(dirname -- "$(readlink "$0")")" && pwd -P)/scripts/harness2_evolve.py" ]; then
-  ALGO_ROOT=$(CDPATH= cd -- "$(dirname -- "$(readlink "$0")")" && pwd -P)
 elif [ -d "$HOME/evan-algo/scripts" ]; then
   ALGO_ROOT="$HOME/evan-algo"
 elif [ -d "$HOME/code/algo/scripts" ]; then
@@ -14,16 +18,17 @@ elif [ -d "$HOME/code/tets/scripts" ]; then
 else
   ALGO_ROOT="$SCRIPT_DIR"
 fi
+[ -f "$ALGO_ROOT/scripts/env" ] && . "$ALGO_ROOT/scripts/env"
 
-if [ -x "$ALGO_ROOT/desk/backtest/.venv/bin/python" ]; then
-  PY_BIN="$ALGO_ROOT/desk/backtest/.venv/bin/python"
-elif [ -x "$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python" ]; then
+if [ -x "$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python" ]; then
   PY_BIN="$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python"
+elif [ -x "$ALGO_ROOT/desk/backtest/.venv/bin/python" ]; then
+  PY_BIN="$ALGO_ROOT/desk/backtest/.venv/bin/python"
 else
   PY_BIN="python3"
 fi
 
-export PYTHONPATH="$HOME/code/harness2:${PYTHONPATH:-}"
+export PYTHONPATH="$ALGO_ROOT/scripts:${PYTHONPATH:-}"
 
 if [ $# -eq 0 ]; then
   exec "$PY_BIN" "$ALGO_ROOT/scripts/harness2_evolve.py" visual

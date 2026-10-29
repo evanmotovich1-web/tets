@@ -1564,9 +1564,10 @@ def configure_sticky_models(
     data = (json.dumps(payload, indent=2, sort_keys=True) + '\n').encode('utf-8')
     path.write_bytes(data)
 
-    # Also mirror to both algo and tets state when using the default state path so both CLIs and UI stay in sync
+    # Also mirror to active checkout plus algo/tets state when using the default state path so both CLIs and UI stay in sync
     if state_path is None:
-        for repo_candidate in (Path('/Users/davidmotovich/code/algo'), Path('/Users/davidmotovich/code/tets')):
+        current_root = Path(__file__).resolve().parents[1]
+        for repo_candidate in dict.fromkeys((current_root, Path('/Users/davidmotovich/code/algo'), Path('/Users/davidmotovich/code/tets'))):
             for rel_dir in ('desk/runtime/.state/harness2', 'desk/runtime/.state/tets'):
                 target_dir = repo_candidate / rel_dir
                 if repo_candidate.is_dir():
@@ -1910,6 +1911,10 @@ def load_provider_connections(keys_path: Path | None = None) -> list[dict[str, A
             connected = True
             status = 'CONNECTED (Codex CLI Subscription)'
             auth_detail = 'Signed-in Codex CLI on PATH'
+        elif prov == 'gemini' and _shutil.which('gemini'):
+            connected = True
+            status = 'CONNECTED (Gemini CLI Subscription)'
+            auth_detail = 'Signed-in Gemini CLI on PATH'
         elif prov == 'local':
             connected = True
             status = 'READY (Local HTTP :11434)'
@@ -1988,7 +1993,8 @@ def save_provider_connection(
         pass
 
     if keys_path is None:
-        for repo_candidate in (Path('/Users/davidmotovich/code/algo'), Path('/Users/davidmotovich/code/tets')):
+        current_root = Path(__file__).resolve().parents[1]
+        for repo_candidate in dict.fromkeys((current_root, Path('/Users/davidmotovich/code/algo'), Path('/Users/davidmotovich/code/tets'))):
             for rel_dir in ('desk/runtime/.state/harness2', 'desk/runtime/.state/tets'):
                 if repo_candidate.is_dir():
                     tdir = repo_candidate / rel_dir
