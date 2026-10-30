@@ -58,7 +58,7 @@ if [ -t 0 ] && [ "${TETS_NO_MODEL_WIZARD:-0}" != 1 ]; then
 else
   sh "$ALGO_ROOT/tets" setup
 fi
-printf '\n==> [7/8] Initializing Harness² 6-Agent ADW & Saved Backtest Replay state + CLI symlinks...\n'
+printf '\n==> [7/8] Initializing Harness² 6-Agent ADW, Saved Backtest Replay & Hermes Agent + CLI symlinks...\n'
 "$SHADOW_PY" "$ALGO_ROOT/scripts/replay_workbench.py" >/dev/null 2>&1 || true
 "$SHADOW_PY" "$ALGO_ROOT/scripts/harness2_evolve.py" visual >/dev/null 2>&1 || true
 mkdir -p "$HOME/.local/bin" 2>/dev/null || true
@@ -75,6 +75,11 @@ if [ -d "$HOME/.local/bin" ]; then
       fi
     fi
   done
+fi
+if [ "${TETS_SKIP_HERMES:-0}" != 1 ] && [ "${TETS_NO_START:-0}" != 1 ] && ! command -v hermes >/dev/null 2>&1 && [ ! -x "$HOME/.local/bin/hermes" ]; then
+  printf '\n==> [7b/8] Installing Hermes Agent (NousResearch/hermes-agent)...\n'
+  curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --non-interactive || \
+    curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash -s -- --non-interactive --skip-browser || true
 fi
 printf '\n==> [8/8] Verifying hardware & connections, then starting Evan Algo dashboard...\n'
 sh "$ALGO_ROOT/tets" verify-hardware
