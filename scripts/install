@@ -1,5 +1,10 @@
 #!/bin/sh
 set -eu
+for arg in "$@"; do
+  case "$arg" in
+    -y|--yes|--non-interactive) TETS_NONINTERACTIVE=1; TETS_NO_MODEL_WIZARD=1; export TETS_NONINTERACTIVE TETS_NO_MODEL_WIZARD ;;
+  esac
+done
 ALGO_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
 case "$(uname -s)" in
   Darwin) ;;
@@ -52,11 +57,11 @@ printf '\n==> [5/8] Preparing Alpaca Paper Trading engine (Python 3.13 · live_o
 printf '\n==> [6/8] Terminal Setup: Strategy, Alpaca Paper API Key & AI Model / Subscription Wizard...\n'
 SHADOW_PY="$ALGO_ROOT/desk/runtime/.state/shadow/.venv/bin/python"
 [ -x "$SHADOW_PY" ] || SHADOW_PY="$ALGO_VENV/bin/python"
-if [ -t 0 ] && [ "${TETS_NO_MODEL_WIZARD:-0}" != 1 ]; then
+if [ -t 0 ] && [ "${TETS_NONINTERACTIVE:-0}" != 1 ] && [ "${TETS_NO_MODEL_WIZARD:-0}" != 1 ]; then
   TETS_SKIP_LEGACY_AI_PROMPT=1 sh "$ALGO_ROOT/tets" setup
   "$SHADOW_PY" "$ALGO_ROOT/scripts/harness2_evolve.py" model wizard || true
 else
-  sh "$ALGO_ROOT/tets" setup
+  sh "$ALGO_ROOT/tets" setup < /dev/null
 fi
 printf '\n==> [7/8] Initializing Harness² 6-Agent ADW, Saved Backtest Replay & Hermes Agent + CLI symlinks...\n'
 "$SHADOW_PY" "$ALGO_ROOT/scripts/replay_workbench.py" >/dev/null 2>&1 || true

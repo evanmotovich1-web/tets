@@ -1,5 +1,10 @@
 #!/bin/sh
 set -eu
+for arg in "$@"; do
+  case "$arg" in
+    -y|--yes|--non-interactive) TETS_NONINTERACTIVE=1; TETS_NO_MODEL_WIZARD=1; export TETS_NONINTERACTIVE TETS_NO_MODEL_WIZARD ;;
+  esac
+done
 if [ -z "${TETS_PROFILE:-}" ]; then
   TETS_PROFILE=normal
   if [ "$(uname -s)" = Darwin ]; then
