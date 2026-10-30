@@ -58,7 +58,8 @@ if [ -t 0 ] && [ "${TETS_NO_MODEL_WIZARD:-0}" != 1 ]; then
 else
   sh "$ALGO_ROOT/tets" setup
 fi
-printf '\n==> [7/8] Initializing Harness² 6-Agent ADW & 20-Year Backtest Replay state + CLI symlinks...\n'
+printf '\n==> [7/8] Initializing Harness² 6-Agent ADW & Saved Backtest Replay state + CLI symlinks...\n'
+"$SHADOW_PY" "$ALGO_ROOT/scripts/replay_workbench.py" >/dev/null 2>&1 || true
 "$SHADOW_PY" "$ALGO_ROOT/scripts/harness2_evolve.py" visual >/dev/null 2>&1 || true
 mkdir -p "$HOME/.local/bin" 2>/dev/null || true
 if [ -d "$HOME/.local/bin" ]; then

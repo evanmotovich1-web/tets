@@ -91,7 +91,11 @@ class ShadowUITests(unittest.TestCase):
         self.assertEqual(data['home']['title'],'Home');self.assertTrue(data['home']['marketOpened'])
         self.assertEqual(data['home']['destinations'],dict(research=True,models=True,replay=True))
         self.assertTrue(data['home']['returned']);self.assertTrue(data['home']['backWorks'])
-        page=(ROOT/'scripts/status.html').read_text();self.assertNotIn('<aside',page);self.assertNotIn('app-nav',page)
+        page=(ROOT/'scripts/status.html').read_text()
+        # A strategy sidebar is now intentional, scoped to the replay workspace.
+        self.assertIn('<aside class="ot-panel bt-sidebar"',page)
+        self.assertNotIn('<aside',page.split('<main id="home-panel"',1)[1].split('<div id="adw-panel"',1)[0])
+        self.assertNotIn('app-nav',page)
 
 
 if __name__=='__main__':unittest.main()

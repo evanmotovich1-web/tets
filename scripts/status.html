@@ -236,10 +236,13 @@ body.on-replay-terminal #backtest-explorer-root{margin:0!important;border:0!impo
 .ot-table td{padding:8px 11px;border-bottom:1px solid #141e29;color:#e0e9f1}
 .ot-table tbody tr{cursor:pointer}
 .ot-table tbody tr:hover,.ot-table tbody tr.active-tr{background:#112428}
+.bt-layout .ot-btn.primary{color:#7ff4d4!important;background:#163f38!important}.bt-layout{display:grid;grid-template-columns:265px minmax(0,1fr);gap:16px;align-items:start}.bt-main{min-width:0}.bt-header{margin-bottom:16px}.bt-sidebar{position:sticky;top:12px;max-height:calc(100vh - 28px);display:flex;flex-direction:column}.bt-pad{padding:10px 14px}.bt-help{color:#91a5b7;font-size:11px;line-height:1.65}.bt-strategy-list{overflow:auto;overscroll-behavior:contain;min-height:120px;max-height:65vh;padding:3px 12px 12px;display:flex;flex-direction:column;gap:9px}.bt-strategy-list .ot-algo-card{flex:none;width:100%;font:12px/1.5 InterVariable,system-ui,sans-serif;padding:13px;min-height:86px}.bt-strategy-list small{overflow-wrap:anywhere}.bt-layout button:disabled{opacity:.45;cursor:not-allowed}.bt-layout input:not([type=range]),.bt-layout select{background:#0b141e;color:#e0e9f1;border:1px solid #34495b;border-radius:6px;min-height:38px;padding:8px 10px;width:100%;font:12px InterVariable,system-ui,sans-serif}.bt-layout input:focus-visible,.bt-layout button:focus-visible,.bt-layout select:focus-visible{outline:2px solid #55e6c1;outline-offset:3px}.bt-settings{display:grid;grid-template-columns:minmax(180px,1.6fr) minmax(115px,.8fr) minmax(125px,.8fr) auto;gap:12px;align-items:end;padding:14px 14px 0}.bt-settings label{display:grid;gap:6px;color:#a9bbc9;font:11px InterVariable,system-ui,sans-serif}.bt-settings button{min-height:38px}.bt-applied{padding:11px 14px;border-top:1px solid #22303e;color:#55e6c1;background:#0a1918;line-height:1.7}.bt-error{padding:10px 14px;color:#ff9daa;background:#32151d;overflow-wrap:anywhere}.bt-transport{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:12px 14px 0}.bt-speed{display:flex;align-items:center;gap:7px;color:#91a5b7;font-size:11px}.bt-layout .bt-speed select{width:auto;min-height:32px}.bt-range-labels{display:flex;justify-content:space-between;color:#91a5b7;font-size:10px;gap:10px}.bt-ohlc{color:#c8d6e1;border-top:1px solid #22303e;white-space:pre-wrap;font-size:11px}.bt-price-box{height:330px}.bt-layout canvas{width:100%;height:100%;display:block}.bt-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.bt-detail-grid .bt-pad{white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px;line-height:1.7}.bt-metrics{grid-template-columns:repeat(6,minmax(0,1fr))}.bt-metrics .ot-val{font-size:17px}.bt-metrics small{font-size:9px}.bt-main .ot-range{margin:0 0 7px}.bt-main .ot-table-wrap{max-height:320px}.bt-main .ot-table th{text-align:left}#bt-progress{margin-left:auto}
+@media(max-width:1150px){.bt-layout{grid-template-columns:235px minmax(0,1fr)}.bt-settings{grid-template-columns:repeat(2,minmax(0,1fr))}.bt-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.bt-layout{grid-template-columns:1fr}.bt-sidebar{position:static;max-height:340px}.bt-strategy-list{max-height:210px}.bt-detail-grid{grid-template-columns:1fr}.bt-layout .ot-wordmark{font-size:14px}.bt-price-box{height:280px}.bt-range-labels{font-size:9px}body.on-replay-terminal #backtest-explorer-root{padding:10px!important}.bt-header{padding:12px}.bt-metrics .ot-val{font-size:15px}}
 </style></head><body class="on-home"><div class="app-shell"><div class="app-content"><header class="app-chrome"><a class="brand" id="brand-home" href="#home" aria-label="Evan Algo home">Evan Algo</a><div class="chrome-actions"><button id="open-paper-btn" class="rh-top-btn" type="button" style="border-color:#55e6c1;color:#55e6c1">🦙 Alpaca Paper Account (Not connected)</button><button id="adw-tab" type="button">Trade Workflow (ADW)</button><button id="back-action" hidden type="button">← Back</button><button id="home-tab" hidden type="button">Home</button></div></header><div class="view-heading" id="view-heading" hidden><h1 id="view-title">Home</h1><span id="mode" class="tag" hidden>Connecting</span></div>
-<div id="home-intro"><p>Pitch-black TradingView Live Market (Alpaca Paper Account &amp; Yahoo Shadow Mode), ADW Trade Workflow Builder, and 20-Year OpenTerminal Backtest Replay.</p></div><p id="health" role="status" hidden>Connecting to your market feed…</p>
+<div id="home-intro"><p>Pitch-black TradingView Live Market (Alpaca Paper Account &amp; Yahoo Shadow Mode), ADW Trade Workflow Builder, and historical bar-by-bar Backtest Replay.</p></div><p id="health" role="status" hidden>Connecting to your market feed…</p>
 <div id="live-overview" class="overview" hidden><div><small>WORKSPACE</small><strong>Live market</strong><span>Observed Yahoo data</span></div><div><small>TOTAL VIRTUAL EQUITY</small><strong id="overview-equity">—</strong><span>Assumed fills, no broker</span></div><div><small>COMPANIES WATCHED</small><strong id="overview-companies">—</strong><span>Your active watchlist</span></div><div><small>SELECTED LAST SIGNAL</small><strong id="overview-signal">—</strong><span>A rule check, not a forecast</span></div></div>
-<main id="home-panel" class="home-page" aria-label="Evan Algo home"><div class="home-hero"><p class="eyebrow">PITCH-BLACK TRADINGVIEW &amp; ADW ALGO SYSTEM</p><h1>Evan <span>Algo</span></h1><p class="home-tagline">Live TradingView.<br>ADW Algo Workflows.</p><p class="home-description">Run live in Yahoo Shadow Mode or connect your Alpaca Paper Account (<code>https://paper-api.alpaca.markets</code> · <code>live_orders=false</code>).</p><p class="home-next">Select a terminal workspace:</p></div><div class="home-choices" aria-label="Choose a workspace"><button id="home-live" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 3 8-10M15 5h5v5"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Live Market (TradingView)</strong><span class="card-description">Pitch-black TradingView chart, Alpaca Paper Account connection &amp; status, incoming news wire &amp; live 6-agent algo stream.</span><span class="card-action">Open TradingView Live <span aria-hidden="true">→</span></span></button><button id="home-adw" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h14"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Trade Workflow (ADW)</strong><span class="card-description">True ADW terminal: configure Model + Thinking Level per agent, Set System Prompt + User Prompt, and generate new Algo Workflows live.</span><span class="card-action">Open ADW Workflow <span aria-hidden="true">→</span></span></button><button id="home-research" class="home-card" type="button" style="display:none"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20V10h4v10M10 20V4h4v16M15 20v-7h4v7M3 20h18"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Research</strong><span class="card-description">Saved tests, virtual accounts and your experiment library.</span><span class="card-action">Review results <span aria-hidden="true">→</span></span></button><button id="home-replay" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 0 7M4 4v5h5M10 8l6 4-6 4z"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Backtest Replay (20Y)</strong><span class="card-description">Full-screen OpenTerminal 20-year (2006–2026) minute-by-minute replay across all 8 algos, trades, and point-in-time news.</span><span class="card-action">Open 20Y Replay <span aria-hidden="true">→</span></span></button><button id="home-models" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Models &amp; Setup</strong><span class="card-description">Connect AI model providers and configure default agent seat models &amp; risk limits.</span><span class="card-action">Open Models <span aria-hidden="true">→</span></span></button></div></main>
+<main id="home-panel" class="home-page" aria-label="Evan Algo home"><div class="home-hero"><p class="eyebrow">PITCH-BLACK TRADINGVIEW &amp; ADW ALGO SYSTEM</p><h1>Evan <span>Algo</span></h1><p class="home-tagline">Live TradingView.<br>ADW Algo Workflows.</p><p class="home-description">Run live in Yahoo Shadow Mode or connect your Alpaca Paper Account (<code>https://paper-api.alpaca.markets</code> · <code>live_orders=false</code>).</p><p class="home-next">Select a terminal workspace:</p></div><div class="home-choices" aria-label="Choose a workspace"><button id="home-live" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 3 8-10M15 5h5v5"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Live Market (TradingView)</strong><span class="card-description">Pitch-black TradingView chart, Alpaca Paper Account connection &amp; status, incoming news wire &amp; live 6-agent algo stream.</span><span class="card-action">Open TradingView Live <span aria-hidden="true">→</span></span></button><button id="home-adw" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h14"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Trade Workflow (ADW)</strong><span class="card-description">True ADW terminal: configure Model + Thinking Level per agent, Set System Prompt + User Prompt, and generate new Algo Workflows live.</span><span class="card-action">Open ADW Workflow <span aria-hidden="true">→</span></span></button><button id="home-research" class="home-card" type="button" style="display:none"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20V10h4v10M10 20V4h4v16M15 20v-7h4v7M3 20h18"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Research</strong><span class="card-description">Saved tests, virtual accounts and your experiment library.</span><span class="card-action">Review results <span aria-hidden="true">→</span></span></button><button id="home-replay" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 0 7M4 4v5h5M10 8l6 4-6 4z"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Backtest Replay</strong><span class="card-description">Replay saved historical bars. Choose a strategy, apply capital and slippage, and inspect each simulated fill.</span><span class="card-action">Open Backtest Replay <span aria-hidden="true">→</span></span></button><button id="home-models" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Models &amp; Setup</strong><span class="card-description">Connect AI model providers and configure default agent seat models &amp; risk limits.</span><span class="card-action">Open Models <span aria-hidden="true">→</span></span></button></div></main>
 <div id="adw-panel" class="view-page" hidden><div class="page-heading" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:10px"><div><p class="eyebrow" style="color:#4ade80;margin:0">ADW TRADE WORKFLOW ENGINE · PER-AGENT MODEL + THINKING LEVEL · SET SYSTEM PROMPT + NEW ALGO WORKFLOW GENERATOR</p></div><button id="refresh-adw" type="button" class="sssf-part-btn">↻ Sync ADW State</button></div><div id="sssf-visualizer-root" class="sssf-wrap"></div></div>
 <div id="research-panel" class="view-page" hidden><div class="page-heading"><div><p class="eyebrow">YOUR SAVED TESTS</p><p class="dim">Review saved simulations and experiments. These are past tests, separate from current market activity.</p></div><button id="refresh-research">Refresh saved results</button></div><section><div class="market-title"><h3>Latest fleet simulation</h3><span class="neutral-tag" id="research-state">Checking saved results</span></div><p id="research-basis" class="note"></p><div class="overview research-metrics"><div><small>SIMULATED P&amp;L</small><strong id="research-pnl">—</strong></div><div><small>SIMULATED ACCOUNTS</small><strong id="research-accounts">—</strong></div><div><small>RUN SAVED</small><strong class="date-value" id="research-time">—</strong></div></div><p id="research-limits" class="note"></p><div id="research-phases" class="phase-list"></div><div id="research-fleet" class="table-wrap"></div><div id="sssf-research-embed" class="sssf-wrap"></div></section><section><div class="market-title"><h3>Algo experiment library</h3><span id="library-counts" class="neutral-tag">Checking catalog</span></div><p id="library-note" class="note"></p><div id="library-table" class="table-wrap"></div></section></div>
 <div id="models-panel" class="view-page" hidden><div class="page-heading"><div><p class="eyebrow">YOUR RESEARCH SETUP</p><p class="dim">Choose which model is assigned to each research role.</p></div></div><section><div class="market-title"><h3>Research model assignments</h3><span id="models-state" class="neutral-tag">Loading</span></div><p class="note">A saved model is a configuration choice. The fleet simulation runs Python rules; its model labels do not prove AI inference. Saving does not start a model, a run or an order.</p><div id="model-roster" class="model-roster"></div><form id="model-form"><div class="form-fields"><label>Research role<select id="model-role" required></select></label><label>Provider<select id="model-provider" required></select></label><label>Model ID<input id="model-id" maxlength="140" required autocomplete="off"></label></div><button id="model-save" type="submit" class="primary">Save assignment</button><p id="model-result" role="status" class="note">Changes apply to future CLI simulations.</p></form></section><details><summary>Algo settings and limits</summary><section><dl id="settings"></dl><h2>AI ENTRY REVIEWER</h2><p id="model"></p><p id="ai-status"></p><p id="ai-reason" class="note"></p><p id="ai-budget" class="note"></p><h2>GOAL</h2><p id="goal"></p><p id="remaining" class="note"></p><p class="note">A goal is an input, not a forecast.</p><h2>LIQUIDITY / RISK</h2><p id="liquidity"></p><p id="liquidity-status" class="note"></p><p id="risk-scope" class="note"></p><p class="note">Change settings with <code>sh tets setup</code>.</p></section></details></div>
@@ -338,10 +341,11 @@ function renderMarket(d,company){
  text('market-volume',info?.day_volume==null?'—':Number(info.day_volume).toLocaleString());text('volume-note',info?.day_volume?'Provider snapshot · '+when(info.observed_at):'Volume snapshot unavailable');
  text('company-sector',info?.sector||info?.quote_type||'Company details loading');text('company-snapshot',info?'Yahoo company snapshot · '+info.state+' · '+when(info.observed_at):'Waiting for a company snapshot. Quotes continue independently.');
 }
-let activeView='home',viewHistory=[];
+let activeView='home',viewHistory=[],replayUI=null;
 async function switchView(view,remember=true){
  if(!['home','live','adw','research','models','replay'].includes(view))return;
  if(view!==activeView&&remember)viewHistory.push(activeView);
+ if(view!=='replay'&&replayUI)replayUI.controller.pause();
  activeView=view;document.body.className=view==='home'?'on-home':(view==='replay'?'on-work on-replay-terminal':'on-work');
  $('live-overview').hidden=true;$('home-intro').hidden=view!=='home';$('health').hidden=view==='home';$('mode').hidden=view==='home';$('view-heading').hidden=view==='home';$('home-tab').hidden=view==='home';$('back-action').hidden=view==='home';
  for(const name of ['home','live','adw','research','models','replay'])$(name==='live'?'live-layout':name+'-panel').hidden=name!==view;
@@ -1410,709 +1414,222 @@ function renderSssfInto(containerId,trace,researchMeta){
   root.append(inspector);
  }
 }
-let otSelectedAlgoIdx=0,otSelectedSessionIdx=15,otMinuteCursor=65,otPlaying=false,otSpeed=120,otTimer=null,otLedgerTab='trades',otEquityMode='1m';
-let otActiveSymbol='SPY',otCustomCapital=10000,otHoverX=null,otRunStatus='',otCustomAlgoKey='algo_0';
-const OT_SYMBOL_MULTIPLIERS={SPY:1.0,NVDA:0.258,AAPL:0.427,QQQ:0.866,TSLA:0.461,MSFT:0.795,META:1.109,AMD:0.305};
-const OT_PREVIOUS_ALGOS=[
- {algo_id:'bt_01_orb_breakout_10d',code:'ALGO-01 · v6.4',name:'Harness² Synced Triad · 5m ORB Breakout + OTM Call Convexity + Jev Catalyst',family:'orb_breakout_multi_asset',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:194920.40,net_profit_20y:184920.40,return_20y_pct:1849.20,cagr_pct:16.02,sharpe:2.68,win_rate_pct:74.8,max_dd_pct:6.40,profit_factor:2.84,total_trades_20y:4820,bars_20y:1965600,news_used_20y:18420,modes:['long_call','long_equity','short_put'],primary_agent:'trader_price_structure',primary_model:'codex:gpt-5.4',data_desc:'SPY/QQQ/NVDA 1m OHLCV + OCC Option Chains + 18,420 Verified Point-in-Time News Catalysts',sha256:'9f84c2e1b7a04823d61e52c8a9014f7b'},
- {algo_id:'bt_05_full_12acct_fleet_10d',code:'ALGO-02 · v6.1',name:'Full 12-Account Parallel Shadow Fleet (6×1D Intraday + 6×1W Swing)',family:'fleet_12_account_multi_asset',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:120000,final_equity_20y:1648390.00,net_profit_20y:1528390.00,return_20y_pct:1273.66,cagr_pct:14.01,sharpe:2.54,win_rate_pct:73.6,max_dd_pct:5.85,profit_factor:2.62,total_trades_20y:14290,bars_20y:1965600,news_used_20y:24100,modes:['long_equity','short_equity','long_call','long_put','short_call','short_put'],primary_agent:'phase_4_fleet_dispatcher',primary_model:'openrouter:kimi-k2.7-code',data_desc:'12 Parallel Accounts ($120k Base) · All 6 Equity/Options Modes + 24,100 News Catalysts',sha256:'4d91a8f0c32e7614b8059c1e3a72d604'},
- {algo_id:'bt_06_evolved_vs_baseline_10d',code:'ALGO-03 · v5.9',name:'Harness² Self-Evolved Multi-Regime Momentum & Crisis Collar',family:'harness2_self_evolved_triad',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:218650.00,net_profit_20y:208650.00,return_20y_pct:2086.50,cagr_pct:16.68,sharpe:2.92,win_rate_pct:80.0,max_dd_pct:4.88,profit_factor:3.12,total_trades_20y:6120,bars_20y:1965600,news_used_20y:22450,modes:['long_equity','long_call','short_put','long_put'],primary_agent:'trader_price_structure',primary_model:'codex:gpt-5.4',data_desc:'Walk-Forward Evolved Prompt+Tool Triad · SPY/NVDA/AAPL 1m + 22,450 Macro/Earnings News',sha256:'7c3e91b2a5084f19d2647e8b1039a5c2'},
- {algo_id:'bt_04_jev_catalyst_blitz_10d',code:'ALGO-04 · v5.2',name:'Jev 0.4s Macro/Earnings News Rerank + Convexity Options Blitz',family:'jev_catalyst_convexity',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:168410.80,net_profit_20y:158410.80,return_20y_pct:1584.11,cagr_pct:15.16,sharpe:2.45,win_rate_pct:73.3,max_dd_pct:7.15,profit_factor:2.55,total_trades_20y:3940,bars_20y:1965600,news_used_20y:31800,modes:['long_call','long_put','long_equity'],primary_agent:'stage_0_jev_router',primary_model:'typesafe:jev-router-v1',data_desc:'31,800 Reuters/Bloomberg/BLS/FOMC Releases + 1m Intraday Options Flow',sha256:'2a78f4c9e1035b68d4921c7f8e30b1a9'},
- {algo_id:'bt_02_theta_harvest_10d',code:'ALGO-05 · v4.8',name:'High-IV Range Compression & Cash-Secured Theta Credit Harvest',family:'theta_credit_harvest',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:142680.15,net_profit_20y:132680.15,return_20y_pct:1326.80,cagr_pct:14.21,sharpe:2.64,win_rate_pct:78.9,max_dd_pct:4.92,profit_factor:2.91,total_trades_20y:5610,bars_20y:1965600,news_used_20y:14290,modes:['short_put','short_call'],primary_agent:'trader_theta_mean_reversion',primary_model:'openrouter:kimi-k2.7-code',data_desc:'100% Collateralized Cash-Secured Puts & Covered Calls · IV Rank > 55 Filter',sha256:'8b19d3e4f6027a51c8394e2d7015f6b3'},
- {algo_id:'bt_03_bearish_put_hedge_10d',code:'ALGO-06 · v4.1',name:'Bearish Crisis Alpha & Downside Put/Short Hedge (GFC / COVID / 2022)',family:'macd_bearish_hedge',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:119840.50,net_profit_20y:109840.50,return_20y_pct:1098.41,cagr_pct:13.22,sharpe:2.18,win_rate_pct:68.4,max_dd_pct:6.80,profit_factor:2.34,total_trades_20y:2890,bars_20y:1965600,news_used_20y:11680,modes:['long_put','short_equity','short_call'],primary_agent:'trader_price_structure',primary_model:'deepseek:deepseek-r1',data_desc:'VIX Term Structure Inversion + Bearish MACD Roll-Over + Macro Crisis Headlines',sha256:'5e42c7a1d9083b62f1748c9e2063a8d1'},
- {algo_id:'bt_07_vwap_rsi_legacy',code:'ALGO-07 · v2.4',name:'Dual-Window Intraday VWAP + RSI-14 Mean Reversion (Pre-Options Gen)',family:'vwap_rsi_reversion',time_range:'2011-01-03 → 2026-04-20 (15.3 Yrs · 3,848 Days · 1,500,720 1m Bars)',start_date:'2011-01-03',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:64320.90,net_profit_20y:54320.90,return_20y_pct:543.21,cagr_pct:12.94,sharpe:1.86,win_rate_pct:64.1,max_dd_pct:9.45,profit_factor:1.92,total_trades_20y:3410,bars_20y:1500720,news_used_20y:8920,modes:['long_equity','short_equity'],primary_agent:'phase_1_scout_recon',primary_model:'openrouter:deepseek/deepseek-v4.1-flash',data_desc:'SPY/QQQ 1m VWAP Band Pullback + Headline Sentiment Veto Gate',sha256:'3f81b6d2e4095a73c6129d8f4052b7e8'},
- {algo_id:'bt_08_sma_baseline_v1',code:'ALGO-08 · v1.0',name:'Frozen SMA 9/21 Crossover Baseline (Original Algo Lab Benchmark)',family:'sma_cross_long',time_range:'2006-04-20 → 2026-04-20 (20.0 Yrs · 5,040 Days · 1,965,600 1m Bars)',start_date:'2006-04-20',end_date:'2026-04-20',initial_equity:10000,final_equity_20y:41280.30,net_profit_20y:31280.30,return_20y_pct:312.80,cagr_pct:7.34,sharpe:1.14,win_rate_pct:53.8,max_dd_pct:18.60,profit_factor:1.31,total_trades_20y:7840,bars_20y:1965600,news_used_20y:6120,modes:['long_equity'],primary_agent:'phase_3_risk_auditor',primary_model:'codex:gpt-5.4',data_desc:'SPY 1m OHLCV 9m/21m SMA Rule Baseline · Next-Bar Open Execution',sha256:'1c64e9a3b8027d54f9316a8c5024e9f0'}
-];
-const OT_20Y_SESSIONS=[
- {date:'2006-05-11',year:2006,era:'2006 · Bernanke Fed Pause',spot:130.80,chg:-1.12,pnl_base:142.50,crisis:false,news_headline:'FOMC Holds Fed Funds Target at 5.00% Pause Signal; Core Inflation & Copper Surge Spark Intraday Volatility',news_src:'Federal Reserve / Reuters',news_pub:'08:30:04 ET',news_obs:'08:30:05 ET',jev_score:0.91,sentiment:'MIXED_VOL +0.64',news_impact:'Stage 0 Jev Router flagged Fed pause + commodity inflation at 09:31 ET -> Agent waited for 09:48 ET VWAP reclaim before buying ATM Calls and harvesting +$142.50.'},
- {date:'2008-09-15',year:2008,era:'2008 · Lehman GFC Crash',spot:120.10,chg:-4.71,pnl_base:486.20,crisis:true,news_headline:'Lehman Brothers Files Chapter 11 Bankruptcy ($639B Assets); Merrill Lynch Sold to Bank of America; AIG Seeks Fed Bridge Loan',news_src:'Reuters / Bloomberg / WSJ',news_pub:'01:45:00 ET',news_obs:'09:30:01 ET',jev_score:0.99,sentiment:'CRISIS_BEARISH -0.98',news_impact:'Jev Crisis Gate scored -0.98 at 09:30:01 ET -> Blocked all long equity/call entries, rotated 100% into SPY 122P Long Puts & Short Equity at 09:36 ET, capturing +$486.20 on the -4.71% crash.'},
- {date:'2009-03-10',year:2009,era:'2009 · Generational GFC Bottom',spot:71.90,chg:6.18,pnl_base:512.80,crisis:false,news_headline:'Citigroup CEO Pandit Memo Reports Q1 Operating Profit; Fed & Treasury Confirm Mark-to-Market Accounting Relief Review',news_src:'Bloomberg / Reuters',news_pub:'08:15:12 ET',news_obs:'09:30:02 ET',jev_score:0.96,sentiment:'BULLISH_REVERSAL +0.94',news_impact:'Jev Router detected +0.94 systemic short-squeeze catalyst -> Agent bought SPY 70C Long Calls + SPY Shares on 09:35 ET 5m ORB breakout, riding +6.18% surge for +$512.80.'},
- {date:'2010-05-06',year:2010,era:'2010 · Intraday Flash Crash',spot:112.90,chg:-3.28,pnl_base:394.10,crisis:true,news_headline:'Eurozone Greek Sovereign Debt Contagion Sparks E-Mini S&P Liquidity Vacuum; NYSE Triggers LULD Circuit Breakers at 14:42 ET',news_src:'Reuters / CME / NYSE Feed',news_pub:'09:12:00 ET',news_obs:'09:30:01 ET',jev_score:0.95,sentiment:'BEARISH_LIQUIDITY -0.89',news_impact:'Maverick-MCP detected order-book depth drop + Jev -0.89 Eurozone stress -> Agent bought protective SPY 115P Puts at 10:05 ET and took profit into the 14:45 ET liquidity V-bottom.'},
- {date:'2011-08-08',year:2011,era:'2011 · US Credit Downgrade',spot:112.20,chg:-6.51,pnl_base:448.90,crisis:true,news_headline:'S&P Downgrades United States Sovereign Credit Rating from AAA to AA+ Over Debt Ceiling Fiscal Standoff; VIX Jumps Above 45',news_src:'Standard & Poors / Bloomberg',news_pub:'07:00:00 ET',news_obs:'09:30:01 ET',jev_score:0.98,sentiment:'BEARISH_SHOCK -0.95',news_impact:'Consumed AAA downgrade headline at open -> Activated Downside Put Hedge & Cash-Secured Collar, generating +$448.90 while benchmark fell -6.51%.'},
- {date:'2013-05-22',year:2013,era:'2013 · Bernanke Taper Tantrum',spot:165.90,chg:-0.84,pnl_base:168.40,crisis:false,news_headline:'Fed Chair Bernanke Testimony Signals QE3 Bond Buying Could Step Down in Next Few Meetings If Labor Market Improves',news_src:'Federal Reserve / Congressional Testimony',news_pub:'10:00:02 ET',news_obs:'10:00:04 ET',jev_score:0.92,sentiment:'HAWKISH_REVERSAL -0.78',news_impact:'At 10:00:04 ET (Minute 31), Jev scored Bernanke taper Q&A at -0.78 -> Agent flipped from morning long call to intraday short-call credit spread + put hedge.'},
- {date:'2015-08-24',year:2015,era:'2015 · China Yuan Deval Flush',spot:189.50,chg:-4.21,pnl_base:372.60,crisis:true,news_headline:'PBOC Yuan Devaluation Aftershock Sends Shanghai Composite Down -8.5%; US Equity Futures Hit Limit-Down Before 09:30 ET Open',news_src:'Reuters / PBOC / CME',news_pub:'08:00:00 ET',news_obs:'09:30:01 ET',jev_score:0.96,sentiment:'BEARISH_GAP -0.91',news_impact:'Risk Auditor blocked fade-buying the 09:30 ET limit-down open, waited for 09:48 ET ETF arbitrage stabilization, then traded High-IV Put/Call spreads for +$372.60.'},
- {date:'2016-11-09',year:2016,era:'2016 · Election Macro Reversal',spot:216.40,chg:1.36,pnl_base:318.50,crisis:false,news_headline:'US Presidential Election Fiscal Infrastructure & Deregulation Rotation: Treasury 10Y Yield Breaks 2.00%, Financials & Industrials Surge',news_src:'Bloomberg / WSJ',news_pub:'07:30:00 ET',news_obs:'09:30:01 ET',jev_score:0.94,sentiment:'BULLISH_ROTATION +0.86',news_impact:'Jev Router reclassified overnight futures panic into +0.86 fiscal reflation breakout -> Agent bought SPY 215C Calls + Long Equity at 09:38 ET for +$318.50.'},
- {date:'2018-02-05',year:2018,era:'2018 · XIV Volmageddon Squeeze',spot:264.10,chg:-4.18,pnl_base:410.30,crisis:true,news_headline:'CBOE VIX Futures Spike +115% Intraday as Inverse Volatility ETNs (XIV/SVXY) Trigger Mandatory Late-Day Rebalance Cascade',news_src:'Bloomberg / CBOE',news_pub:'09:20:00 ET',news_obs:'09:30:02 ET',jev_score:0.97,sentiment:'VOL_EXPLOSION -0.93',news_impact:'Detected VIX term-structure inversion at 10:05 ET -> Vetoed short-vol theta selling and deployed Long Put convexity into the 15:15 ET rebalance cascade.'},
- {date:'2020-03-16',year:2020,era:'2020 · COVID Fed Zero-Rate Cut',spot:239.80,chg:-10.94,pnl_base:642.80,crisis:true,news_headline:'Federal Reserve Slashes Funds Rate to 0.00%-0.25% & Launches $700B Emergency QE; NYSE Level-1 7% Circuit Breaker Halts Trading at 09:30:01 ET',news_src:'Federal Reserve / NYSE / Reuters',news_pub:'07:00:00 ET',news_obs:'09:30:01 ET',jev_score:1.00,sentiment:'EXTREME_CRISIS -0.99',news_impact:'Handled 15-minute Level-1 halt artifact cleanly, refused stale pre-halt quotes, and executed SPY 250P Long Put + Short Equity post-reopen at 09:48 ET for +$642.80.'},
- {date:'2021-11-05',year:2021,era:'2021 · Post-Stimulus NFP Meltup',spot:468.50,chg:0.42,pnl_base:264.10,crisis:false,news_headline:'US Nonfarm Payrolls Beat at +531,000 Jobs & Pfizer Antiviral Paxlovid Trial Shows 89% Efficacy; Mega-Cap Tech & Travel Rally',news_src:'BLS / Reuters / Yahoo Finance',news_pub:'08:30:01 ET',news_obs:'08:30:03 ET',jev_score:0.93,sentiment:'BULLISH_MACRO +0.87',news_impact:'Consumed 08:30 ET BLS NFP +531k beat -> Agent entered OTM Long Calls + Cash-Secured Short Puts at 09:48 ET, harvesting +$264.10.'},
- {date:'2022-06-13',year:2022,era:'2022 · Hot CPI 75bps Rate Shock',spot:375.10,chg:-3.80,pnl_base:389.40,crisis:true,news_headline:'US CPI Inflation Accelerates to 40-Year High +8.6% YoY; Bond Market Prices Immediate 75 bps FOMC Rate Hike & 2Y/10Y Curve Inverts',news_src:'BLS / WSJ / Bloomberg',news_pub:'08:30:00 ET',news_obs:'09:30:01 ET',jev_score:0.97,sentiment:'BEARISH_RATES -0.92',news_impact:'Jev Router flagged 75bps hike repricing at 09:31 ET -> Agent entered SPY 380P Long Puts + Short Equity at 09:48 ET, locking +$389.40.'},
- {date:'2023-05-25',year:2023,era:'2023 · NVDA AI Guidance Breakout',spot:415.20,chg:0.88,pnl_base:428.70,crisis:false,news_headline:'NVIDIA Q2 Revenue Guidance ($11.0B vs $7.18B Est) Crushes Consensus by +53% on Generative AI Data Center GPU Demand Surge',news_src:'NVIDIA IR / Reuters / Bloomberg',news_pub:'08:00:00 ET',news_obs:'09:30:01 ET',jev_score:0.99,sentiment:'AI_BREAKOUT +0.97',news_impact:'Highest Jev earnings catalyst score of 2023 (0.99) -> Agent deployed maximum allowed 0.1% bar-cap allocation into OTM Call Blitz & Long Tech Momentum at 09:36 ET.'},
- {date:'2024-08-05',year:2024,era:'2024 · Yen Carry Unwind & Reclaim',spot:517.40,chg:-2.91,pnl_base:356.20,crisis:false,news_headline:'Bank of Japan Rate Hike Triggers Global Yen Carry-Trade Unwind; ISM Services Index Rebounds to 51.4 at 10:00 ET Sparking Intraday Reclaim',news_src:'BOJ / ISM / Bloomberg',news_pub:'10:00:01 ET',news_obs:'10:00:03 ET',jev_score:0.95,sentiment:'INTRADAY_PIVOT +0.84',news_impact:'Avoided the 09:30 ET VIX 65 opening panic, then consumed the 10:00:03 ET ISM Services 51.4 beat to buy the VWAP reclaim and sell high-IV cash-secured puts.'},
- {date:'2025-04-09',year:2025,era:'2025 · 90-Day Tariff Pause Rip',spot:542.60,chg:9.52,pnl_base:718.90,crisis:false,news_headline:'White House Announces Immediate 90-Day Pause on Reciprocal Tariffs for 75+ Trading Partners at 13:18 ET; S&P 500 Surges +9.5%',news_src:'Reuters / Bloomberg / Official Wire',news_pub:'13:18:04 ET',news_obs:'13:18:05 ET',jev_score:1.00,sentiment:'MACRO_EXPLOSION +0.99',news_impact:'Jev Router ingested the 13:18:04 ET tariff pause headline in 380ms -> Agent immediately executed Long Call + Long SPY breakout at 13:19 ET, banking +$718.90.'},
- {date:'2026-04-20',year:2026,era:'2026 · Walk-Forward Holdout (Latest)',spot:530.50,chg:0.74,pnl_base:412.80,crisis:false,news_headline:'Core CPI Disinflation +0.2% MoM & Q1 Semiconductor CapEx Beat Confirm Soft-Landing Expansion Above 30-Bar Resistance ($529.80)',news_src:'BLS / Yahoo Finance / Maverick-MCP',news_pub:'08:30:02 ET',news_obs:'09:31:00 ET',jev_score:0.96,sentiment:'BULLISH_CONTINUATION +0.88',news_impact:'Verified 0 prompt injections in 0.38s, confirmed $39.3M/bar liquidity >= $1M floor, and entered SPY 530C + Long Equity on 09:48 ET 5m ORB breakout for +$412.80.'}
-];
-const OT_20Y_ANNUAL=[
- [2006,'Bernanke Rate Pause & Energy Cycle','+14.8%','+$1,480','+13.6%','218','73.4%','FOMC 5.25% Pause & Housing Peak Hedging'],
- [2007,'Subprime Credit Crack & Vol Expansion','+19.2%','+$2,204','+3.5%','246','74.0%','Bear Stearns Credit Fund Freeze & Fed Sept Cut'],
- [2008,'Global Financial Crisis (Lehman / AIG)','+34.6%','+$4,734','-38.5%','312','76.9%','Lehman Ch. 11 & TARP Long-Put Crisis Alpha'],
- [2009,'Generational GFC Bottom & QE1 Rally','+28.4%','+$5,230','+23.5%','274','77.4%','March 2009 Bank Stress Test & QE1 Launch'],
- [2010,'Flash Crash & QE2 Jackson Hole Pivot','+16.9%','+$3,996','+12.8%','230','72.6%','May 6 Flash Crash V-Rebound & Bernanke QE2'],
- [2011,'US AAA Downgrade & Euro Debt Crisis','+18.1%','+$5,005','+0.0%','258','73.2%','S&P AAA Downgrade Put Collar & ECB Liquidity'],
- [2012,'Draghi Whatever-It-Takes & QE3','+15.4%','+$5,028','+13.4%','204','75.5%','ECB OMT Pledge & FOMC Open-Ended QE3'],
- [2013,'Taper Tantrum & Broad Bull Breakout','+21.8%','+$8,215','+29.6%','226','78.3%','Bernanke Taper Q&A Pivot & Tech Momentum'],
- [2014,'Oil Crash & Low-Vol Theta Harvest','+13.9%','+$6,380','+11.4%','198','79.8%','OPEC Supply Shock & VIX Compression Theta'],
- [2015,'China Yuan Devaluation & First Fed Hike','+12.6%','+$6,587','-0.7%','242','71.9%','PBOC Aug 24 Deval Flush & Dec Liftoff'],
- [2016,'Brexit Shock & Post-Election Reflation','+17.5%','+$10,301','+9.5%','234','74.8%','June Brexit Put Hedge & Nov 9 Reflation Call Sweep'],
- [2017,'Historic Low-Vol Meltup & Tax Cut Rally','+19.8%','+$13,695','+19.4%','192','81.2%','Semiconductor Breakout & Cash-Secured Theta'],
- [2018,'Feb Volmageddon & Q4 Fed Autopilot Bear','+16.2%','+$13,424','-6.2%','268','72.4%','Feb 5 XIV Squeeze & Dec Powell Pivot'],
- [2019,'Fed Mid-Cycle Cuts & Repo Liquidity','+22.4%','+$21,568','+28.9%','220','77.7%','July/Sept FOMC Insurance Cuts & Apple/Semi Surge'],
- [2020,'COVID-19 Crash & Unlimited QE V-Bottom','+38.5%','+$45,375','+16.3%','340','78.5%','March Zero-Rate Cut Put Alpha + Nov Vaccine Call Blitz'],
- [2021,'Stimulus Boom & Mega-Cap Options Flow','+24.1%','+$39,340','+26.9%','248','79.0%','NFP Beats, Gamma Sweeps & NVDA/TSLA Breakouts'],
- [2022,'9.1% Inflation & 425bps Rate-Hike Bear','+19.6%','+$39,703','-19.4%','290','73.1%','CPI Shock Downside Puts & FOMC 75bps Collars'],
- [2023,'Generative AI Breakout & Regional Bank Hedge','+26.8%','+$64,925','+24.2%','236','78.4%','SVB March Hedge + May 25 NVDA AI Guidance Call Blitz'],
- [2024,'AI Megatrend & Yen Carry Unwind Reclaim','+22.9%','+$70,340','+23.3%','224','79.5%','Aug 5 Yen Carry VWAP Reclaim & Sept 50bps Fed Cut'],
- [2025,'Reciprocal Tariff Volatility & 90-Day Rip','+25.4%','+$95,880','+14.1%','260','76.5%','April 9 Tariff Pause +9.5% Intraday Call Sweep'],
- [2026,'2026 YTD Walk-Forward Out-of-Sample','+8.4%','+$39,710','+5.2%','100','80.0%','April CPI Disinflation & Synced Triad ORB Execution']
-];
-function fmtMinTime(m){
- const total=9*60+30+m,hh=Math.floor(total/60),mm=total%60;
- return (hh<10?'0'+hh:String(hh))+':'+(mm<10?'0'+mm:String(mm))+':00 ET';
+// REPLAY_CONTROLLER_START
+function createReplayController({schedule=setTimeout,cancel=clearTimeout,change=()=>{}}={}){
+ return {data:null,cursor:0,playing:false,speed:120,timer:null,
+  load(data){this.pause();this.data=data;this.cursor=0;change();},
+  seek(index){this.pause();this.cursor=Math.max(0,Math.min((this.data?.bars.length||1)-1,Math.trunc(index)||0));change();},
+  step(delta){this.seek(this.cursor+delta);},
+  pause(){if(this.timer!==null)cancel(this.timer);this.timer=null;this.playing=false;change();},
+  setSpeed(speed){if(![1,30,120,600,3600].includes(Number(speed)))return;this.speed=Number(speed);if(this.playing){cancel(this.timer);this.queue();}},
+  queue(){
+   const bars=this.data.bars,current=bars[this.cursor],next=bars[this.cursor+1];
+   if(!next){this.pause();return;}
+   const gap=Date.parse(next.timestamp)-Date.parse(current.timestamp);
+   // Closed-market gaps are skipped. Every recorded bar is still visited.
+   const interval=gap>0&&gap<=3600000?gap:(this.data.bar_interval_ms||60000);
+   this.timer=schedule(()=>{this.timer=null;if(!this.playing)return;this.cursor++;if(this.cursor===bars.length-1)this.playing=false;change();if(this.playing)this.queue();},Math.max(16,interval/this.speed));
+  },
+  play(){if(!this.data?.bars.length||this.playing)return;if(this.cursor>=this.data.bars.length-1)this.cursor=0;this.playing=true;change();this.queue();}
+ };
 }
-function buildMinuteSessionData(algo,sess){
- const sym=otActiveSymbol||'SPY',symMult=OT_SYMBOL_MULTIPLIERS[sym]||1.0;
- const initEq=Number(otCustomCapital)||algo.initial_equity||10000;
- const bars=[],trades=[],scale=(initEq/10000)*Number((algo.net_profit_20y/184920.40).toFixed(2));
- const baseOpen=Number((sess.spot*symMult).toFixed(2)),dayRet=sess.chg/100,isBear=sess.chg<0;
- const primaryMode=isBear?(algo.modes.includes('long_put')?'long_put':algo.modes.includes('short_equity')?'short_equity':algo.modes[0]):algo.modes[0];
- const strike=Math.round(baseOpen*(primaryMode.includes('put')?0.99:1.01));
- const contract=primaryMode.includes('call')||primaryMode.includes('put')?`${sym} ${sess.date.replaceAll('-','')} ${primaryMode.includes('put')?'P':'C'}${strike} (OCC)`:`${sym} Shares (${primaryMode})`;
- let curPrice=baseOpen,cumVol=0,cumPV=0,posQty=0,entryPx=0,realizedPnl=0;
- const sessionTargetPnl=Number((sess.pnl_base*scale).toFixed(2));
- const sessionNews=[
-  {min:0,pub:sess.news_pub,obs:sess.news_obs,title:sess.news_headline,src:sess.news_src,score:sess.jev_score,sent:sess.sentiment,status:'USED FOR PRIMARY ENTRY & REGIME BIAS',impact:sess.news_impact},
-  {min:5,pub:'09:34:50 ET',obs:'09:35:00 ET',title:`[${sess.date} · ${sym}] Maverick-MCP 5m Opening Range & Dark-Pool Print Audit: $39.3M/bar Liquidity Confirmed (0 Prompt Injections)`,src:'Maverick-MCP / IEX Depth',score:0.89,sent:'LIQUIDITY_PASS +0.80',status:'USED FOR SIZING & 0.1% BAR CAP',impact:`Confirmed median bar dollar volume >= $1,000,000 floor; unlocked ${primaryMode.toUpperCase()} order allocation for ${algo.primary_agent}.`},
-  {min:30,pub:'10:00:01 ET',obs:'10:00:03 ET',title:`[${sess.date} 10:00 ET Macro Release] Intraday ISM / Consumer Confidence & Treasury 10Y Auction Flow Confirmation`,src:'BLS / ISM / Bloomberg Wire',score:0.92,sent:isBear?'BEARISH_CONFIRM -0.85':'BULLISH_CONFIRM +0.86',status:'USED FOR 10:35 ET SCALE-IN ADD',impact:`10:00 ET macro print confirmed morning ${sess.era} direction -> Agent scaled +50% into ${contract} with stop trailed to breakeven.`},
-  {min:120,pub:'11:30:00 ET',obs:'11:30:02 ET',title:`[${sess.date} Midday Options Sweep] CBOE 0DTE/Weekly Gamma Pinning & IV Term Structure Check`,src:'CBOE LiveVol / OPRA Feed',score:0.84,sent:'THETA_HARVEST +0.72',status:'USED FOR 11:45 ET PARTIAL PROFIT HARVEST',impact:'Detected midday gamma deceleration at 2.1x ATR extension -> Agent harvested 50% of morning convexity gains and locked realized profit.'},
-  {min:270,pub:'14:00:00 ET',obs:'14:00:02 ET',title:`[${sess.date} 14:00 ET Afternoon Catalyst] FOMC Minutes / Treasury Desk Rebalance & Institutional MOC Imbalance Preview`,src:'Federal Reserve / Reuters',score:0.90,sent:isBear?'AFTERNOON_HEDGE -0.82':'AFTERNOON_WAVE +0.84',status:'USED FOR 14:00 ET AFTERNOON WAVE',impact:`Afternoon catalyst triggered second intraday wave in ${contract} under strict -10.0% daily stop-loss collar.`},
-  {min:380,pub:'15:49:50 ET',obs:'15:50:00 ET',title:`[${sess.date} 15:50 ET Closing Bell Audit] NYSE Market-On-Close (MOC) Imbalance & 1D Flat Settlement Gate`,src:'NYSE MOC / Risk Auditor',score:0.88,sent:'SETTLEMENT_PASS 1.00',status:'USED FOR 15:50 ET EOD SETTLEMENT EXIT',impact:`Risk Auditor (codex:gpt-5.4) closed 100% of intraday exposure 10 minutes before close, settling +$${sessionTargetPnl.toFixed(2)} net profit.`}
- ];
- for(let m=0;m<390;m++){
-  const progress=m/389;
-  const macroWave=Math.sin(m/14)*0.0028+Math.cos(m/6)*0.0014;
-  const barImpulse=Math.sin(m*1.9+otSelectedAlgoIdx)*0.00145+Math.cos(m*3.1)*0.00095;
-  const open=Number(curPrice.toFixed(2));
-  const rawClose=baseOpen*(1+dayRet*progress+macroWave)+baseOpen*barImpulse;
-  const close=Number((Math.abs(rawClose-open)<baseOpen*0.0004?open+(m%2===0?1:-1)*Math.max(0.08,baseOpen*0.0007):rawClose).toFixed(2));
-  const bodySpan=Math.abs(close-open);
-  const upperWick=Math.max(0.06,bodySpan*(0.45+0.35*Math.abs(Math.sin(m*2.3))));
-  const lowerWick=Math.max(0.06,bodySpan*(0.45+0.35*Math.abs(Math.cos(m*1.7))));
-  const high=Number((Math.max(open,close)+upperWick).toFixed(2));
-  const low=Number((Math.min(open,close)-lowerWick).toFixed(2));
-  const vol=Math.round(54000+(m<15||m>370?68000:16000)+Math.abs(Math.sin(m*1.3))*29000);
-  curPrice=close;cumVol+=vol;cumPV+=close*vol;
-  const vwap=Number((cumPV/cumVol).toFixed(2));
-  const fastSma=m>=8?Number(((bars.slice(Math.max(0,m-8),m).reduce((s,b)=>s+b.close,0)+close)/Math.min(9,m+1)).toFixed(2)):close;
-  const slowSma=m>=20?Number(((bars.slice(Math.max(0,m-20),m).reduce((s,b)=>s+b.close,0)+close)/Math.min(21,m+1)).toFixed(2)):close;
-  const orbHigh=m<5?high:bars[4].orbHigh,orbLow=m<5?low:bars[4].orbLow;
-  const rsi=Number(Math.max(24,Math.min(78,52+(isBear?-12:11)*progress+Math.sin(m/9)*6)).toFixed(1));
-  let action='HOLD / MONITOR',agentId=algo.primary_agent,modelId=algo.primary_model,tradeEvent=null;
-  if(m<5){action='5M ORB & NEWS WARMUP';agentId='stage_0_jev_router';modelId='typesafe:jev-router-v1';}
-  else if(m===5){
-   action='CATALYST & ORB RECON PASS';agentId='phase_1_scout_recon';modelId='openrouter:deepseek/deepseek-v4.1-flash';
-   tradeEvent={min:m,time:fmtMinTime(m),side:'RECON',action,agent:agentId,model:modelId,contract:sym+' 5m ORB Gate',qty:'0 (Recon Verified)',price:close,pnl:0,news_title:sessionNews[0].title};
-   trades.push(tradeEvent);
-  }else if(m===18){
-   action='BUY ENTRY #1 ('+primaryMode.toUpperCase()+')';posQty=initEq>=100000?24:4;entryPx=close;
-   tradeEvent={min:m,time:fmtMinTime(m),side:'BUY',action,agent:agentId,model:modelId,contract,qty:posQty+(primaryMode.includes('equity')?' sh':' cts'),price:close,pnl:Number((sessionTargetPnl*0.18).toFixed(2)),news_title:sessionNews[0].title};
-   trades.push(tradeEvent);
-  }else if(m===65){
-   action='SCALE-IN ADD (+50% ON 10:00 ET MACRO)';posQty=initEq>=100000?36:6;
-   tradeEvent={min:m,time:fmtMinTime(m),side:'BUY',action,agent:agentId,model:modelId,contract,qty:posQty+(primaryMode.includes('equity')?' sh':' cts'),price:close,pnl:Number((sessionTargetPnl*0.42).toFixed(2)),news_title:sessionNews[2].title};
-   trades.push(tradeEvent);
-  }else if(m===135){
-   action='MIDDAY PARTIAL HARVEST (LOCK 50%)';posQty=initEq>=100000?18:3;realizedPnl=Number((sessionTargetPnl*0.58).toFixed(2));
-   tradeEvent={min:m,time:fmtMinTime(m),side:'SELL',action,agent:'trader_theta_mean_reversion',model:'openrouter:kimi-k2.7-code',contract,qty:posQty+' held (50% sold)',price:close,pnl:realizedPnl,news_title:sessionNews[3].title};
-   trades.push(tradeEvent);
-  }else if(m===270){
-   action='AFTERNOON CATALYST RE-LOAD';posQty=initEq>=100000?30:5;
-   tradeEvent={min:m,time:fmtMinTime(m),side:'BUY',action,agent:agentId,model:modelId,contract,qty:posQty+(primaryMode.includes('equity')?' sh':' cts'),price:close,pnl:Number((sessionTargetPnl*0.79).toFixed(2)),news_title:sessionNews[4].title};
-   trades.push(tradeEvent);
-  }else if(m===380){
-   action='EOD SETTLEMENT EXIT (100% FLAT)';posQty=0;realizedPnl=sessionTargetPnl;agentId='phase_3_risk_auditor';modelId='codex:gpt-5.4';
-   tradeEvent={min:m,time:fmtMinTime(m),side:'SELL',action,agent:agentId,model:modelId,contract,qty:'0 (Closed 100%)',price:close,pnl:sessionTargetPnl,news_title:sessionNews[5].title};
-   trades.push(tradeEvent);
-  }else if(m>380){
-   action='SESSION SETTLED · FLAT IN CASH';agentId='phase_3_risk_auditor';modelId='codex:gpt-5.4';
+function createReplaySession(run){
+ return {draft:{strategy_id:'',dataset_id:'',capital:10000,slippage_bps:10},applied:null,result:null,busy:false,
+  payload(){return {...this.draft,capital:Number(this.draft.capital),slippage_bps:Number(this.draft.slippage_bps)};},
+  dirty(){return JSON.stringify(this.payload())!==JSON.stringify(this.applied);},
+  async apply(){
+   if(this.busy)throw Error('A simulation is already running.');
+   const payload=this.payload();
+   if(!payload.strategy_id||!payload.dataset_id)throw Error('Choose an available strategy and saved dataset.');
+   if(!Number.isFinite(payload.capital)||payload.capital<1||payload.capital>100000000)throw Error('Capital must be between $1 and $100,000,000.');
+   if(String(this.draft.slippage_bps).trim()===''||!Number.isFinite(payload.slippage_bps)||payload.slippage_bps<0||payload.slippage_bps>1000)throw Error('Slippage must be between 0 and 1,000 bps per fill.');
+   this.busy=true;
+   try{const result=await run(payload);if(!result.bars?.length)throw Error('The dataset returned no bars.');this.result=result;this.applied=payload;return result;}finally{this.busy=false;}
   }
-  const minPnl=m<18?0:m>=380?sessionTargetPnl:Number((sessionTargetPnl*((m-17)/363)+Math.sin(m/8)*sessionTargetPnl*0.04).toFixed(2));
-  const eqNow=Number((initEq+minPnl).toFixed(2));
-  const bhNow=Number((initEq*(close/baseOpen)).toFixed(2));
-  const activeNews=sessionNews.filter(n=>n.min<=m).at(-1)||sessionNews[0];
-  bars.push({
-   min:m,time:fmtMinTime(m),open,high,low,close,vol,vwap,fastSma,slowSma,orbHigh,orbLow,rsi,
-   ivRank:sess.crisis?'84.2% (CRISIS IV)':'38.6% (NORMAL IV)',
-   delta:posQty>0?(primaryMode.includes('put')?'-0.42':'+0.46'):'0.00',
-   theta:posQty>0?(primaryMode.includes('short')?'+$48/day':'-$22/day'):'$0/day',
-   action,agentId,modelId,contract,posQty:posQty>0?`${posQty} (${contract})`:'0 (FLAT IN CASH)',
-   entryPx:entryPx||baseOpen,minPnl,eqNow,bhNow,tradeEvent,activeNews
-  });
- }
- return {bars,trades,sessionNews,contract,primaryMode,sessionTargetPnl,sym,initEq};
+ };
 }
-function drawOtPriceCanvas(canvas,sessionData,cursor,sess){
- if(!canvas||!canvas.getContext||!canvas.getBoundingClientRect)return;
- const rect=canvas.getBoundingClientRect(),w=Math.max(rect.width||820,320),h=Math.max(rect.height||380,240),dpr=Math.min(globalThis.devicePixelRatio||1,2);
- canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
- const ctx=canvas.getContext('2d');if(!ctx)return;ctx.scale(dpr,dpr);
- ctx.fillStyle='#070c12';ctx.fillRect(0,0,w,h);
- const win=100,start=Math.max(0,cursor-win),end=cursor+1,slice=sessionData.bars.slice(start,end);
- if(!slice.length)return;
- const left=12,right=w-64,top=16,bottom=h-52;
- const vals=[];
- for(let i=start;i<end;i++){
-  const b=sessionData.bars[i];
-  vals.push(b.low,b.high,b.fastSma,b.slowSma);
- }
- let lo=Math.min(...vals),hi=Math.max(...vals),pad=Math.max((hi-lo)*0.1,0.05);lo-=pad;hi+=pad;
- const y=p=>top+(hi-p)/(hi-lo)*(bottom-top),span=Math.max(slice.length,30),step=(right-left)/span,x=i=>left+(i-start+0.5)*step;
- ctx.strokeStyle='#1b2a38';ctx.lineWidth=0.6;ctx.font='10px ui-monospace,monospace';ctx.fillStyle='#8c9dae';
- for(let i=0;i<5;i++){
-  const v=lo+(hi-lo)*i/4,yy=y(v);
-  ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(right,yy);ctx.stroke();
-  ctx.fillText('$'+v.toFixed(2),right+6,yy+3);
- }
- const maxV=Math.max(...slice.map(b=>b.vol||1),1);
- for(let i=start;i<end;i++){
-  const b=sessionData.bars[i],up=b.close>=b.open,col=up?'#55e6c1':'#ff798b',xx=x(i);
-  const vh=(b.vol/maxV)*28;
-  ctx.fillStyle=col+'33';ctx.fillRect(xx-step*0.32,h-14-vh,Math.max(1.2,step*0.64),vh);
-  ctx.strokeStyle=col;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(xx,y(b.high));ctx.lineTo(xx,y(b.low));ctx.stroke();
-  const by=Math.min(y(b.open),y(b.close)),bh=Math.max(1.5,Math.abs(y(b.open)-y(b.close)));
-  ctx.fillStyle=col;ctx.fillRect(xx-step*0.3,by,Math.max(1.5,step*0.6),bh);
- }
- for(const [fld,col] of [['fastSma','#ac9aff'],['slowSma','#ffbe70']]){
-  ctx.beginPath();ctx.lineWidth=1.5;ctx.strokeStyle=col;
-  for(let i=start;i<end;i++){const xx=x(i),yy=y(sessionData.bars[i][fld]);if(i===start)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);}
-  ctx.stroke();
- }
- for(const tr of sessionData.trades){
-  if(tr.side==='RECON'||tr.min<start||tr.min>cursor)continue;
-  const b=sessionData.bars[tr.min],xx=x(tr.min),isBuy=tr.side==='BUY',yy=y(isBuy?b.low:b.high)+(isBuy?12:-12);
-  ctx.fillStyle=isBuy?'#55e6c1':'#ff798b';
-  ctx.beginPath();ctx.moveTo(xx,yy+(isBuy?-5:5));ctx.lineTo(xx-4,yy+(isBuy?4:-4));ctx.lineTo(xx+4,yy+(isBuy?4:-4));ctx.closePath();ctx.fill();
-  ctx.font='bold 9px ui-monospace,monospace';ctx.fillText(isBuy?'B':'S',xx-3,yy+(isBuy?13:-7));
- }
- const cur=sessionData.bars[cursor],cy=y(cur.close);
- ctx.strokeStyle='#55e6c177';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(left,cy);ctx.lineTo(right,cy);ctx.stroke();ctx.setLineDash([]);
- ctx.fillStyle='#16463e';ctx.fillRect(right+2,cy-9,58,18);ctx.fillStyle='#55e6c1';ctx.font='10px ui-monospace,monospace';ctx.fillText('$'+cur.close.toFixed(2),right+6,cy+3);
- if(otHoverX!=null&&otHoverX>=left&&otHoverX<=right){
-  const hiIdx=Math.max(start,Math.min(end-1,start+Math.floor((otHoverX-left)/step))),hb=sessionData.bars[hiIdx],hx=x(hiIdx),hy=y(hb.close);
-  ctx.strokeStyle='#8c9dae66';ctx.setLineDash([2,3]);ctx.beginPath();ctx.moveTo(hx,top);ctx.lineTo(hx,bottom);ctx.moveTo(left,hy);ctx.lineTo(right,hy);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='#0b1118ee';ctx.strokeStyle='#233548';ctx.lineWidth=1;const bx=Math.min(hx+10,right-210);ctx.fillRect(bx,top+4,204,48);ctx.strokeRect(bx,top+4,204,48);
-  ctx.fillStyle='#e7eef7';ctx.font='10px ui-monospace,monospace';ctx.fillText(sess.date+' '+hb.time,bx+7,top+19);
-  ctx.fillStyle='#8c9dae';ctx.fillText('O '+hb.open.toFixed(2)+' H '+hb.high.toFixed(2)+' L '+hb.low.toFixed(2)+' C '+hb.close.toFixed(2),bx+7,top+34);
-  ctx.fillText('Fast SMA '+hb.fastSma.toFixed(2)+' · Slow SMA '+hb.slowSma.toFixed(2),bx+7,top+47);
- }
- ctx.fillStyle='#8c9dae';ctx.font='10px ui-monospace,monospace';
- ctx.fillText(sess.date+' '+sessionData.bars[start].time,left,h-2);
- ctx.fillText(sess.date+' '+cur.time,right-128,h-2);
+function replaySnapshot(data,index){
+ const fills=data.fills.filter(fill=>fill.bar_index<=index);
+ return {fills,pnl:Number(data.bars[index].equity)-Number(data.settings.capital),slippage:fills.reduce((sum,fill)=>sum+Number(fill.slippage_cost||0),0),fees:fills.reduce((sum,fill)=>sum+Number(fill.fee||0),0)};
 }
-function drawOtEquityCanvas(canvas,algo,sessionData,cursor){
- if(!canvas||!canvas.getContext||!canvas.getBoundingClientRect)return;
- const rect=canvas.getBoundingClientRect(),w=Math.max(rect.width||820,320),h=Math.max(rect.height||160,110),dpr=Math.min(globalThis.devicePixelRatio||1,2);
- canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
- const ctx=canvas.getContext('2d');if(!ctx)return;ctx.scale(dpr,dpr);
- ctx.fillStyle='#070c12';ctx.fillRect(0,0,w,h);
- const left=12,right=w-64,top=10,bottom=h-18;
- if(otEquityMode==='20y'){
-  const pts=[algo.initial_equity],bh=[algo.initial_equity];
-  let eq=algo.initial_equity,b=algo.initial_equity;
-  const mult=Math.pow(algo.final_equity_20y/algo.initial_equity,1/21);
-  for(let i=0;i<21;i++){eq=i===20?algo.final_equity_20y:eq*mult*(i===2?1.12:i===14?1.18:0.98);b=b*(i===2?0.68:i===16?0.84:1.09);pts.push(eq);bh.push(b);}
-  const all=[...pts,...bh],lo=Math.min(...all)*0.95,hi=Math.max(...all)*1.04;
-  const y=v=>top+(hi-v)/(hi-lo)*(bottom-top),x=i=>left+(i/21)*(right-left);
-  ctx.strokeStyle='#1b2a38';ctx.lineWidth=0.6;ctx.font='10px ui-monospace,monospace';ctx.fillStyle='#8c9dae';
-  for(let i=0;i<3;i++){const v=lo+(hi-lo)*i/2,yy=y(v);ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(right,yy);ctx.stroke();ctx.fillText('$'+Math.round(v/1000)+'k',right+6,yy+3);}
-  for(const [arr,col,fill] of [[bh,'#8c9dae',false],[pts,'#55e6c1',true]]){
-   ctx.beginPath();arr.forEach((v,i)=>{const xx=x(i),yy=y(v);if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);});
-   ctx.strokeStyle=col;ctx.lineWidth=1.6;ctx.stroke();
-   if(fill&&ctx.createLinearGradient){ctx.lineTo(x(arr.length-1),bottom);ctx.lineTo(left,bottom);ctx.closePath();const g=ctx.createLinearGradient(0,top,0,bottom);g.addColorStop(0,'#55e6c125');g.addColorStop(1,'#55e6c100');ctx.fillStyle=g;ctx.fill();}
-  }
+// REPLAY_CONTROLLER_END
+// REPLAY_VIEW_START
+function buildFallbackBacktestExplorer(){return {runs:[],total_runs:0};}
+function renderBacktestExplorer(containerId){
+ if(activeView!=='replay')return;
+ const root=$(containerId);if(!root||replayUI)return;
+ root.innerHTML=`
+ <div class="ot-header bt-header"><div class="ot-brand"><div class="ot-mark">∿</div><div><div class="ot-wordmark">ALGO / LAB</div><div class="ot-sub">BACKTEST WORKSPACE · HISTORICAL REPLAY</div></div></div><span class="sssf-chip cyan">Research only · No broker orders</span></div>
+ <div class="bt-layout">
+ <aside class="ot-panel bt-sidebar" aria-label="Strategy library">
+  <div class="ot-panel-hd"><h3>01 / Choose a strategy</h3><span id="bt-count" class="ot-sub"></span></div>
+  <div class="bt-pad"><input id="bt-search" type="search" placeholder="Find a saved algorithm…" aria-label="Search saved strategies"></div>
+  <div id="bt-strategy-list" class="bt-strategy-list" role="group" aria-label="Saved algorithms"></div>
+  <div class="bt-pad bt-help">Saved definitions, not ranked claims. Unavailable strategies stay visible with a reason.</div>
+ </aside>
+ <main class="bt-main">
+  <form id="bt-form" class="ot-panel">
+   <div class="ot-panel-hd"><h3>02 / Configure & apply</h3><span id="bt-dirty" class="bt-help">Loading saved data…</span></div>
+   <div class="bt-settings">
+    <label class="bt-dataset">Saved dataset<select id="bt-dataset" class="ot-btn" required></select></label>
+    <label>Capital (USD)<input id="bt-capital" type="number" value="10000" min="1" max="100000000" step="0.01" required></label>
+    <label>Slippage (bps / fill)<input id="bt-slippage" type="number" value="10" min="0" max="1000" step="0.1" required></label>
+    <button id="bt-apply" class="ot-btn primary" type="submit" disabled>Apply & reset replay</button>
+   </div>
+   <div class="bt-pad bt-help">1 bp = 0.01%. Slippage worsens each buy and sell fill. Saved share sizing stays unchanged; capital sets available cash, not automatic position scaling. Fees are zero. Apply reruns every saved bar without changing a live account.</div>
+   <div id="bt-error" class="bt-error" role="alert" hidden></div>
+   <div id="bt-applied" class="bt-applied" role="status">No simulation applied yet.</div>
+  </form>
+  <div id="bt-empty" class="ot-panel bt-pad">Reading the local strategy library…</div>
+  <div id="bt-result" hidden>
+   <div class="ot-metrics bt-metrics" id="bt-metrics"></div>
+   <section class="ot-panel">
+    <div class="ot-panel-hd"><h3 id="bt-chart-title">03 / Replay</h3><span id="bt-cursor-time" class="bt-help"></span></div>
+    <div class="bt-transport">
+     <button id="bt-reset" class="ot-btn" type="button" title="Reset to first bar">↤ Start</button>
+     <button id="bt-prev" class="ot-btn" type="button" title="Previous bar (left arrow)">← Bar</button>
+     <button id="bt-play" class="ot-btn primary" type="button">▶ Play</button>
+     <button id="bt-next" class="ot-btn" type="button" title="Next bar (right arrow)">Bar →</button>
+     <button id="bt-fill" class="ot-btn" type="button">Next fill →</button>
+     <button id="bt-end" class="ot-btn" type="button">End ↦</button>
+     <label class="bt-speed">Speed <select id="bt-speed" class="ot-btn"><option value="1">1× real time</option><option value="30">30×</option><option value="120" selected>120×</option><option value="600">600×</option><option value="3600">3600×</option></select></label>
+     <span id="bt-progress" class="sssf-chip cyan"></span>
+    </div>
+    <div class="bt-pad bt-help">Space: play / pause · ← / →: one bar · Closed-market gaps are skipped; every recorded bar is visited.</div>
+    <div class="bt-pad"><input id="bt-seek" class="ot-range" type="range" min="0" value="0" aria-label="Replay bar"><div class="bt-range-labels"><span id="bt-start-date"></span><span id="bt-end-date"></span></div></div>
+    <div id="bt-ohlc" class="bt-pad bt-ohlc"></div>
+    <div class="ot-chart-box bt-price-box"><canvas id="bt-price-chart" aria-label="Historical candlestick chart"></canvas></div>
+    <div class="ot-panel-hd"><h3>Account equity</h3><span class="bt-help">Strategy net of costs · Gray: buy & hold reference</span></div>
+    <div class="ot-eq-box"><canvas id="bt-equity-chart" aria-label="Simulated account equity through current bar"></canvas></div>
+   </section>
+   <div class="bt-detail-grid">
+    <section class="ot-panel"><div class="ot-panel-hd"><h3>At this bar</h3></div><div id="bt-inspector" class="bt-pad"></div></section>
+    <section class="ot-panel"><div class="ot-panel-hd"><h3>Data & execution assumptions</h3></div><div id="bt-provenance" class="bt-pad bt-help"></div></section>
+   </div>
+   <section class="ot-panel"><div class="ot-panel-hd"><h3>Fills through current bar</h3><span id="bt-fill-count" class="bt-help"></span></div><div class="ot-table-wrap"><table class="ot-table"><thead><tr><th>Time (UTC)</th><th>Side</th><th>Quantity</th><th>Reference</th><th>Fill price</th><th>Slippage $</th><th>Fee $</th></tr></thead><tbody id="bt-fills"></tbody></table></div></section>
+  </div>
+ </main></div>`;
+ const session=createReplaySession(async payload=>{
+  const abort=new AbortController(),timeout=setTimeout(()=>abort.abort(),60000);
+  try{const response=await fetch('/api/backtest/run',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:abort.signal});
+   if(!response.ok){let message='Simulation rejected ('+response.status+'). Check the settings and saved data.';try{message=(await response.json()).error||message;}catch{}throw Error(message);}
+   return await response.json();
+  }finally{clearTimeout(timeout);}
+ });
+ const controller=createReplayController({change:()=>updateReplayFrame()});
+ replayUI={session,controller,library:null};
+ const dirty=()=>{controller.pause();session.draft.capital=$('bt-capital').value;session.draft.slippage_bps=$('bt-slippage').value;session.draft.dataset_id=$('bt-dataset').value;updateReplayDraft();};
+ $('bt-capital').oninput=dirty;$('bt-slippage').oninput=dirty;$('bt-dataset').onchange=dirty;
+ $('bt-search').oninput=renderReplayStrategies;
+ $('bt-form').onsubmit=event=>{event.preventDefault();applyReplaySettings();};
+ $('bt-play').onclick=()=>controller.playing?controller.pause():controller.play();
+ $('bt-prev').onclick=()=>controller.step(-1);$('bt-next').onclick=()=>controller.step(1);
+ $('bt-reset').onclick=()=>controller.seek(0);$('bt-end').onclick=()=>controller.seek(controller.data.bars.length-1);
+ $('bt-fill').onclick=()=>{const next=controller.data.fills.find(fill=>fill.bar_index>controller.cursor);controller.seek(next?next.bar_index:controller.data.bars.length-1);};
+ $('bt-seek').oninput=event=>controller.seek(Number(event.target.value));
+ $('bt-speed').onchange=event=>controller.setSpeed(event.target.value);
+ root.onkeydown=event=>{
+  if(['INPUT','SELECT','TEXTAREA','BUTTON'].includes(event.target.tagName)||event.target.isContentEditable||!controller.data)return;
+  if(event.code==='Space'){event.preventDefault();controller.playing?controller.pause():controller.play();}
+  if(event.code==='ArrowRight'){event.preventDefault();controller.step(1);}
+  if(event.code==='ArrowLeft'){event.preventDefault();controller.step(-1);}
+ };
+ root.tabIndex=0;
+ globalThis.addEventListener?.('resize',updateReplayFrame);
+ loadReplayLibrary();
+}
+async function loadReplayLibrary(){
+ const abort=new AbortController(),timeout=setTimeout(()=>abort.abort(),15000);
+ try{
+  const response=await fetch('/api/backtest/library',{cache:'no-store',signal:abort.signal});if(!response.ok)throw Error('Could not read the local backtest library.');
+  const library=await response.json();replayUI.library=library;
+  const select=$('bt-dataset');select.replaceChildren();
+  for(const dataset of library.datasets||[]){const option=mk('option','',dataset.symbol+' · '+dataset.bar_count.toLocaleString()+' bars · '+String(dataset.start).slice(0,10)+' → '+String(dataset.end).slice(0,10));option.value=dataset.id;select.append(option);}
+  const defaults=library.defaults||{},strategy=(library.strategies||[]).find(s=>s.id===defaults.strategy_id&&s.available)||(library.strategies||[]).find(s=>s.available);
+  replayUI.session.draft={strategy_id:strategy?.id||'',dataset_id:defaults.dataset_id||library.datasets?.[0]?.id||'',capital:defaults.capital||10000,slippage_bps:defaults.slippage_bps??10};
+  $('bt-capital').value=String(replayUI.session.draft.capital);$('bt-slippage').value=String(replayUI.session.draft.slippage_bps);select.value=replayUI.session.draft.dataset_id;
+  renderReplayStrategies();updateReplayDraft();
+  if(strategy&&library.datasets?.length)await applyReplaySettings();
+  else text('bt-empty',library.message||'No supported strategy and saved historical bars are available. No demo prices or invented results will be substituted.');
+ }catch(error){text('bt-empty',error.message+' Reload this browser tab to retry.');showReplayError(error.message);}finally{clearTimeout(timeout);}
+}
+function renderReplayStrategies(){
+ if(!replayUI?.library)return;
+ const {library,session}=replayUI,query=String($('bt-search').value||'').toLowerCase(),list=$('bt-strategy-list');
+ list.replaceChildren();const strategies=library.strategies||[];text('bt-count',String(strategies.length)+' saved');
+ const matches=strategies.filter(s=>(s.name+' '+s.family+' '+s.id).toLowerCase().includes(query));
+ for(const strategy of matches){
+  const button=mk('button','ot-algo-card'+(session.draft.strategy_id===strategy.id?' active':''));button.type='button';button.disabled=!strategy.available||session.busy;
+  button.setAttribute('aria-pressed',String(session.draft.strategy_id===strategy.id));
+  button.append(mk('small','bt-help',strategy.family||'Saved strategy'),mk('strong','',strategy.name||strategy.id),mk('small','bt-help',strategy.available?'Ready to replay':strategy.reason||'Unavailable'));
+  button.onclick=()=>{replayUI.controller.pause();session.draft.strategy_id=strategy.id;renderReplayStrategies();updateReplayDraft();};list.append(button);
+ }
+ if(!matches.length)list.append(mk('p','bt-pad bt-help','No matching saved strategies.'));
+}
+function updateReplayDraft(){
+ const {session,library}=replayUI,available=(library?.strategies||[]).some(s=>s.id===session.draft.strategy_id&&s.available);
+ $('bt-apply').disabled=session.busy||!available||!session.draft.dataset_id;
+ text('bt-dirty',session.busy?'Computing over all saved bars…':session.dirty()?'Unapplied settings':'Settings applied');
+ for(const id of ['bt-capital','bt-slippage','bt-dataset'])$(id).disabled=session.busy;
+}
+function showReplayError(message){$('bt-error').hidden=!message;text('bt-error',message||'');}
+async function applyReplaySettings(){
+ const {session,controller}=replayUI;controller.pause();showReplayError('');
+ try{const pending=session.apply();updateReplayDraft();renderReplayStrategies();const result=await pending;
+  $('bt-empty').hidden=true;$('bt-result').hidden=false;
+  const strategy=replayUI.library.strategies.find(s=>s.id===session.applied.strategy_id);
+  text('bt-applied','Applied: '+(strategy?.name||session.applied.strategy_id)+' · '+replayMoney(session.applied.capital)+' capital · '+session.applied.slippage_bps+' bps per fill · '+result.bars.length.toLocaleString()+' bars');
+  text('bt-provenance',typeof result.provenance==='string'?result.provenance:[result.provenance?.note,'Point-in-time verified: '+String(result.provenance?.point_in_time_verified??false),result.provenance?.signal_basis,result.provenance?.fee_policy,result.provenance?.terminal_policy,'Sizing: '+result.settings.sizing,'Source: '+result.provenance?.source_report].filter(Boolean).join('\n\n'));
+  controller.load(result);
+ }catch(error){showReplayError(error.name==='AbortError'?'Simulation timed out. Previous applied result is unchanged.':error.message);}
+ finally{updateReplayDraft();renderReplayStrategies();}
+}
+function replayMoney(value){return Number.isFinite(Number(value))?Number(value).toLocaleString('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2,maximumFractionDigits:2}):'—';}
+function replayTime(value){return String(value||'').replace('T',' ').replace('.000Z',' UTC').replace('Z',' UTC');}
+function updateReplayFrame(){
+ if(!replayUI?.controller.data)return;
+ const {controller,session}=replayUI,data=controller.data,index=controller.cursor,bar=data.bars[index],view=replaySnapshot(data,index),bars=data.bars;
+ text('bt-play',controller.playing?'Ⅱ Pause':'▶ Play');$('bt-play').disabled=session.busy;
+ $('bt-prev').disabled=index===0;$('bt-next').disabled=index===bars.length-1;
+ text('bt-progress',(index===bars.length-1?'Complete · ':'')+'Bar '+(index+1).toLocaleString()+' / '+bars.length.toLocaleString());
+ text('bt-cursor-time',replayTime(bar.bar_close_at||bar.timestamp)+' · bar close');text('bt-chart-title',(data.symbol||replayUI.library?.datasets.find(d=>d.id===session.applied?.dataset_id)?.symbol||'Saved bars')+' / Historical candles');
+ $('bt-seek').max=String(bars.length-1);$('bt-seek').value=String(index);$('bt-seek').setAttribute('aria-valuetext','Bar '+(index+1)+' of '+bars.length+', '+replayTime(bar.timestamp));
+ text('bt-start-date',replayTime(bars[0].timestamp));text('bt-end-date',replayTime(bars[bars.length-1].timestamp));
+ const metrics=$('bt-metrics');metrics.replaceChildren();
+ for(const [label,value] of [['Equity',replayMoney(bar.equity)],['Net P&L',replayMoney(view.pnl)],['Cash',replayMoney(bar.cash)],['Position',Number(bar.position).toLocaleString()+' shares'],['Slippage paid',replayMoney(view.slippage)],['Fills',String(view.fills.length)]]){
+  const item=mk('div','ot-metric');item.append(mk('small','',label),mk('div','ot-val'+(label==='Net P&L'?(view.pnl>=0?' positive':' negative'):''),value));metrics.append(item);
+ }
+ text('bt-ohlc','O '+replayMoney(bar.open)+'    H '+replayMoney(bar.high)+'    L '+replayMoney(bar.low)+'    C '+replayMoney(bar.close)+'    Volume '+Number(bar.volume||0).toLocaleString());
+ text('bt-inspector',(typeof bar.decision==='string'?bar.decision:JSON.stringify(bar.decision||'No decision recorded.'))+'\nFees paid through this bar: '+replayMoney(view.fees)+'\nOnly fills at or before this timestamp are shown.');
+ text('bt-fill-count',view.fills.length+' fills · most recent first');const body=$('bt-fills');body.replaceChildren();
+ // All fills stay available; no future fills are exposed by the replay ledger.
+ for(const fill of [...view.fills].reverse()){
+  const row=mk('tr','');for(const value of [replayTime(fill.timestamp),fill.side,String(fill.quantity),replayMoney(fill.reference_price),replayMoney(fill.price),replayMoney(fill.slippage_cost),replayMoney(fill.fee)])row.append(mk('td','',value));body.append(row);
+ }
+ if(!view.fills.length){const row=mk('tr',''),cell=mk('td','','No fills yet. Step forward or use Next fill.');cell.colSpan=7;row.append(cell);body.append(row);}
+ drawReplayCanvas($('bt-price-chart'),data,index,false);drawReplayCanvas($('bt-equity-chart'),data,index,true);
+}
+function drawReplayCanvas(canvas,data,index,equity){
+ if(!canvas?.getContext||!canvas.getBoundingClientRect)return;
+ const rect=canvas.getBoundingClientRect(),w=Math.max(320,rect.width),h=Math.max(110,rect.height),dpr=Math.min(globalThis.devicePixelRatio||1,2);
+ canvas.width=w*dpr;canvas.height=h*dpr;const ctx=canvas.getContext('2d');if(!ctx)return;ctx.scale(dpr,dpr);ctx.fillStyle='#070c12';ctx.fillRect(0,0,w,h);
+ const first=equity?0:Math.max(0,index-119),bars=data.bars.slice(first,index+1),left=12,right=w-78,top=16,bottom=h-24;
+ const capital=Number(data.settings.capital),base=Number(data.bars[0].close),benchmark=b=>capital*Number(b.close)/base;
+ let low=Infinity,high=-Infinity;
+ for(const bar of bars){low=Math.min(low,equity?Math.min(Number(bar.equity),benchmark(bar)):Number(bar.low));high=Math.max(high,equity?Math.max(Number(bar.equity),benchmark(bar)):Number(bar.high));}
+ const pad=Math.max((high-low)*0.1,0.1);low-=pad;high+=pad;
+ const y=value=>top+(high-Number(value))/(high-low)*(bottom-top),step=(right-left)/Math.max(bars.length,equity?2:30),x=i=>left+(i+0.5)*step;
+ ctx.font='10px ui-monospace,monospace';ctx.lineWidth=0.5;
+ for(let i=0;i<5;i++){const v=low+(high-low)*i/4,yy=y(v);ctx.strokeStyle='#1b2a38';ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(right,yy);ctx.stroke();ctx.fillStyle='#8c9dae';ctx.fillText('$'+v.toFixed(2),right+7,yy+3);}
+ if(equity){
+  for(const [field,color] of [['benchmark','#8c9dae'],['equity','#55e6c1']]){ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=1.6;bars.forEach((b,i)=>{const yy=y(field==='benchmark'?benchmark(b):b.equity);i?ctx.lineTo(x(i),yy):ctx.moveTo(x(i),yy);});ctx.stroke();}
  }else{
-  const end=cursor+1,slice=sessionData.bars.slice(0,end),pts=slice.map(b=>b.eqNow),bh=slice.map(b=>b.bhNow);
-  const all=[sessionData.initEq,...pts,...bh];
-  let lo=Math.min(...all),hi=Math.max(...all),pad=Math.max((hi-lo)*0.12,10);lo-=pad;hi+=pad;
-  const y=v=>top+(hi-v)/(hi-lo)*(bottom-top),x=i=>left+(i/Math.max(1,end-1))*(right-left);
-  ctx.strokeStyle='#1b2a38';ctx.lineWidth=0.6;ctx.font='10px ui-monospace,monospace';ctx.fillStyle='#8c9dae';
-  for(let i=0;i<3;i++){const v=lo+(hi-lo)*i/2,yy=y(v);ctx.beginPath();ctx.moveTo(left,yy);ctx.lineTo(right,yy);ctx.stroke();ctx.fillText('$'+v.toFixed(0),right+6,yy+3);}
-  for(const [arr,col,fill] of [[bh,'#8c9dae',false],[pts,'#55e6c1',true]]){
-   ctx.beginPath();arr.forEach((v,i)=>{const xx=x(i),yy=y(v);if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);});
-   ctx.strokeStyle=col;ctx.lineWidth=1.6;ctx.stroke();
-   if(fill&&ctx.createLinearGradient){ctx.lineTo(x(end-1),bottom);ctx.lineTo(left,bottom);ctx.closePath();const g=ctx.createLinearGradient(0,top,0,bottom);g.addColorStop(0,'#55e6c125');g.addColorStop(1,'#55e6c100');ctx.fillStyle=g;ctx.fill();}
-  }
+  bars.forEach((b,i)=>{ctx.strokeStyle=ctx.fillStyle=Number(b.close)>=Number(b.open)?'#55e6c1':'#ff798b';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x(i),y(b.high));ctx.lineTo(x(i),y(b.low));ctx.stroke();ctx.fillRect(x(i)-step*0.3,Math.min(y(b.open),y(b.close)),Math.max(1,step*0.6),Math.max(1.5,Math.abs(y(b.open)-y(b.close))));});
+  for(const fill of data.fills){if(fill.bar_index<first||fill.bar_index>index)continue;const i=fill.bar_index-first,b=bars[i],buy=String(fill.side).toLowerCase()==='buy';ctx.fillStyle=buy?'#55e6c1':'#ff798b';ctx.font='bold 10px ui-monospace,monospace';ctx.fillText(buy?'B':'S',x(i)-3,y(buy?b.low:b.high)+(buy?13:-7));}
  }
+ ctx.fillStyle='#8c9dae';ctx.font='10px ui-monospace,monospace';ctx.fillText(replayTime(bars[0].timestamp).slice(0,16),left,h-5);ctx.fillText(replayTime(bars[bars.length-1].timestamp).slice(0,16),Math.max(left+120,right-110),h-5);
 }
-function buildFallbackBacktestExplorer(){
- return {active_run_id:OT_PREVIOUS_ALGOS[0].algo_id,total_runs:OT_PREVIOUS_ALGOS.length,runs:OT_PREVIOUS_ALGOS};
-}
-function renderBacktestExplorer(containerId,btData){
- const root=$(containerId);if(!root)return;root.replaceChildren();
- const algo=OT_PREVIOUS_ALGOS[otSelectedAlgoIdx]||OT_PREVIOUS_ALGOS[0];
- const sess=OT_20Y_SESSIONS[otSelectedSessionIdx]||OT_20Y_SESSIONS[OT_20Y_SESSIONS.length-1];
- const sessionData=buildMinuteSessionData(algo,sess);
- otMinuteCursor=Math.max(0,Math.min(389,otMinuteCursor));
- const curBar=sessionData.bars[otMinuteCursor];
- const activeNews=curBar.activeNews;
- const win=100,startBarIdx=Math.max(0,otMinuteCursor-win);
-
- // 1. OPEN TERMINAL HEADER (NO BLUE PART)
- const hdr=mk('div','ot-header');
- const brand=mk('div','ot-brand');
- brand.append(mk('div','ot-mark','∿'));
- const btxt=mk('div','');
- btxt.append(
-  mk('div','ot-wordmark','ALGO / LAB · OPEN TERMINAL REPLAY · BACKTEST REPLAY'),
-  mk('div','ot-sub',sessionData.sym+' · 1m · '+algo.family.replaceAll('_',' ')+' · '+sess.date+' ('+sess.era+') · 20-Year Archive (2006–2026)')
- );
- brand.append(btxt);
- const hActs=mk('div','ot-transport-btns');
- hActs.append(mk('span','sssf-chip ok','✓ ZERO LOOKAHEAD · 4.0 bps slippage · 1.0 bps fee · live_orders=false'));
- const expJson=mk('button','ot-btn','↓ Export 20Y Algo JSON');expJson.type='button';
- expJson.onclick=()=>{if(globalThis.Blob&&globalThis.URL?.createObjectURL){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({algo,symbol:sessionData.sym,session:sess,minute_bar:curBar,trades:sessionData.trades,annual_20y:OT_20Y_ANNUAL},null,2)],{type:'application/json'}));a.download=algo.algo_id+'-'+sessionData.sym+'-replay.json';a.click?.()}};
- hActs.append(expJson);
- hdr.append(brand,hActs);
- root.append(hdr);
-
- // 1B. PICK ANY ALGO & RUN BACKTEST BAR (PICK ANY ALGO, PRESET, WORKFLOW, SYMBOL, SESSION & CAPITAL -> RUN BACKTEST)
- const runBar=mk('div','ot-panel');
- if(runBar.style){runBar.style.marginBottom='12px';runBar.style.borderColor='#55e6c155';}
- const runHd=mk('div','ot-panel-hd');
- runHd.append(
-  mk('h3','','⚡ PICK ANY ALGO & RUN BACKTEST · SELECT ANY HISTORICAL ALGO, ADW PRESET OR STRATEGY RULE + SYMBOL + SESSION'),
-  mk('span','sssf-chip ok',otRunStatus||'Ready · Pick any Algo below and click ▶ Run Backtest')
- );
- runBar.append(runHd);
- const runBody=mk('div','ot-transport-btns');
- if(runBody.style){runBody.style.padding='10px 14px';runBody.style.display='flex';runBody.style.flexWrap='wrap';runBody.style.gap='10px';runBody.style.alignItems='center';}
- const algoSel=mk('select','ot-btn');
- OT_PREVIOUS_ALGOS.forEach((a,idx)=>{
-  const o=mk('option','',a.code+' — '+a.name+' (+'+a.return_20y_pct.toFixed(0)+'%)');
-  o.value='algo_'+idx;
-  if(otCustomAlgoKey==='algo_'+idx)o.selected=true;
-  algoSel.append(o);
- });
- (typeof FALLBACK_PRESETS!=='undefined'?FALLBACK_PRESETS:[]).forEach((p,idx)=>{
-  const o=mk('option','','[ADW PRESET] '+(p.badge||p.preset_id)+' — '+p.title+' ('+p.model_summary+')');
-  o.value='preset_'+idx;
-  if(otCustomAlgoKey==='preset_'+idx)o.selected=true;
-  algoSel.append(o);
- });
- for(const [famKey,famLabel,mappedIdx] of [
-  ['fam_sma','[CLASSIC RULE] SMA 9/21 Crossover (sma_cross_long)',7],
-  ['fam_ema','[CLASSIC RULE] EMA 12/26 Momentum Crossover (ema_cross_long)',0],
-  ['fam_rsi','[CLASSIC RULE] RSI-14 Mean Reversion + VWAP Band (rsi_reversion_long)',6],
-  ['fam_brk','[CLASSIC RULE] 20-Bar Donchian Channel Breakout (channel_breakout_long)',2]
- ]){
-  const o=mk('option','',famLabel);o.value=famKey+':'+mappedIdx;
-  if(otCustomAlgoKey===famKey+':'+mappedIdx)o.selected=true;
-  algoSel.append(o);
- }
- algoSel.onchange=e=>{
-  const v=String(e.target.value||'algo_0');otCustomAlgoKey=v;
-  if(v.startsWith('algo_'))otSelectedAlgoIdx=Number(v.split('_')[1])||0;
-  else if(v.startsWith('preset_'))otSelectedAlgoIdx=(Number(v.split('_')[1])||0)%OT_PREVIOUS_ALGOS.length;
-  else if(v.includes(':'))otSelectedAlgoIdx=Number(v.split(':')[1])||0;
-  otRunStatus='✓ Loaded '+OT_PREVIOUS_ALGOS[otSelectedAlgoIdx].code+' on '+otActiveSymbol;
-  renderBacktestExplorer(containerId,btData);
- };
- const symSel=mk('select','ot-btn');
- for(const sym of ['SPY','NVDA','AAPL','QQQ','TSLA','MSFT','META','AMD']){
-  const o=mk('option','','Symbol: '+sym);o.value=sym;if(sym===otActiveSymbol)o.selected=true;symSel.append(o);
- }
- symSel.onchange=e=>{otActiveSymbol=e.target.value||'SPY';otRunStatus='✓ Switched backtest symbol to '+otActiveSymbol;renderBacktestExplorer(containerId,btData)};
- const sessSel=mk('select','ot-btn');
- OT_20Y_SESSIONS.forEach((s,idx)=>{
-  const o=mk('option','',s.date+' — '+s.era+' ('+(s.chg>=0?'+':'')+s.chg+'%)');o.value=String(idx);if(idx===otSelectedSessionIdx)o.selected=true;sessSel.append(o);
- });
- sessSel.onchange=e=>{otSelectedSessionIdx=Number(e.target.value)||0;otMinuteCursor=65;renderBacktestExplorer(containerId,btData)};
- const capSel=mk('select','ot-btn');
- for(const c of [10000,25000,50000,100000,120000,250000]){
-  const o=mk('option','','Capital: $'+c.toLocaleString());o.value=String(c);if(c===otCustomCapital)o.selected=true;capSel.append(o);
- }
- capSel.onchange=e=>{otCustomCapital=Number(e.target.value)||10000;renderBacktestExplorer(containerId,btData)};
- const runExecBtn=mk('button','ot-btn primary','▶ Run Backtest on Selected Algo');runExecBtn.type='button';
- runExecBtn.onclick=()=>{
-  otMinuteCursor=0;otPlaying=true;
-  otRunStatus='⚡ RUNNING BACKTEST: '+algo.code+' on '+otActiveSymbol+' ('+sess.date+' · $'+otCustomCapital.toLocaleString()+')';
-  if(otTimer){clearInterval(otTimer);otTimer=null;}
-  otTimer=setInterval(()=>{
-   if(activeView!=='replay'){clearInterval(otTimer);otTimer=null;otPlaying=false;return;}
-   otMinuteCursor=Math.min(389,otMinuteCursor+3);
-   if(otMinuteCursor>=389){otPlaying=false;clearInterval(otTimer);otTimer=null;otRunStatus='✓ COMPLETED BACKTEST: '+algo.code+' on '+otActiveSymbol+' (+$'+sessionData.sessionTargetPnl.toFixed(2)+')';}
-   renderBacktestExplorer(containerId,btData);
-  },60);
-  renderBacktestExplorer(containerId,btData);
- };
- const jumpFullBtn=mk('button','ot-btn','⏭ Instant Full Result (Bar 390)');jumpFullBtn.type='button';
- jumpFullBtn.onclick=()=>{
-  otPlaying=false;if(otTimer){clearInterval(otTimer);otTimer=null;}
-  otMinuteCursor=389;
-  otRunStatus='✓ FULL BACKTEST RESULT LOADED: '+algo.code+' on '+otActiveSymbol+' · Net P&L +$'+sessionData.sessionTargetPnl.toFixed(2);
-  renderBacktestExplorer(containerId,btData);
- };
- runBody.append(algoSel,symSel,sessSel,capSel,runExecBtn,jumpFullBtn);
- runBar.append(runBody);
- root.append(runBar);
-
- // 2. 6-METRIC OPEN TERMINAL HUD BAR
- const metrics=mk('div','ot-metrics');
- for(const [lbl,val,sub,cls] of [
-  ['20-YEAR TOTAL PROFIT','+$'+algo.net_profit_20y.toLocaleString('en-US',{minimumFractionDigits:2})+' (+'+algo.return_20y_pct.toFixed(1)+'%)','$'+algo.initial_equity.toLocaleString()+' → $'+algo.final_equity_20y.toLocaleString()+' · CAGR '+algo.cagr_pct+'%','positive'],
-  ['TIME RANGE & DATA BARS',algo.start_date+' → '+algo.end_date,'20.0 Yrs · 5,040 Days · '+algo.bars_20y.toLocaleString()+' 1m Bars',''],
-  ['SHARPE & PROFIT FACTOR',algo.sharpe.toFixed(2)+' Sharpe · PF '+algo.profit_factor.toFixed(2),'Annualized √252 · Max DD -'+algo.max_dd_pct.toFixed(2)+'%','accent'],
-  ['20Y WIN RATE & TRADES',algo.win_rate_pct.toFixed(1)+'% Win Rate',algo.total_trades_20y.toLocaleString()+' Closed Round Trips (2006–2026)','positive'],
-  ['SESSION MINUTE P&L ('+sess.date+')',(curBar.minPnl>=0?'+$':'-$')+Math.abs(curBar.minPnl).toFixed(2),'Cursor '+curBar.time+' · Session Target +$'+sessionData.sessionTargetPnl.toFixed(2),curBar.minPnl>=0?'positive':'negative'],
-  ['NEWS CATALYSTS USED (20Y)',algo.news_used_20y.toLocaleString()+' Headlines','Active Jev Score: '+activeNews.score.toFixed(2)+' ('+activeNews.sent+')','']
- ]){
-  const m=mk('div','ot-metric');
-  const v=mk('div','ot-val'+(cls?' '+cls:''),val);
-  m.append(mk('small','',lbl),v,mk('small','',sub));
-  metrics.append(m);
- }
- root.append(metrics);
-
- // 3. ALL 8 PREVIOUS ALGOS SELECTOR STRIP (SEE ALL PREVIOUS ALGOS, THEIR DATA, PROFIT & TIME RANGE/DATES)
- const algosSec=mk('div','ot-panel');
- const algosHd=mk('div','ot-panel-hd');
- algosHd.append(
-  mk('h3','','1. ALL PREVIOUS ALGOS ARCHIVE (2006–2026) · CLICK ANY ALGO TO LOAD & RUN ITS BACKTEST'),
-  mk('span','sssf-chip cyan','Selected: '+algo.code+' · '+sessionData.sym+' · '+algo.time_range)
- );
- algosSec.append(algosHd);
- const algosBody=mk('div','');if(algosBody.style)algosBody.style.padding='10px 12px';
- const algosGrid=mk('div','ot-algos-strip');
- OT_PREVIOUS_ALGOS.forEach((a,idx)=>{
-  const card=mk('div','ot-algo-card'+(idx===otSelectedAlgoIdx?' active':''));
-  const top=mk('div','sssf-card-top');
-  const runCardBtn=mk('button','ot-btn primary','▶ Run Backtest');runCardBtn.type='button';
-  runCardBtn.onclick=ev=>{
-   if(ev?.stopPropagation)ev.stopPropagation();
-   otSelectedAlgoIdx=idx;otCustomAlgoKey='algo_'+idx;otMinuteCursor=389;
-   otRunStatus='✓ Executed '+a.code+' Backtest on '+otActiveSymbol+' ('+sess.date+')';
-   renderBacktestExplorer(containerId,btData);
-  };
-  top.append(
-   mk('span','sssf-chip '+(idx===otSelectedAlgoIdx?'ok':'cyan'),a.code),
-   mk('span','sssf-chip amber','+$'+a.net_profit_20y.toLocaleString('en-US',{maximumFractionDigits:0})+' (+'+a.return_20y_pct.toFixed(0)+'%)'),
-   runCardBtn
-  );
-  card.append(
-   top,
-   mk('strong','',a.name),
-   mk('div','sssf-card-trig','Dates: '+a.start_date+' → '+a.end_date+' · Bars: '+a.bars_20y.toLocaleString()+' · Win: '+a.win_rate_pct+'% · Sharpe: '+a.sharpe),
-   mk('div','sssf-card-trig','Data: '+a.data_desc+' · Agent: '+a.primary_agent+' ('+a.primary_model+')')
-  );
-  card.onclick=()=>{otSelectedAlgoIdx=idx;otCustomAlgoKey='algo_'+idx;renderBacktestExplorer(containerId,btData)};
-  algosGrid.append(card);
- });
- algosBody.append(algosGrid);
- algosSec.append(algosBody);
- root.append(algosSec);
-
- // 4. 20-YEAR HISTORICAL REGIME & SESSION SELECTOR (2006 → 2026)
- const eraBar=mk('div','ot-era-bar');
- eraBar.append(mk('span','sssf-chip purple','20Y SESSIONS (2006–2026):'));
- OT_20Y_SESSIONS.forEach((s,idx)=>{
-  const b=mk('button','ot-era-btn'+(idx===otSelectedSessionIdx?' active':'')+(s.crisis?' crisis':''),s.era+' ('+(s.chg>=0?'+':'')+s.chg+'%)');
-  b.type='button';
-  b.onclick=()=>{otSelectedSessionIdx=idx;otMinuteCursor=65;renderBacktestExplorer(containerId,btData)};
-  eraBar.append(b);
- });
- root.append(eraBar);
-
- // 5. MAIN OPEN TERMINAL WORKSPACE: [LEFT: CLASSIC BACKTEST REPLAY 1M CANDLES + ACCOUNT EQUITY + TRANSPORT + 4 LEDGER TABS] | [RIGHT: MINUTE-BY-MINUTE INSPECTORS]
- const ws=mk('div','ot-workspace');
- const leftCol=mk('div','');
- const chartPanel=mk('div','ot-panel');
- const chartHd=mk('div','ot-panel-hd');
- const priceLegend=mk('div','ot-legend');
- for(const [lTxt,lCol] of [['Price','#55e6c1'],['Fast SMA','#ac9aff'],['Slow SMA','#ffbe70']]){
-  const sp=mk('span','');const sw=mk('i','ot-key');if(sw.style)sw.style.background=lCol;
-  sp.append(sw,mk('span','',lTxt));priceLegend.append(sp);
- }
- chartHd.append(
-  mk('h3','',sessionData.sym+' / 1M CANDLES · LAST '+(otMinuteCursor-startBarIdx+1)+' ('+sess.date+' · '+sess.era+')'),
-  priceLegend
- );
- chartPanel.append(chartHd);
-
- const ohlcStrip=mk('div','ohlc');if(ohlcStrip.style)ohlcStrip.style.padding='8px 14px';
- const makeOhlcItem=(lbl,val,cls)=>{const s=mk('span','');s.textContent=lbl+' ';const b=mk('b',cls||'',val);s.append(b);return s};
- const chgPct=((curBar.close-curBar.open)/curBar.open*100);
- ohlcStrip.append(
-  makeOhlcItem('',sess.date+' '+curBar.time,''),
-  makeOhlcItem('O','$'+curBar.open.toFixed(2),''),
-  makeOhlcItem('H','$'+curBar.high.toFixed(2),''),
-  makeOhlcItem('L','$'+curBar.low.toFixed(2),''),
-  makeOhlcItem('C','$'+curBar.close.toFixed(2)+' ('+(chgPct>=0?'+':'')+chgPct.toFixed(2)+'%)',curBar.close>=curBar.open?'positive':'negative'),
-  makeOhlcItem('VOL',curBar.vol.toLocaleString(),''),
-  makeOhlcItem('Fast SMA','$'+curBar.fastSma.toFixed(2),''),
-  makeOhlcItem('Slow SMA','$'+curBar.slowSma.toFixed(2),'')
- );
- chartPanel.append(ohlcStrip);
-
- const cWrap=mk('div','ot-chart-box');
- const priceCanvas=mk('canvas','');priceCanvas.id='ot-price-chart';
- priceCanvas.onmousemove=e=>{
-  if(!priceCanvas.getBoundingClientRect)return;
-  otHoverX=e.clientX-priceCanvas.getBoundingClientRect().left;
-  drawOtPriceCanvas(priceCanvas,sessionData,otMinuteCursor,sess);
- };
- priceCanvas.onmouseleave=()=>{
-  otHoverX=null;
-  drawOtPriceCanvas(priceCanvas,sessionData,otMinuteCursor,sess);
- };
- cWrap.append(priceCanvas);
- chartPanel.append(cWrap);
-
- // Equity Curve Header + Legend + Mode Toggle (matches prior backtest-report.html ACCOUNT EQUITY)
- const eqHd=mk('div','ot-panel-hd');
- const eqRight=mk('div','ot-transport-btns');
- const eqLegend=mk('div','ot-legend');
- for(const [lTxt,lCol] of [['Strategy','#55e6c1'],['Buy & hold account','#8c9dae']]){
-  const sp=mk('span','');const sw=mk('i','ot-key');if(sw.style)sw.style.background=lCol;
-  sp.append(sw,mk('span','',lTxt));eqLegend.append(sp);
- }
- const btn1m=mk('button','ot-btn'+(otEquityMode==='1m'?' primary':''),'Session Equity ('+sess.date+')');btn1m.type='button';
- btn1m.onclick=()=>{otEquityMode='1m';renderBacktestExplorer(containerId,btData)};
- const btn20y=mk('button','ot-btn'+(otEquityMode==='20y'?' primary':''),'20Y Compounding (2006–2026)');btn20y.type='button';
- btn20y.onclick=()=>{otEquityMode='20y';renderBacktestExplorer(containerId,btData)};
- eqRight.append(eqLegend,btn1m,btn20y);
- eqHd.append(mk('h3','','ACCOUNT EQUITY'),eqRight);
- chartPanel.append(eqHd);
-
- const eqWrap=mk('div','ot-eq-box');
- const eqCanvas=mk('canvas','');eqCanvas.id='ot-equity-chart';
- eqWrap.append(eqCanvas);
- chartPanel.append(eqWrap);
-
- // Classic Backtest Replay Transport & Scrubber Bar (matches backtest-report.html)
- const trans=mk('div','ot-transport');
- const tBtns=mk('div','ot-transport-btns');
- const playBtn=mk('button','ot-btn primary',otPlaying?'Ⅱ Pause':'▶ Play replay');playBtn.type='button';
- playBtn.onclick=()=>{
-  otPlaying=!otPlaying;
-  if(otTimer){clearInterval(otTimer);otTimer=null;}
-  if(otPlaying){
-   if(otMinuteCursor>=389)otMinuteCursor=0;
-   otTimer=setInterval(()=>{
-    if(activeView!=='replay'){clearInterval(otTimer);otTimer=null;otPlaying=false;return;}
-    const stepBars=otSpeed>=3600?8:otSpeed>=600?3:1;
-    otMinuteCursor=Math.min(389,otMinuteCursor+stepBars);
-    if(otMinuteCursor>=389){otPlaying=false;clearInterval(otTimer);otTimer=null;}
-    renderBacktestExplorer(containerId,btData);
-   },Math.max(30,Math.round(6000/Math.max(30,otSpeed))));
-  }
-  renderBacktestExplorer(containerId,btData);
- };
- const bP1=mk('button','ot-btn','+1m');bP1.type='button';bP1.onclick=()=>{otPlaying=false;if(otTimer)clearInterval(otTimer);otMinuteCursor=Math.min(389,otMinuteCursor+1);renderBacktestExplorer(containerId,btData)};
- const bNextT=mk('button','ot-btn','Next fill →');bNextT.type='button';
- bNextT.onclick=()=>{otPlaying=false;if(otTimer)clearInterval(otTimer);const nxt=sessionData.trades.find(t=>t.min>otMinuteCursor);otMinuteCursor=nxt?nxt.min:389;renderBacktestExplorer(containerId,btData)};
- const bFull=mk('button','ot-btn','Full result ↗');bFull.type='button';
- bFull.onclick=()=>{otPlaying=false;if(otTimer)clearInterval(otTimer);otMinuteCursor=389;renderBacktestExplorer(containerId,btData)};
- const bOpen=mk('button','ot-btn','⏮ 09:30 Open');bOpen.type='button';bOpen.onclick=()=>{otPlaying=false;if(otTimer)clearInterval(otTimer);otMinuteCursor=0;renderBacktestExplorer(containerId,btData)};
- const bPrevT=mk('button','ot-btn','← Prev fill');bPrevT.type='button';
- bPrevT.onclick=()=>{otPlaying=false;if(otTimer)clearInterval(otTimer);const prev=[...sessionData.trades].reverse().find(t=>t.min<otMinuteCursor);if(prev){otMinuteCursor=prev.min;renderBacktestExplorer(containerId,btData)}};
- const speedSel=mk('select','ot-btn');
- for(const [sv,sl] of [[1,'1× real time'],[30,'30× speed'],[120,'120× speed'],[600,'600× speed'],[3600,'3600× speed']]){
-  const o=mk('option','',sl);o.value=String(sv);if(sv===otSpeed)o.selected=true;speedSel.append(o);
- }
- speedSel.onchange=e=>{otSpeed=Number(e.target.value)||120};
- const curTimeTag=mk('time','sssf-chip cyan',sess.date+' '+curBar.time+' · Bar '+(otMinuteCursor+1)+'/390');
- if(curTimeTag.style)curTimeTag.style.marginLeft='auto';
- tBtns.append(playBtn,bP1,bNextT,bFull,bOpen,bPrevT,speedSel,curTimeTag);
- trans.append(tBtns);
-
- const seek=mk('input','ot-range');seek.id='ot-seek';seek.type='range';seek.min='0';seek.max='389';seek.value=String(otMinuteCursor);
- seek.oninput=e=>{otPlaying=false;if(otTimer)clearInterval(otTimer);otMinuteCursor=Number(e.target?.value||0);renderBacktestExplorer(containerId,btData)};
- trans.append(seek);
- const rLbls=mk('div','sssf-card-top');
- rLbls.append(mk('span','',sess.date+' 09:30:00 ET'),mk('span','','Bar '+(otMinuteCursor+1)+' / 390'),mk('span','',sess.date+' 15:59:00 ET'));
- trans.append(rLbls);
- const progWrap=mk('div','ot-progress');const progFill=mk('span','');if(progFill.style)progFill.style.width=((otMinuteCursor/389)*100).toFixed(2)+'%';
- progWrap.append(progFill);
- trans.append(progWrap);
- chartPanel.append(trans);
- leftCol.append(chartPanel);
-
- // Multi-Tab Bottom Ledger (1: Session Minute Fills | 2: 20-Year Annual Breakdown 2006-2026 | 3: All 8 Previous Algos Comparison | 4: Date & Truth of Algo)
- const ledgerPanel=mk('div','ot-panel');
- const ledgerHd=mk('div','ot-panel-hd');
- const tabBar=mk('div','ot-transport-btns');
- for(const [tid,tlbl] of [
-  ['trades','MINUTE AGENT TRADES & FILLS ('+sess.date+')'],
-  ['annual','20-YEAR ANNUAL PROFIT & NEWS LEDGER (2006–2026)'],
-  ['algos','ALL 8 PREVIOUS ALGOS COMPARISON'],
-  ['truth','DATE & TRUTH OF ALGO · SHA-256 RECEIPT']
- ]){
-  const tb=mk('button','ot-btn'+(otLedgerTab===tid?' primary':''),tlbl);tb.type='button';
-  tb.onclick=()=>{otLedgerTab=tid;renderBacktestExplorer(containerId,btData)};
-  tabBar.append(tb);
- }
- ledgerHd.append(tabBar);
- ledgerPanel.append(ledgerHd);
-
- const tblWrap=mk('div','ot-table-wrap');
- const tbl=mk('table','ot-table');
- const thead=mk('thead',''),tbody=mk('tbody',''),hr=mk('tr','');
- if(otLedgerTab==='trades'){
-  for(const h of ['MINUTE (ET)','SIDE','WHAT AGENT BOUGHT / ACTION','AGENT & MODEL','CONTRACT / SYMBOL','QTY','FILL PRICE','CUMULATIVE P&L','NEWS CATALYST USED'])hr.append(mk('th','',h));
-  thead.append(hr);
-  for(const tr of sessionData.trades){
-   const r=mk('tr',tr.min===otMinuteCursor?'active-tr':'');
-   r.append(
-    mk('td','',sess.date+' '+tr.time+' (m'+tr.min+')'),
-    mk('td',tr.side==='SELL'?'negative':'positive',tr.side),
-    mk('td','',tr.action),
-    mk('td','',tr.agent+' ('+tr.model+')'),
-    mk('td','',tr.contract),
-    mk('td','',tr.qty),
-    mk('td','','$'+tr.price.toFixed(2)),
-    mk('td',tr.pnl>=0?'positive':'negative',(tr.pnl>=0?'+$':'-$')+Math.abs(tr.pnl).toFixed(2)),
-    mk('td','',tr.news_title.slice(0,68)+'…')
-   );
-   r.onclick=()=>{otMinuteCursor=tr.min;renderBacktestExplorer(containerId,btData)};
-   tbody.append(r);
-  }
- }else if(otLedgerTab==='annual'){
-  for(const h of ['YEAR','HISTORICAL MARKET REGIME','ALGO RETURN','ALGO NET PROFIT','SPY BENCHMARK','TRADES','WIN RATE','PRIMARY NEWS & MACRO CATALYST USED'])hr.append(mk('th','',h));
-  thead.append(hr);
-  for(const [yr,reg,aret,apnl,spy,trc,wr,nws] of OT_20Y_ANNUAL){
-   const r=mk('tr',yr===sess.year?'active-tr':'');
-   r.append(mk('td','',String(yr)),mk('td','',reg),mk('td','positive',aret),mk('td','positive',apnl),mk('td','',spy),mk('td','',trc),mk('td','',wr),mk('td','',nws));
-   r.onclick=()=>{const sIdx=OT_20Y_SESSIONS.findIndex(s=>s.year===yr);if(sIdx>=0){otSelectedSessionIdx=sIdx;otMinuteCursor=65;renderBacktestExplorer(containerId,btData)}};
-   tbody.append(r);
-  }
- }else if(otLedgerTab==='algos'){
-  for(const h of ['ALGO CODE','STRATEGY NAME','TIME RANGE (DATES)','20Y BARS','START → END CAPITAL','20Y TOTAL PROFIT','CAGR','SHARPE','WIN RATE','MAX DD','NEWS USED','PRIMARY AGENT & MODEL'])hr.append(mk('th','',h));
-  thead.append(hr);
-  OT_PREVIOUS_ALGOS.forEach((a,idx)=>{
-   const r=mk('tr',idx===otSelectedAlgoIdx?'active-tr':'');
-   r.append(
-    mk('td','',a.code),mk('td','',a.name),mk('td','',a.start_date+' → '+a.end_date+' (20Y)'),mk('td','',a.bars_20y.toLocaleString()),
-    mk('td','','$'+a.initial_equity.toLocaleString()+' → $'+a.final_equity_20y.toLocaleString()),
-    mk('td','positive','+$'+a.net_profit_20y.toLocaleString()+' (+'+a.return_20y_pct.toFixed(1)+'%)'),
-    mk('td','',a.cagr_pct+'%'),mk('td','',String(a.sharpe)),mk('td','',a.win_rate_pct+'%'),mk('td','negative','-'+a.max_dd_pct+'%'),
-    mk('td','',a.news_used_20y.toLocaleString()),mk('td','',a.primary_agent+' ('+a.primary_model+')')
-   );
-   r.onclick=()=>{otSelectedAlgoIdx=idx;renderBacktestExplorer(containerId,btData)};
-   tbody.append(r);
-  });
- }else{
-  for(const h of ['VERIFICATION FIELD','CRYPTOGRAPHIC & EXECUTION TRUTH OF ALGO'])hr.append(mk('th','',h));
-  thead.append(hr);
-  for(const [k,v] of [
-   ['ALGO ID & VERSION',algo.code+' · '+algo.name],
-   ['20-YEAR DATE WINDOW',algo.time_range],
-   ['BAR DENOMINATOR',algo.bars_20y.toLocaleString()+' completed 1-minute bars (390 bars/day × 5,040 market days · 0 missing · 0 lookahead)'],
-   ['DATA PROVENANCE',algo.data_desc],
-   ['EXECUTION & SLIPPAGE','Next-bar open fills ± 4.0 bps slippage/side + 1.0 bps fee · live_orders=false · broker_orders=false'],
-   ['10% DAILY STOP COLLAR','10.0% Daily Stop Loss armed on every session · 0.1% Median Bar Dollar Volume participation cap'],
-   ['100% COLLATERAL LOCK','100% Cash-Secured Put & Covered Call collateral lock (0 naked short options allowed)'],
-   ['POINT-IN-TIME NEWS GATE','All '+algo.news_used_20y.toLocaleString()+' headlines verified with observed_at <= bar_close_at + Jev 0.4s prompt-injection filter'],
-   ['STRATEGY SHA-256',algo.sha256]
-  ]){
-   const r=mk('tr','');r.append(mk('td','',k),mk('td','',v));tbody.append(r);
-  }
- }
- tbl.append(thead,tbody);
- tblWrap.append(tbl);
- ledgerPanel.append(tblWrap);
- leftCol.append(ledgerPanel);
- ws.append(leftCol);
-
- // RIGHT STACK: 3 LIVE MINUTE-BY-MINUTE INSPECTORS (1. WHAT AGENT BOUGHT WHAT | 2. WHAT THE ALGO DID | 3. WHAT NEWS IT USED TO MAKE THE TRADE DECISION)
- const rightCol=mk('div','');
-
- // RIGHT PANEL 1: WHAT AGENT BOUGHT WHAT (MINUTE-BY-MINUTE POSITION, ORDER & FILL TELEMETRY)
- const pBought=mk('div','ot-panel');
- const hdBought=mk('div','ot-panel-hd');
- hdBought.append(mk('h3','','2. WHAT AGENT BOUGHT WHAT · MINUTE '+(otMinuteCursor+1)+'/390 ('+curBar.time+')'),mk('span','sssf-chip ok',curBar.action));
- pBought.append(hdBought);
- const bdBought=mk('div','sssf-sec-bd');
- for(const [k,v] of [
-  ['ACTING AGENT',curBar.agentId+' ('+(roleNames[curBar.agentId]||'Autonomous Trading Agent')+')'],
-  ['ACTIVE MODEL',curBar.modelId+' (Anthropic/Claude Blocked)'],
-  ['MINUTE ACTION',curBar.action],
-  ['WHAT IT BOUGHT / HELD',curBar.contract+' · Position: '+curBar.posQty],
-  ['ENTRY / MARK PRICE','Entry Basis: $'+curBar.entryPx.toFixed(2)+' · Minute Mark: $'+curBar.close.toFixed(2)+' (incl. 4.0 bps slippage)'],
-  ['OPTION GREEKS / EXPOSURE','Delta '+curBar.delta+' · Theta '+curBar.theta+' · IV Rank '+curBar.ivRank],
-  ['MINUTE CUMULATIVE P&L',(curBar.minPnl>=0?'+$':'-$')+Math.abs(curBar.minPnl).toFixed(2)+' · Session Account Equity: $'+curBar.eqNow.toLocaleString('en-US',{minimumFractionDigits:2})],
-  ['20-YEAR ALGO PROFIT','+$'+algo.net_profit_20y.toLocaleString('en-US',{minimumFractionDigits:2})+' (+'+algo.return_20y_pct.toFixed(1)+'% over 2006–2026)']
- ]){
-  const kv=mk('div','sssf-kv');kv.append(mk('span','',k),mk('span','',v));bdBought.append(kv);
- }
- pBought.append(bdBought);
- rightCol.append(pBought);
-
- // RIGHT PANEL 2: WHAT THE ALGO DID (MINUTE-BY-MINUTE SYSTEM STATE, INDICATORS, REASONING & TOOL CALLS)
- const pDid=mk('div','ot-panel');
- const hdDid=mk('div','ot-panel-hd');
- hdDid.append(mk('h3','','3. WHAT THE ALGO DID · MINUTE-BY-MINUTE SYSTEM & TOOL TRACE'),mk('span','sssf-chip purple','Bar '+(otMinuteCursor+1)+' / 390'));
- pDid.append(hdDid);
- const indGrid=mk('div','ot-ind-grid');
- for(const [ilbl,ival] of [
-  ['1M CLOSE / VWAP','$'+curBar.close.toFixed(2)+' / $'+curBar.vwap.toFixed(2)],
-  ['FAST / SLOW SMA','$'+curBar.fastSma.toFixed(2)+' / $'+curBar.slowSma.toFixed(2)],
-  ['5M ORB RANGE','$'+curBar.orbLow.toFixed(2)+' – $'+curBar.orbHigh.toFixed(2)],
-  ['MAVERICK RSI-14',curBar.rsi+' · IV '+curBar.ivRank.split(' ')[0]]
- ]){
-  const cell=mk('div','ot-ind');cell.append(mk('span','',ilbl),mk('b','',ival));indGrid.append(cell);
- }
- pDid.append(indGrid);
- const bdDid=mk('div','sssf-sec-bd');
- for(const [stepTitle,stepDesc] of [
-  ['STEP 1 · BAR & LIQUIDITY GATE','Ingested completed 1m candle '+sess.date+' '+curBar.time+' (Vol '+curBar.vol.toLocaleString()+', $39.3M median bar >= $1M floor, 0 lookahead).'],
-  ['STEP 2 · JEV 0.4s NEWS RERANK','Evaluated point-in-time news stream up to '+curBar.time+'; primary catalyst scored '+activeNews.score.toFixed(2)+' ('+activeNews.sent+').'],
-  ['STEP 3 · SIGNAL & GREEKS MATH','Checked '+algo.family+' rules: Close $'+curBar.close.toFixed(2)+' vs VWAP $'+curBar.vwap.toFixed(2)+', SMA9 $'+curBar.fastSma.toFixed(2)+' vs SMA21 $'+curBar.slowSma.toFixed(2)+', RSI '+curBar.rsi+'.'],
-  ['STEP 4 · TOOL CALLS & STOP COLLAR','Executed jev_router.score(380ms) → maverick_mcp.bars(95ms) → options_short_engine.route(84ms) → risk_gate.verify_10pct_stop(PASS).']
- ]){
-  const tc=mk('div','sssf-tool-card');tc.append(mk('span','sssf-chip cyan',stepTitle),mk('div','sssf-card-trig',stepDesc));bdDid.append(tc);
- }
- pDid.append(bdDid);
- rightCol.append(pDid);
-
- // RIGHT PANEL 3: WHAT NEWS IT USED TO MAKE THE TRADE DECISION (20-YEAR POINT-IN-TIME NEWS & MACRO CATALYST AUDIT)
- const pNews=mk('div','ot-panel');
- const hdNews=mk('div','ot-panel-hd');
- hdNews.append(
-  mk('h3','','4. WHAT NEWS IT USED TO MAKE THE TRADE DECISION ('+sess.date+')'),
-  mk('span','sssf-chip amber','Jev Score: '+activeNews.score.toFixed(2)+' · '+activeNews.sent)
- );
- pNews.append(hdNews);
- const bdNews=mk('div','');
- const primaryNewsBox=mk('div','ot-news-card used');
- primaryNewsBox.append(
-  mk('div','sssf-card-top'),
-  mk('span','sssf-chip ok','✓ ACTIVE NEWS CATALYST CONSUMED AT '+curBar.time),
-  mk('div','sssf-card-title',activeNews.title),
-  mk('div','sssf-card-trig','Source: '+activeNews.src+' · Published: '+activeNews.pub+' · Observed by Algo: '+activeNews.obs+' (Verified <= '+curBar.time+')'),
-  mk('div','sssf-card-trig','HOW THE ALGO USED THIS NEWS: '+activeNews.impact)
- );
- bdNews.append(primaryNewsBox);
- for(const n of sessionData.sessionNews){
-  const unlocked=n.min<=otMinuteCursor;
-  const item=mk('div','ot-news-card'+(unlocked?' used':' locked'));
-  const top=mk('div','sssf-card-top');
-  top.append(
-   mk('span','sssf-chip '+(unlocked?'cyan':''),unlocked?'✓ CONSUMED (m'+n.min+' · '+n.obs+')':'⏳ LOCKED UNTIL MINUTE '+n.min+' ('+n.obs+')'),
-   mk('span','sssf-chip purple','Jev '+n.score.toFixed(2)+' · '+n.sent)
-  );
-  item.append(top,mk('strong','',n.title),mk('div','sssf-card-trig',n.src+' · '+n.status+' — '+n.impact));
-  item.onclick=()=>{otMinuteCursor=n.min;renderBacktestExplorer(containerId,btData)};
-  bdNews.append(item);
- }
- pNews.append(bdNews);
- rightCol.append(pNews);
-
- ws.append(rightCol);
- root.append(ws);
-
- setTimeout(()=>{
-  drawOtPriceCanvas(priceCanvas,sessionData,otMinuteCursor,sess);
-  drawOtEquityCanvas(eqCanvas,algo,sessionData,otMinuteCursor);
- },0);
-}
+// REPLAY_VIEW_END
 function renderSssfAll(trace,researchMeta){
  renderSssfInto('sssf-visualizer-root',trace,researchMeta);
  renderSssfInto('sssf-research-embed',trace,researchMeta);

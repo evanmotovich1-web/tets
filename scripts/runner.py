@@ -29,6 +29,7 @@ import shadow
 import news
 import company_data
 import replay_bridge
+import replay_workbench
 import terminal_state
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -169,6 +170,7 @@ class Handler(BaseHTTPRequestHandler):
         if self.path in ('/', '/status', '/status/'): body=(ROOT/'scripts/status.html').read_bytes(); content='text/html; charset=utf-8'
         elif self.path == '/api/status': body=json.dumps(status()).encode(); content='application/json'
         elif self.path == '/api/replay': body=json.dumps(replay_bridge.status()).encode(); content='application/json'
+        elif self.path == '/api/backtest/library': body=json.dumps(replay_workbench.library()).encode(); content='application/json'
         elif self.path == '/api/terminal': body=json.dumps(terminal_state.snapshot()).encode(); content='application/json'
         elif self.path == '/api/broker': body=json.dumps(terminal_state.broker()).encode(); content='application/json'
         elif self.path == '/api/alpaca-paper': body=json.dumps(terminal_state.alpaca_paper()).encode(); content='application/json'
@@ -190,7 +192,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header('Content-Security-Policy',"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'self'")
         self.end_headers(); self.wfile.write(body)
     def do_POST(self):
-        if self.path not in ('/api/models', '/api/broker', '/api/alpaca-paper'): self.send_error(404); return
+        if self.path not in ('/api/models', '/api/broker', '/api/alpaca-paper', '/api/backtest/run'): self.send_error(404); return
         # Same-origin JSON only: no cross-site form submissions or arbitrary command execution.
         expected=f'http://127.0.0.1:{self.server.server_port}'
         if self.headers.get('Origin') != expected or self.headers.get('Host') != expected.removeprefix('http://'):
@@ -202,6 +204,7 @@ class Handler(BaseHTTPRequestHandler):
             if not 0 < length <= 4096: raise ValueError('Invalid request size')
             payload=json.loads(self.rfile.read(length))
             result=(terminal_state.save_models(payload) if self.path == '/api/models'
+                    else replay_workbench.run(payload) if self.path == '/api/backtest/run'
                     else terminal_state.save_alpaca_paper(payload) if self.path == '/api/alpaca-paper'
                     else terminal_state.save_broker(payload))
         except (ValueError,TypeError):
@@ -240,6 +243,7 @@ def refresh_sources(stop, profile):
 
 def dashboard(seconds, open_browser=True):
     """Reopen the UI over saved or running observations without starting another trader."""
+    replay_workbench.ensure_seed()
     port=int(os.environ.get('TETS_PORT','8765'))
     if not 1024<=port<=65535: raise ValueError('Choose a port from 1024 to 65535')
     server=open_server(port,allow_fallback='TETS_PORT' not in os.environ)
@@ -300,6 +304,7 @@ def _open_url(url):
 
 def start(seconds, open_browser=True):
     STATE.mkdir(parents=True,exist_ok=True,mode=0o700)
+    replay_workbench.ensure_seed()
     _cleanup_previous_runner()
     with (STATE/'runner.lock').open('a') as lock:
         try: fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)

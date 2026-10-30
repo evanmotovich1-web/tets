@@ -269,13 +269,13 @@ class Harness2EvolveTests(unittest.TestCase):
         status_html = (Path(__file__).resolve().parents[1] / 'status.html').read_text(encoding='utf-8')
         for token in (
             'on-replay-terminal',
-            'ALGO / LAB · OPEN TERMINAL REPLAY',
-            'OT_PREVIOUS_ALGOS',
-            'OT_20Y_SESSIONS',
-            'OT_20Y_ANNUAL',
-            'WHAT AGENT BOUGHT WHAT',
-            'WHAT THE ALGO DID',
-            'WHAT NEWS IT USED TO MAKE THE TRADE DECISION',
+            'ALGO / LAB',
+            'bt-strategy-list',
+            '/api/backtest/library',
+            '/api/backtest/run',
+            'bt-applied',
+            'Fills through current bar',
+            'Data & execution assumptions',
         ):
             self.assertIn(token, status_html)
 
