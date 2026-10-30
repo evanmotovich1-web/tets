@@ -285,12 +285,20 @@ from __future__ import annotations
 import argparse
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_EVEN
 import json
+import os
 from pathlib import Path
 from statistics import median
 import sys
 
 DESK_PATH = Path(__file__).resolve()
-for parent in DESK_PATH.parents:
+_CANDIDATE_ROOTS = [
+    *(Path(os.environ["ALGO_ROOT"]) for _ in [0] if os.environ.get("ALGO_ROOT")),
+    *DESK_PATH.parents,
+    Path.home() / "evan-algo",
+    Path.home() / "code/tets",
+    Path.home() / "code/algo",
+]
+for parent in _CANDIDATE_ROOTS:
     if (parent / "desk/backtest/engine.py").is_file():
         sys.path.insert(0, str(parent / "desk"))
         sys.path.insert(0, str(parent / "scripts"))
@@ -1367,12 +1375,17 @@ class AlgoHarness2Adapter:
         shadow_py = DESK / 'runtime/.state/shadow/.venv/bin/python'
         backtest_py = DESK / 'backtest/.venv/bin/python'
         python_exe = str(shadow_py) if shadow_py.is_file() else str(backtest_py) if backtest_py.is_file() else sys.executable
+        env = dict(os.environ)
+        env['ALGO_ROOT'] = str(ROOT)
+        existing_py = env.get('PYTHONPATH', '')
+        env['PYTHONPATH'] = f"{DESK}:{SCRIPTS}" + (f":{existing_py}" if existing_py else "")
         subprocess.run(
             [python_exe, str(agent_script), str(self.task_files(task_id)), str(run_dir)],
             capture_output=True,
             text=True,
             check=True,
             timeout=timeout or 60,
+            env=env,
         )
         return run_dir
 
