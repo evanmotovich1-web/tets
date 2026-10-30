@@ -20,6 +20,8 @@ fetch_tarball() {
   curl -fL --retry 3 --connect-timeout 20 --progress-bar https://codeload.github.com/evanmotovich1-web/tets/tar.gz/refs/heads/main | tar -xz --strip-components=1 -C "$TARGET_DIR"
 }
 if { [ "$(uname -s)" != Darwin ] || xcode-select -p >/dev/null 2>&1; } && command -v git >/dev/null 2>&1 && git --version >/dev/null 2>&1; then
+  git config --global http.version HTTP/1.1 2>/dev/null || true
+  git config --global http.postBuffer 524288000 2>/dev/null || true
   if [ ! -e "$TARGET_DIR" ]; then
     git clone --depth=1 --progress https://github.com/evanmotovich1-web/tets.git "$TARGET_DIR" || fetch_tarball
   elif [ ! -d "$TARGET_DIR/.git" ]; then
