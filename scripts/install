@@ -93,8 +93,51 @@ if [ "${TETS_SKIP_HERMES:-0}" != 1 ] && [ "${TETS_NO_START:-0}" != 1 ] && ! comm
     git -c http.version=HTTP/1.1 -c http.postBuffer=524288000 clone --progress --depth 1 --branch "$HERMES_TAG" https://github.com/NousResearch/hermes-agent.git "$HOME/.hermes/hermes-agent" || true
   fi
   if [ -f "$HOME/.hermes/hermes-agent/scripts/install.sh" ]; then
-    bash "$HOME/.hermes/hermes-agent/scripts/install.sh" --non-interactive || \
-      bash "$HOME/.hermes/hermes-agent/scripts/install.sh" --non-interactive --skip-browser || true
+    if [ "$(uname -s):$(uname -m)" = Darwin:x86_64 ] && [ -f "$HOME/.hermes/hermes-agent/uv.lock" ]; then
+      printf '  Applying Intel Mac (x86_64) universal2 wheel fix for cryptography in Hermes Agent...\n'
+      "$SHADOW_PY" - "$HOME/.hermes/hermes-agent" <<'PY' || true
+import json, re, sys
+from pathlib import Path
+from urllib.request import urlopen
+
+root = Path(sys.argv[1])
+lock_path = root / "uv.lock"
+pyp_path = root / "pyproject.toml"
+text = lock_path.read_text(encoding="utf-8")
+if 'name = "cryptography"\nversion = "50.' in text:
+    data = json.load(urlopen("https://pypi.org/pypi/cryptography/48.0.1/json", timeout=15))
+    urls = data["urls"]
+    sdist = next(u for u in urls if u["packagetype"] == "sdist")
+    wheels = [u for u in urls if u["packagetype"] == "bdist_wheel"]
+    su, sh, ss, st = sdist["url"], sdist["digests"]["sha256"], sdist["size"], sdist["upload_time_iso_8601"]
+    lines = [
+        "[[package]]",
+        'name = "cryptography"',
+        'version = "48.0.1"',
+        'source = { registry = "https://pypi.org/simple" }',
+        "dependencies = [",
+        '    { name = "cffi", marker = "platform_python_implementation != \x27PyPy\x27" },',
+        "]",
+        f'sdist = {{ url = "{su}", hash = "sha256:{sh}", size = {ss}, upload-time = "{st}" }}',
+        "wheels = [",
+    ]
+    for w in sorted(wheels, key=lambda x: x["filename"]):
+        wu, wh, ws, wt = w["url"], w["digests"]["sha256"], w["size"], w["upload_time_iso_8601"]
+        lines.append(f'    {{ url = "{wu}", hash = "sha256:{wh}", size = {ws}, upload-time = "{wt}" }},')
+    lines.append("]\n\n")
+    replacement = "\n".join(lines)
+    text = re.sub(r'(?ms)^\[\[package\]\]\nname = "cryptography"\nversion = "50\.[^"]+"\n.*?(?=^\[\[package\]\]|\Z)', replacement, text)
+    text = re.sub(r'\{ name = "cryptography", version = "50\.[^"]+"', '{ name = "cryptography", version = "48.0.1"', text)
+    text = re.sub(r'"cryptography==50\.[^"]+"', '"cryptography==48.0.1"', text)
+    lock_path.write_text(text, encoding="utf-8")
+if pyp_path.is_file():
+    pt = pyp_path.read_text(encoding="utf-8")
+    pt = re.sub(r'cryptography==50\.[0-9.]+', 'cryptography==48.0.1', pt)
+    pyp_path.write_text(pt, encoding="utf-8")
+PY
+    fi
+    env -u UV_NO_BUILD -u UV_PYTHON -u UV_PROJECT_ENVIRONMENT -u VIRTUAL_ENV bash "$HOME/.hermes/hermes-agent/scripts/install.sh" --non-interactive || \
+      env -u UV_NO_BUILD -u UV_PYTHON -u UV_PROJECT_ENVIRONMENT -u VIRTUAL_ENV bash "$HOME/.hermes/hermes-agent/scripts/install.sh" --non-interactive --skip-browser || true
   else
     curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --non-interactive || true
   fi

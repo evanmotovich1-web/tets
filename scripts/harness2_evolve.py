@@ -169,6 +169,11 @@ def _build_synthetic_intraday_bars(symbol: str = 'SPY', count: int = 960) -> lis
 
 def load_real_or_fallback_intraday_dataset(symbol: str = 'SPY') -> tuple[dict[str, Any], list[dict[str, Any]]]:
     """Load captured 1m Yahoo market bars from desk state or deterministic fallback."""
+    try:
+        from backtest.replay_seed import ensure_seeded
+        ensure_seeded(STATE)
+    except Exception:
+        pass
     candidate_views = [
         STATE / 'backtest-views',
         Path('/Users/davidmotovich/code/algo/desk/runtime/.state/backtest-views'),
@@ -186,6 +191,38 @@ def load_real_or_fallback_intraday_dataset(symbol: str = 'SPY') -> tuple[dict[st
                     rows = [loads(line) for line in (replay / 'data.jsonl').read_bytes().splitlines() if line.strip()]
                     if len(rows) >= 400:
                         return manifest, rows
+    seeded_report_path = STATE / 'workstation/backtest-report.json'
+    if seeded_report_path.is_file():
+        try:
+            rep = loads(seeded_report_path.read_bytes())
+            if rep.get('symbol') == symbol and rep.get('timeframe') == '1m' and isinstance(rep.get('bars'), list) and len(rep['bars']) >= 400:
+                rows = rep['bars']
+                raw_bytes = b''.join(canonical(r) + b'\n' for r in rows)
+                data_hash = hashlib.sha256(raw_bytes).hexdigest()
+                manifest = dict(
+                    schema_version=1,
+                    kind='dataset_manifest',
+                    dataset_id=f'seeded:intraday:{data_hash[:16]}',
+                    classification='historical_unverified',
+                    partition='development',
+                    format='jsonl',
+                    row_schema='ohlcv_pti_v1',
+                    timeframe='1m',
+                    calendar_id='nyse_regular',
+                    price_basis='raw',
+                    currency='USD',
+                    price_scale=6,
+                    cash_scale=6,
+                    quantity_scale=0,
+                    symbols=[symbol],
+                    coverage=dict(first_bar_open=rows[0]['bar_open_at'], last_bar_close=rows[-1]['bar_close_at']),
+                    row_count=len(rows),
+                    data_sha256=data_hash,
+                )
+                manifest['manifest_sha256'] = sha(manifest)
+                return manifest, rows
+        except Exception:
+            pass
     rows = _build_synthetic_intraday_bars(symbol=symbol, count=960)
     raw_bytes = b''.join(canonical(r) + b'\n' for r in rows)
     data_hash = hashlib.sha256(raw_bytes).hexdigest()
