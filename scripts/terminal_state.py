@@ -206,11 +206,109 @@ def save_alpaca_paper(value):
         if mode in ('shadow', 'paper'):
             cfg_path = STATE / 'tets/config.json'
             cfg_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-            cur_cfg = read(cfg_path) or {'mode': 'shadow', 'watchlist': ['SPY', 'AAPL', 'MSFT'], 'news_sources': ['yahoo_finance', 'yahoo_finance_rss', 'bbc_business_rss', 'alpaca_news_when_connected']}
+            cur_cfg = read(cfg_path) or {'mode': 'shadow', 'watchlist': ['SPY', 'QQQ', 'NVDA', 'AAPL', 'MSFT'], 'news_sources': ['yahoo_finance', 'yahoo_finance_rss', 'bbc_business_rss', 'alpaca_news_when_connected']}
             cur_cfg['mode'] = mode
             cfg_path.write_text(json.dumps(cur_cfg, indent=2) + '\n')
     return alpaca_paper()
 
 
+def deepseek():
+    keys_path = STATE / 'harness2/provider_keys.json'
+    roster_path = STATE / 'harness2/model_roster.json'
+    has_key = False
+    key_hint = None
+    updated_at = None
+    env_key = os.environ.get('DEEPSEEK_API_KEY', '').strip()
+    if env_key:
+        has_key = True
+        key_hint = (env_key[:5] + '••••' + env_key[-4:]) if len(env_key) >= 10 else 'sk-••••'
+    try:
+        if keys_path.is_file() and not keys_path.is_symlink():
+            raw = json.loads(keys_path.read_text())
+            ds = (raw.get('providers') or {}).get('deepseek') if isinstance(raw, dict) else None
+            if isinstance(ds, dict) and ds.get('token'):
+                has_key = True
+                tok = str(ds['token'])
+                key_hint = (tok[:5] + '••••' + tok[-4:]) if len(tok) >= 10 else 'sk-••••'
+                updated_at = ds.get('updated_at')
+    except Exception:
+        pass
+    roster = engine.load_sticky_model_roster(roster_path)
+    deepseek_agents = [r['agent_id'] for r in roster if str(r.get('primary_model', '')).startswith('deepseek:')]
+    return dict(
+        provider='deepseek',
+        endpoint='https://api.deepseek.com/v1',
+        state='connected' if has_key else 'not_connected',
+        has_api_key=has_key,
+        key_hint=key_hint,
+        updated_at=updated_at,
+        deepseek_agent_count=len(deepseek_agents),
+        total_agents=len(roster),
+        all_agents_deepseek=len(deepseek_agents) == len(roster),
+        models=['deepseek-chat', 'deepseek-reasoner', 'deepseek-v4.1-flash', 'deepseek-r1'],
+        roster={r['agent_id']: r['primary_model'] for r in roster},
+    )
+
+
+def save_deepseek(value):
+    if not isinstance(value, dict):
+        raise ValueError('Expected DeepSeek configuration payload')
+    api_key = str(value.get('api_key') or '').strip()
+    apply_all = bool(value.get('apply_all_agents', True))
+    chat_model = str(value.get('chat_model') or 'deepseek-chat').strip()
+    reasoner_model = str(value.get('reasoner_model') or 'deepseek-reasoner').strip()
+    with MODEL_LOCK:
+        if api_key:
+            if len(api_key) > 200 or any(ord(c) < 33 for c in api_key):
+                raise ValueError('Invalid DeepSeek API key format')
+            engine.save_provider_key('deepseek', api_key, keys_path=STATE / 'harness2/provider_keys.json')
+            # Also sync to Hermes Agent ~/.hermes/.env if present
+            try:
+                hermes_dir = Path.home() / '.hermes'
+                if hermes_dir.is_dir():
+                    env_file = hermes_dir / '.env'
+                    lines = env_file.read_text().splitlines() if env_file.is_file() else []
+                    lines = [ln for ln in lines if not ln.startswith(('DEEPSEEK_API_KEY=', 'OPENAI_API_KEY=', 'OPENAI_BASE_URL='))]
+                    lines.append(f'DEEPSEEK_API_KEY={api_key}')
+                    lines.append('OPENAI_BASE_URL=https://api.deepseek.com/v1')
+                    lines.append(f'OPENAI_API_KEY={api_key}')
+                    env_file.write_text('\n'.join(lines) + '\n')
+                    os.chmod(env_file, 0o600)
+            except Exception:
+                pass
+        if apply_all:
+            roster_path = STATE / 'harness2/model_roster.json'
+            roster_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+            engine.configure_sticky_models(
+                state_path=roster_path,
+                assignments=[
+                    f'stage_0_jev_router=deepseek:{chat_model}',
+                    f'phase_1_scout_recon=deepseek:{chat_model}',
+                    f'trader_price_structure=deepseek:{reasoner_model}',
+                    f'trader_theta_mean_reversion=deepseek:{chat_model}',
+                    f'phase_3_risk_auditor=deepseek:{reasoner_model}',
+                    f'phase_4_fleet_dispatcher=deepseek:{chat_model}',
+                ],
+            )
+            try:
+                import onboarding
+                prof = onboarding.load_profile() or onboarding.defaults()
+                prof['ai']['provider'] = 'deepseek'
+                prof['ai']['model'] = chat_model
+                onboarding.save_profile(prof)
+            except Exception:
+                pass
+    return deepseek()
+
+
 def snapshot():
-    return dict(models=models(), broker=broker(), alpaca_paper=alpaca_paper(), research=research(), library=library())
+    import market_universe
+    return dict(
+        models=models(),
+        broker=broker(),
+        alpaca_paper=alpaca_paper(),
+        deepseek=deepseek(),
+        market_universe=market_universe.catalog(),
+        research=research(),
+        library=library(),
+    )

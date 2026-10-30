@@ -1529,7 +1529,7 @@ def configure_sticky_models(
                 else {'trader_price_structure', 'trader_theta_mean_reversion', 'phase_3_risk_auditor', 'phase_4_fleet_dispatcher'}
             )
             for tid in targets:
-                if tid == 'stage_0_jev_router' and target_id != 'stage_0_jev_router' and not resolved.startswith('typesafe:'):
+                if tid == 'stage_0_jev_router' and target_id != 'stage_0_jev_router' and not resolved.startswith(('typesafe:', 'deepseek:')):
                     continue
                 existing_overrides[tid] = {'primary_model': resolved}
         elif target_id in valid_ids:
@@ -1545,7 +1545,7 @@ def configure_sticky_models(
         resolved = resolve_provider_model(v.strip())
         if k in ('all', 'traders'):
             for tid in valid_ids:
-                if tid == 'stage_0_jev_router' and not resolved.startswith('typesafe:'):
+                if tid == 'stage_0_jev_router' and not resolved.startswith(('typesafe:', 'deepseek:')):
                     continue
                 existing_overrides[tid] = {'primary_model': resolved}
         elif k in valid_ids:

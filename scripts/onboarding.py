@@ -58,7 +58,7 @@ def validate(value):
         raise ValueError('Order budget must fit your capital and the $1,000 paper entry cap')
     if Decimal(value['loss_stop_usd']) > Decimal(value['capital_usd']): raise ValueError('Loss stop must fit your capital')
     ai = value['ai']
-    if type(ai) is not dict or set(ai) != set(defaults()['ai']) or ai['provider'] not in ('none','local','codex','claude'):
+    if type(ai) is not dict or set(ai) != set(defaults()['ai']) or ai['provider'] not in ('none','local','codex','claude','deepseek'):
         raise ValueError('Invalid AI provider')
     if not isinstance(ai['model'], str) or len(ai['model']) > 128 or (ai['model'] and not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:/-]*', ai['model'])):
         raise ValueError('Invalid model identifier')
@@ -115,7 +115,8 @@ def wizard(interactive=True, *, mode=None):
     if os.environ.get('TETS_SKIP_LEGACY_AI_PROMPT') != '1':
         previous_provider = p['ai']['provider']
         p['ai']['provider'] = choice('AI connection', [('none','Rule-based only'),('local','Local OpenAI-compatible model (Ollama / LM Studio)'),
-                                        ('codex','My signed-in Codex CLI'),('claude','My signed-in Claude CLI')], p['ai']['provider'])
+                                        ('codex','My signed-in Codex CLI'),('claude','My signed-in Claude CLI'),
+                                        ('deepseek','DeepSeek API (deepseek-chat / deepseek-reasoner)')], p['ai']['provider'])
         provider = p['ai']['provider']
         if provider != previous_provider: p['ai']['model'] = ''
         if provider != 'none':

@@ -28,6 +28,7 @@ import paper
 import shadow
 import news
 import company_data
+import market_universe
 import replay_bridge
 import replay_workbench
 import terminal_state
@@ -67,6 +68,7 @@ def status():
     return dict(observed_at=stamp(), runner=runner, observer=observer, activity=read(ACTIVITY), settings=public_profile(),
                 news=read(STATE/'news.json'), market=read(STATE/'market.json'), connections=read(STATE/'connections.json'),
                 broker=terminal_state.broker(), alpaca_paper=terminal_state.alpaca_paper(),
+                deepseek=terminal_state.deepseek(), market_universe=market_universe.catalog(),
                 adw_fleet=read(STATE/'adw_latest_run.json') or read(ROOT/'desk/runtime/.state/harness2/adw_latest_run.json'))
 
 
@@ -86,7 +88,7 @@ def setup():
     if mode == 'shadow':
         from_spec = {k:v for k,v in spec.items() if k not in ('quantity','label','sizing_budget')}
         shadow.save(STATE/'strategy.json', from_spec)
-    symbols = config().get('watchlist', [profile['symbol'], 'AAPL', 'MSFT'])
+    symbols = config().get('watchlist', [profile['symbol'], 'QQQ', 'NVDA', 'AAPL', 'MSFT'])
     if mode == 'shadow':
         if 'TETS_SYMBOLS' in os.environ: symbols = os.environ['TETS_SYMBOLS']
         elif sys.stdin.isatty():
@@ -174,6 +176,8 @@ class Handler(BaseHTTPRequestHandler):
         elif self.path == '/api/terminal': body=json.dumps(terminal_state.snapshot()).encode(); content='application/json'
         elif self.path == '/api/broker': body=json.dumps(terminal_state.broker()).encode(); content='application/json'
         elif self.path == '/api/alpaca-paper': body=json.dumps(terminal_state.alpaca_paper()).encode(); content='application/json'
+        elif self.path == '/api/deepseek': body=json.dumps(terminal_state.deepseek()).encode(); content='application/json'
+        elif self.path == '/api/market-universe': body=json.dumps(market_universe.catalog()).encode(); content='application/json'
         elif self.path == '/api/broker/robinhood-redirect':
             terminal_state.save_broker({'broker':'robinhood','connected':False,'connection_status':'pending_login'})
             self.send_response(302)
@@ -192,7 +196,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header('Content-Security-Policy',"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; frame-ancestors 'self'")
         self.end_headers(); self.wfile.write(body)
     def do_POST(self):
-        if self.path not in ('/api/models', '/api/broker', '/api/alpaca-paper', '/api/backtest/run'): self.send_error(404); return
+        if self.path not in ('/api/models', '/api/broker', '/api/alpaca-paper', '/api/deepseek', '/api/market-lookup', '/api/backtest/run'): self.send_error(404); return
         # Same-origin JSON only: no cross-site form submissions or arbitrary command execution.
         expected=f'http://127.0.0.1:{self.server.server_port}'
         if self.headers.get('Origin') != expected or self.headers.get('Host') != expected.removeprefix('http://'):
@@ -206,6 +210,8 @@ class Handler(BaseHTTPRequestHandler):
             result=(terminal_state.save_models(payload) if self.path == '/api/models'
                     else replay_workbench.run(payload) if self.path == '/api/backtest/run'
                     else terminal_state.save_alpaca_paper(payload) if self.path == '/api/alpaca-paper'
+                    else terminal_state.save_deepseek(payload) if self.path == '/api/deepseek'
+                    else market_universe.lookup_symbol(payload) if self.path == '/api/market-lookup'
                     else terminal_state.save_broker(payload))
         except (ValueError,TypeError):
             self.send_error(400,'Invalid request payload'); return

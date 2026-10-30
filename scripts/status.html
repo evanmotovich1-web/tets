@@ -239,7 +239,7 @@ body.on-replay-terminal #backtest-explorer-root{margin:0!important;border:0!impo
 .bt-layout .ot-btn.primary{color:#7ff4d4!important;background:#163f38!important}.bt-layout{display:grid;grid-template-columns:265px minmax(0,1fr);gap:16px;align-items:start}.bt-main{min-width:0}.bt-header{margin-bottom:16px}.bt-sidebar{position:sticky;top:12px;max-height:calc(100vh - 28px);display:flex;flex-direction:column}.bt-pad{padding:10px 14px}.bt-help{color:#91a5b7;font-size:11px;line-height:1.65}.bt-strategy-list{overflow:auto;overscroll-behavior:contain;min-height:120px;max-height:65vh;padding:3px 12px 12px;display:flex;flex-direction:column;gap:9px}.bt-strategy-list .ot-algo-card{flex:none;width:100%;font:12px/1.5 InterVariable,system-ui,sans-serif;padding:13px;min-height:86px}.bt-strategy-list small{overflow-wrap:anywhere}.bt-layout button:disabled{opacity:.45;cursor:not-allowed}.bt-layout input:not([type=range]),.bt-layout select{background:#0b141e;color:#e0e9f1;border:1px solid #34495b;border-radius:6px;min-height:38px;padding:8px 10px;width:100%;font:12px InterVariable,system-ui,sans-serif}.bt-layout input:focus-visible,.bt-layout button:focus-visible,.bt-layout select:focus-visible{outline:2px solid #55e6c1;outline-offset:3px}.bt-settings{display:grid;grid-template-columns:minmax(180px,1.6fr) minmax(115px,.8fr) minmax(125px,.8fr) auto;gap:12px;align-items:end;padding:14px 14px 0}.bt-settings label{display:grid;gap:6px;color:#a9bbc9;font:11px InterVariable,system-ui,sans-serif}.bt-settings button{min-height:38px}.bt-applied{padding:11px 14px;border-top:1px solid #22303e;color:#55e6c1;background:#0a1918;line-height:1.7}.bt-error{padding:10px 14px;color:#ff9daa;background:#32151d;overflow-wrap:anywhere}.bt-transport{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:12px 14px 0}.bt-speed{display:flex;align-items:center;gap:7px;color:#91a5b7;font-size:11px}.bt-layout .bt-speed select{width:auto;min-height:32px}.bt-range-labels{display:flex;justify-content:space-between;color:#91a5b7;font-size:10px;gap:10px}.bt-ohlc{color:#c8d6e1;border-top:1px solid #22303e;white-space:pre-wrap;font-size:11px}.bt-price-box{height:330px}.bt-layout canvas{width:100%;height:100%;display:block}.bt-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.bt-detail-grid .bt-pad{white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px;line-height:1.7}.bt-metrics{grid-template-columns:repeat(6,minmax(0,1fr))}.bt-metrics .ot-val{font-size:17px}.bt-metrics small{font-size:9px}.bt-main .ot-range{margin:0 0 7px}.bt-main .ot-table-wrap{max-height:320px}.bt-main .ot-table th{text-align:left}#bt-progress{margin-left:auto}
 @media(max-width:1150px){.bt-layout{grid-template-columns:235px minmax(0,1fr)}.bt-settings{grid-template-columns:repeat(2,minmax(0,1fr))}.bt-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:760px){.bt-layout{grid-template-columns:1fr}.bt-sidebar{position:static;max-height:340px}.bt-strategy-list{max-height:210px}.bt-detail-grid{grid-template-columns:1fr}.bt-layout .ot-wordmark{font-size:14px}.bt-price-box{height:280px}.bt-range-labels{font-size:9px}body.on-replay-terminal #backtest-explorer-root{padding:10px!important}.bt-header{padding:12px}.bt-metrics .ot-val{font-size:15px}}
-</style></head><body class="on-home"><div class="app-shell"><div class="app-content"><header class="app-chrome"><a class="brand" id="brand-home" href="#home" aria-label="Evan Algo home">Evan Algo</a><div class="chrome-actions"><button id="open-paper-btn" class="rh-top-btn" type="button" style="border-color:#55e6c1;color:#55e6c1">🦙 Alpaca Paper Account (Not connected)</button><button id="adw-tab" type="button">Trade Workflow (ADW)</button><button id="back-action" hidden type="button">← Back</button><button id="home-tab" hidden type="button">Home</button></div></header><div class="view-heading" id="view-heading" hidden><h1 id="view-title">Home</h1><span id="mode" class="tag" hidden>Connecting</span></div>
+</style></head><body class="on-home"><div class="app-shell"><div class="app-content"><header class="app-chrome"><a class="brand" id="brand-home" href="#home" aria-label="Evan Algo home">Evan Algo</a><div class="chrome-actions"><button id="open-deepseek-btn" class="rh-top-btn" type="button" style="border-color:#ac9aff;color:#ac9aff">🧠 DeepSeek AI (6 Agents)</button><button id="open-paper-btn" class="rh-top-btn" type="button" style="border-color:#55e6c1;color:#55e6c1">🦙 Alpaca Paper Account (Not connected)</button><button id="adw-tab" type="button">Trade Workflow (ADW)</button><button id="back-action" hidden type="button">← Back</button><button id="home-tab" hidden type="button">Home</button></div></header><div class="view-heading" id="view-heading" hidden><h1 id="view-title">Home</h1><span id="mode" class="tag" hidden>Connecting</span></div>
 <div id="home-intro"><p>Pitch-black TradingView Live Market (Alpaca Paper Account &amp; Yahoo Shadow Mode), ADW Trade Workflow Builder, and historical bar-by-bar Backtest Replay.</p></div><p id="health" role="status" hidden>Connecting to your market feed…</p>
 <div id="live-overview" class="overview" hidden><div><small>WORKSPACE</small><strong>Live market</strong><span>Observed Yahoo data</span></div><div><small>TOTAL VIRTUAL EQUITY</small><strong id="overview-equity">—</strong><span>Assumed fills, no broker</span></div><div><small>COMPANIES WATCHED</small><strong id="overview-companies">—</strong><span>Your active watchlist</span></div><div><small>SELECTED LAST SIGNAL</small><strong id="overview-signal">—</strong><span>A rule check, not a forecast</span></div></div>
 <main id="home-panel" class="home-page" aria-label="Evan Algo home"><div class="home-hero"><p class="eyebrow">PITCH-BLACK TRADINGVIEW &amp; ADW ALGO SYSTEM</p><h1>Evan <span>Algo</span></h1><p class="home-tagline">Live TradingView.<br>ADW Algo Workflows.</p><p class="home-description">Run live in Yahoo Shadow Mode or connect your Alpaca Paper Account (<code>https://paper-api.alpaca.markets</code> · <code>live_orders=false</code>).</p><p class="home-next">Select a terminal workspace:</p></div><div class="home-choices" aria-label="Choose a workspace"><button id="home-live" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 3 8-10M15 5h5v5"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Live Market (TradingView)</strong><span class="card-description">Pitch-black TradingView chart, Alpaca Paper Account connection &amp; status, incoming news wire &amp; live 6-agent algo stream.</span><span class="card-action">Open TradingView Live <span aria-hidden="true">→</span></span></button><button id="home-adw" class="home-card featured" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h14"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Trade Workflow (ADW)</strong><span class="card-description">True ADW terminal: configure Model + Thinking Level per agent, Set System Prompt + User Prompt, and generate new Algo Workflows live.</span><span class="card-action">Open ADW Workflow <span aria-hidden="true">→</span></span></button><button id="home-research" class="home-card" type="button" style="display:none"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20V10h4v10M10 20V4h4v16M15 20v-7h4v7M3 20h18"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Research</strong><span class="card-description">Saved tests, virtual accounts and your experiment library.</span><span class="card-action">Review results <span aria-hidden="true">→</span></span></button><button id="home-replay" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9a8 8 0 1 1 0 7M4 4v5h5M10 8l6 4-6 4z"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Backtest Replay</strong><span class="card-description">Replay saved historical bars. Choose a strategy, apply capital and slippage, and inspect each simulated fill.</span><span class="card-action">Open Backtest Replay <span aria-hidden="true">→</span></span></button><button id="home-models" class="home-card" type="button"><span class="card-heading"><span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg></span><span class="card-arrow" aria-hidden="true">↗</span></span><strong>Models &amp; Setup</strong><span class="card-description">Connect AI model providers and configure default agent seat models &amp; risk limits.</span><span class="card-action">Open Models <span aria-hidden="true">→</span></span></button></div></main>
@@ -249,9 +249,11 @@ body.on-replay-terminal #backtest-explorer-root{margin:0!important;border:0!impo
 <div id="replay-panel" class="view-page" hidden><div class="page-heading"><div><p class="eyebrow">BACKTEST EXPLORER · DAY-BY-DAY TIMELINE, DATE &amp; TRUTH OF ALGO SIDEBAR &amp; MODEL/AGENT REASONING</p><p class="dim">Browse all backtest suites, verify the Date &amp; Truth of Algo on the left, step through the backtest day by day in the center, and inspect the exact Model &amp; Agent Reasoning + What It Looked At on the right.</p></div></div><div id="backtest-explorer-root" class="sssf-wrap"></div><p id="replay-state" role="status">Checking the earlier saved replay…</p><iframe id="replay-frame" title="Algo Lab historical strategy replay" hidden sandbox="allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox"></iframe></div>
 <main id="live-layout" class="workspace" hidden>
 <div id="tv-top-command" class="tv-top-command"></div>
+<div id="tv-universe-bar" class="tv-top-command" style="padding:8px 12px;gap:6px"></div>
 <div class="tv-symbol-bar">
- <span class="sssf-chip ok" style="flex-shrink:0">📈 TRADINGVIEW LIVE TAPE</span>
- <input id="tv-symbol-input" class="tv-sym-search" type="text" placeholder="🔍 Type any symbol (SPY, NVDA, TSLA…)" aria-label="Search or enter symbol">
+ <span class="sssf-chip ok" style="flex-shrink:0">📈 FULL US MARKET LIVE TAPE</span>
+ <input id="tv-symbol-input" class="tv-sym-search" type="text" placeholder="🔍 Any stock/ETF (NVDA, TSLA, PLTR, AMD…)" aria-label="Search or enter symbol">
+ <button id="tv-symbol-go" type="button" class="sssf-part-btn" style="flex-shrink:0">⚡ Load Live Stock</button>
  <div id="companies" class="watchlist" aria-label="Choose a company"></div>
  <label class="sssf-chip cyan" style="flex-shrink:0;cursor:pointer"><input id="follow-scanner" type="checkbox" style="min-height:auto;margin-right:4px"> Auto-Follow Algo Scanner</label>
  <span id="scanner-state" class="sssf-chip" style="flex-shrink:0">LIVE SCANNER ACTIVE</span>
@@ -376,6 +378,28 @@ let alpacaKeysFormOpen=true,alpacaSaveStatus='',alpacaPaperState={
  today_pnl_usd:null,
  live_orders:false
 };
+let deepseekFormOpen=true,deepseekSaveStatus='',deepseekState={
+ provider:'deepseek',
+ endpoint:'https://api.deepseek.com/v1',
+ state:'not_connected',
+ has_api_key:false,
+ key_hint:null,
+ deepseek_agent_count:0,
+ total_agents:6,
+ all_agents_deepseek:false,
+ roster:{}
+};
+const DEFAULT_MARKET_SECTORS=[
+ {id:'all_leaders',label:'🔥 Market Leaders (15)',symbols:['SPY','QQQ','NVDA','AAPL','MSFT','TSLA','META','AMZN','GOOGL','AMD','PLTR','NFLX','AVGO','COIN','JPM']},
+ {id:'indices_etfs',label:'📊 Indices & Macro ETFs',symbols:['SPY','QQQ','IWM','DIA','SMH','SOXX','XLK','XLF','XLE','XLV','ARKK','TLT','GLD','SLV','IBIT']},
+ {id:'ai_semis',label:'🧠 AI & Semiconductors',symbols:['NVDA','AMD','AVGO','TSM','MU','ARM','SMCI','ASML','INTC','QCOM','MRVL','AMAT','LRCX','KLAC','SNPS']},
+ {id:'megacap_tech',label:'💻 Mega-Cap & Cloud Tech',symbols:['AAPL','MSFT','META','AMZN','GOOGL','NFLX','ORCL','CRM','NOW','ADBE','PANW','CRWD','SNOW','DDOG','SHOP']},
+ {id:'momentum_fintech',label:'🚀 Momentum, Crypto & Fintech',symbols:['TSLA','PLTR','COIN','MSTR','HOOD','SOFI','SQ','PYPL','UBER','AFRM','RBLX','DKNG','RDDT','IONQ','RKLB']},
+ {id:'financials_energy',label:'🏦 Wall St, Energy & Industrials',symbols:['JPM','GS','MS','BAC','BLK','V','MA','XOM','CVX','OXY','CAT','GE','BA','LMT','RTX']},
+ {id:'healthcare_consumer',label:'💊 Healthcare & Consumer',symbols:['LLY','UNH','NVO','ABBV','MRK','AMGN','ISRG','COST','WMT','HD','MCD','SBUX','NKE','DIS','CMG']}
+];
+let activeSectorId='all_leaders',customLoadedCompanies=new Map(),lookupBusySymbol=null;
+
 function updatePaperTopButton(){
  const btn=$('open-paper-btn');if(!btn)return;
  const connected=alpacaPaperState.state==='connected';
@@ -387,6 +411,110 @@ function updatePaperTopButton(){
  }else{
   btn.textContent='🦙 Alpaca Paper Account (Not connected)';
  }
+ const dsBtn=$('open-deepseek-btn');if(!dsBtn)return;
+ if(deepseekState.has_api_key||deepseekState.all_agents_deepseek){
+  dsBtn.textContent=`🧠 DeepSeek AI (${deepseekState.deepseek_agent_count||6}/${deepseekState.total_agents||6} Agents · ${deepseekState.has_api_key?'Connected':'Assigned'})`;
+ }else{
+  dsBtn.textContent='🧠 DeepSeek AI (Connect 6 Agents)';
+ }
+}
+async function saveDeepSeekKey(apiKey,applyAll=true){
+ deepseekSaveStatus='Saving DeepSeek API key & assigning all 6 ADW agents…';
+ renderLivePaperAccountDesk();
+ try{
+  const res=await fetch('/api/deepseek',{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({api_key:apiKey,apply_all_agents:applyAll,chat_model:'deepseek-chat',reasoner_model:'deepseek-reasoner'})
+  });
+  if(res.ok){
+   const data=await res.json();
+   Object.assign(deepseekState,data);
+   if(data.roster){Object.assign(sssfModelOverrides,data.roster)}
+   deepseekSaveStatus=`DeepSeek ${data.state||'updated'}${data.key_hint?' ('+data.key_hint+')':''} · ${data.deepseek_agent_count||6}/${data.total_agents||6} agents on DeepSeek (deepseek-chat & deepseek-reasoner) + Hermes synced`;
+  }else{
+   deepseekSaveStatus='Backend rejected DeepSeek key (HTTP '+res.status+').';
+  }
+ }catch{
+  deepseekSaveStatus='Backend unavailable; DeepSeek key not saved.';
+ }
+ updatePaperTopButton();
+ renderTvLiveCommand();
+ renderLivePaperAccountDesk();
+ renderTvAgentStream(selectedSymbol||'SPY',null);
+}
+async function lookupSymbolLive(rawSym){
+ const sym=String(rawSym||'').trim().toUpperCase();
+ if(!sym)return;
+ lookupBusySymbol=sym;
+ selectedSymbol=sym;
+ if($('follow-scanner'))$('follow-scanner').checked=false;
+ renderTvUniverseBar();
+ try{
+  const res=await fetch('/api/market-lookup',{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({symbol:sym,timeframe:'1m'})
+  });
+  if(res.ok){
+   const data=await res.json();
+   customLoadedCompanies.set(sym,data);
+   if(lastResponse){
+    if(!lastResponse.market)lastResponse.market={companies:[]};
+    if(!Array.isArray(lastResponse.market.companies))lastResponse.market.companies=[];
+    if(data.company_info){
+     lastResponse.market.companies=lastResponse.market.companies.filter(c=>c.symbol!==sym);
+     lastResponse.market.companies.push(data.company_info);
+    }
+    if(data.company_news&&lastResponse.news&&Array.isArray(lastResponse.news.companies)){
+     lastResponse.news.companies=lastResponse.news.companies.filter(c=>c.symbol!==sym);
+     lastResponse.news.companies.push(data.company_news);
+     lastNewsKey=null;
+    }
+   }
+  }
+ }catch{}
+ lookupBusySymbol=null;
+ renderTvUniverseBar();
+ if(lastResponse)render(lastResponse);
+}
+function renderTvUniverseBar(){
+ const box=$('tv-universe-bar');if(!box)return;
+ box.replaceChildren();
+ const sectors=lastResponse?.market_universe?.sectors||DEFAULT_MARKET_SECTORS;
+ const secRow=mk('div','tv-day-pills');
+ secRow.append(mk('span','sssf-chip purple','🌎 US STOCK & ETF SECTORS (105+ PRESETS + ANY TICKER):'));
+ for(const sec of sectors){
+  const b=mk('button','tv-day-btn'+(sec.id===activeSectorId?' active':''),sec.label);
+  b.type='button';
+  b.onclick=()=>{activeSectorId=sec.id;renderTvUniverseBar()};
+  secRow.append(b);
+ }
+ box.append(secRow);
+ const curSec=sectors.find(s=>s.id===activeSectorId)||sectors[0];
+ const symRow=mk('div','tv-day-pills');
+ for(const sym of (curSec?.symbols||[])){
+  const isSel=sym===selectedSymbol;
+  const isBusy=sym===lookupBusySymbol;
+  const cached=customLoadedCompanies.get(sym)||(lastResponse?.activity?.companies||[]).find(c=>c.symbol===sym);
+  const px=cached?.quote?.price!=null?' '+money(cached.quote.price):'';
+  const b=mk('button','tv-day-btn'+(isSel?' active':''),(isBusy?'⏳ ':'')+sym+px);
+  b.type='button';
+  b.onclick=()=>{
+   if($('tv-symbol-input'))$('tv-symbol-input').value=sym;
+   const inScan=(lastResponse?.activity?.companies||[]).some(c=>c.symbol===sym);
+   if(inScan||customLoadedCompanies.has(sym)){
+    selectedSymbol=sym;
+    if($('follow-scanner'))$('follow-scanner').checked=false;
+    renderTvUniverseBar();
+    if(lastResponse)render(lastResponse);
+   }else{
+    lookupSymbolLive(sym);
+   }
+  };
+  symRow.append(b);
+ }
+ box.append(symRow);
 }
 async function saveAlpacaPaperKeys(apiKey,secretKey,mode){
  alpacaSaveStatus='Verifying with backend (/api/alpaca-paper)…';
@@ -421,7 +549,9 @@ function renderLivePaperAccountDesk(){
  const d=lastResponse||{};
  const act=d.activity||null;
  const ap=d.alpaca_paper||alpacaPaperState;
+ const ds=d.deepseek||deepseekState;
  const isConnected=ap.state==='connected';
+ const dsConnected=ds.has_api_key||ds.state==='connected';
  const runnerMode=d?.runner?.mode||ap.mode||'shadow';
  const eqVal=act?.account?.equity??ap.equity_usd;
  const cashVal=act?.account?.cash??ap.cash_usd;
@@ -432,38 +562,50 @@ function renderLivePaperAccountDesk(){
  const top=mk('div','sssf-card-top');
  const titleBox=mk('div','');
  titleBox.append(
-  mk('h2','sssf-card-title','🦙 ALPACA PAPER TRADING SYSTEM & CONNECTION STATUS'),
-  mk('div','sssf-card-trig','Endpoint: '+(ap.endpoint||'https://paper-api.alpaca.markets')+' · Credentials stored privately in desk/runtime/.state/paper/credentials.json (chmod 600) · live_orders=false.')
+  mk('h2','sssf-card-title','🦙 ALPACA PAPER TRADING & 🧠 DEEPSEEK 6-AGENT AI CONNECTION DESK'),
+  mk('div','sssf-card-trig','Alpaca Paper ('+(ap.endpoint||'https://paper-api.alpaca.markets')+') + DeepSeek V3/R1 ('+(ds.endpoint||'https://api.deepseek.com/v1')+') · Private chmod 600 storage · live_orders=false.')
  );
  const topBtns=mk('div','sssf-run-stats');
- const statusChip=mk('span','sssf-chip '+(isConnected?'ok':ap.has_api_keys?'cyan':'warn'),isConnected?'● CONNECTED (ACTIVE)':ap.has_api_keys?'● '+String(ap.state||'keys_saved').toUpperCase():'○ NOT CONNECTED');
- const rhChip=mk('span','sssf-chip warn',d?.broker?.status_message||'Robinhood: not connected — live orders unavailable');
- const keyBtn=mk('button','sssf-part-btn'+(alpacaKeysFormOpen?' active':''),'🔑 '+(ap.has_api_keys?'Alpaca Paper Keys ('+(ap.key_hint||'saved')+')':'Connect Alpaca Paper API Key'));
+ const statusChip=mk('span','sssf-chip '+(isConnected?'ok':ap.has_api_keys?'cyan':'warn'),isConnected?'● ALPACA CONNECTED':ap.has_api_keys?'● ALPACA '+String(ap.state||'keys_saved').toUpperCase():'○ ALPACA NOT CONNECTED');
+ const dsChip=mk('span','sssf-chip '+(dsConnected?'ok':ds.all_agents_deepseek?'cyan':'warn'),dsConnected?'● DEEPSEEK CONNECTED ('+(ds.deepseek_agent_count||6)+'/6 AGENTS)':ds.all_agents_deepseek?'● DEEPSEEK ASSIGNED (6/6)':'○ DEEPSEEK KEY REQUIRED');
+ const keyBtn=mk('button','sssf-part-btn'+(alpacaKeysFormOpen?' active':''),'🔑 '+(ap.has_api_keys?'Alpaca Keys ('+(ap.key_hint||'saved')+')':'Connect Alpaca & DeepSeek Keys'));
  keyBtn.type='button';
  keyBtn.onclick=()=>{alpacaKeysFormOpen=!alpacaKeysFormOpen;renderLivePaperAccountDesk()};
- topBtns.append(statusChip,rhChip,keyBtn);
+ topBtns.append(statusChip,dsChip,keyBtn);
  top.append(titleBox,topBtns);
  box.append(top);
 
  if(alpacaKeysFormOpen){
   const kBox=mk('div','sssf-studio');if(kBox.style)kBox.style.marginTop='8px';
   kBox.append(
-   mk('div','sssf-card-title','🦙 CONNECT ALPACA PAPER ACCOUNT (`https://paper-api.alpaca.markets` · `sh tets connect`)'),
-   mk('div','sssf-card-trig','Paste your Alpaca Paper API Key ID and Secret Key (or run `sh tets setup` / `sh tets connect` in terminal, which uses getpass and writes chmod 600 credentials.json). Keys are never committed to git.')
+   mk('div','sssf-card-title','1️⃣ CONNECT ALPACA PAPER ACCOUNT (`https://paper-api.alpaca.markets`)'),
+   mk('div','sssf-card-trig','Paste your Alpaca Paper API Key ID (PK...) and Secret Key. Keys are stored privately in desk/runtime/.state/paper/credentials.json (chmod 600).')
   );
   const kRow=mk('div','ot-transport-btns');
-  const inpKey=mk('input','rh-input');inpKey.type='password';inpKey.placeholder='Paper API key (PK...)';if(inpKey.style)inpKey.style.maxWidth='240px';
-  const inpSec=mk('input','rh-input');inpSec.type='password';inpSec.placeholder='Paper secret key';if(inpSec.style)inpSec.style.maxWidth='240px';
+  const inpKey=mk('input','rh-input');inpKey.type='password';inpKey.placeholder='Paper API key (PK...)';if(inpKey.style)inpKey.style.maxWidth='230px';
+  const inpSec=mk('input','rh-input');inpSec.type='password';inpSec.placeholder='Paper secret key';if(inpSec.style)inpSec.style.maxWidth='230px';
   const modeSel=mk('select','ot-btn');
   for(const [mVal,mTxt] of [['paper','Mode: Alpaca Paper'],['shadow','Mode: Yahoo Shadow']]){
    const o=mk('option','',mTxt);o.value=mVal;if(mVal===runnerMode)o.selected=true;
    modeSel.append(o);
   }
-  const btnSaveKey=mk('button','sssf-run-btn','Save & Verify Alpaca Paper Key');btnSaveKey.type='button';
+  const btnSaveKey=mk('button','sssf-run-btn','Save & Connect Alpaca Paper');btnSaveKey.type='button';
   btnSaveKey.onclick=()=>saveAlpacaPaperKeys(inpKey.value.trim(),inpSec.value.trim(),modeSel.value);
   kRow.append(inpKey,inpSec,modeSel,btnSaveKey);
   kBox.append(kRow);
   if(alpacaSaveStatus)kBox.append(mk('div','sssf-chip cyan',alpacaSaveStatus));
+
+  kBox.append(
+   mk('div','sssf-card-title','2️⃣ CONNECT DEEPSEEK API & ASSIGN ALL 6 AGENTS TO DEEPSEEK (`https://api.deepseek.com/v1`)'),
+   mk('div','sssf-card-trig','Paste your DeepSeek API Key (sk-...). Sets all 6 ADW Agents to DeepSeek (`deepseek-chat` V3 + `deepseek-reasoner` R1) and syncs to Hermes Agent (~/.hermes/.env).')
+  );
+  const dsRow=mk('div','ot-transport-btns');
+  const inpDs=mk('input','rh-input');inpDs.type='password';inpDs.placeholder=ds.key_hint?`DeepSeek key saved (${ds.key_hint})`:'DeepSeek API key (sk-...)';if(inpDs.style)inpDs.style.maxWidth='340px';
+  const btnSaveDs=mk('button','sssf-run-btn','🧠 Save DeepSeek Key & Set All 6 Agents to DeepSeek');btnSaveDs.type='button';
+  btnSaveDs.onclick=()=>saveDeepSeekKey(inpDs.value.trim(),true);
+  dsRow.append(inpDs,btnSaveDs);
+  kBox.append(dsRow);
+  if(deepseekSaveStatus)kBox.append(mk('div','sssf-chip ok',deepseekSaveStatus));
   box.append(kBox);
  }
 
@@ -472,7 +614,7 @@ function renderLivePaperAccountDesk(){
   ['ALPACA PAPER EQUITY',eqVal!=null?money(eqVal):'Not connected',isConnected?'Reported by paper-api.alpaca.markets':'Connect Paper API keys to view account equity',eqVal!=null?'positive':''],
   ['ALPACA PAPER CASH',cashVal!=null?money(cashVal):'Not connected',isConnected?'Reported by paper-api.alpaca.markets':'No paper account cash reported',''],
   ['ALPACA BUYING POWER',bpVal!=null?money(bpVal):'Not connected','Endpoint: paper-api.alpaca.markets',''],
-  ['STRATEGY PRICE P&L',pnlVal!=null?money(pnlVal):'Not connected',pnlVal!=null?'Observed strategy P&L':'No paper strategy P&L recorded yet',Number(pnlVal)>0?'positive':Number(pnlVal)<0?'negative':''],
+  ['DEEPSEEK 6-AGENT FLEET',(ds.deepseek_agent_count||0)+' / '+(ds.total_agents||6)+' Agents',dsConnected?'Connected ('+(ds.key_hint||'sk-••••')+') · V3 + R1':'Click above to connect DeepSeek API',dsConnected?'positive':'cyan'],
   ['SHADOW VIRTUAL EQUITY',shadowEq!=null?money(shadowEq):'—','Yahoo shadow virtual portfolio','cyan']
  ]){
   const c=mk('div','paper-money-card');
@@ -487,6 +629,15 @@ function renderLivePaperAccountDesk(){
 }
 if($('open-paper-btn')){
  $('open-paper-btn').onclick=()=>{
+  alpacaKeysFormOpen=true;
+  switchView('live');
+  renderTvLiveCommand();
+  renderLivePaperAccountDesk();
+  $('tv-paper-account-desk')?.scrollIntoView?.({behavior:'smooth',block:'start'});
+ };
+}
+if($('open-deepseek-btn')){
+ $('open-deepseek-btn').onclick=()=>{
   alpacaKeysFormOpen=true;
   switchView('live');
   renderTvLiveCommand();
@@ -543,13 +694,21 @@ function renderTvAgentStream(sym,company){
  const sName=sym||selectedSymbol||'SPY';
  const px=company?.quote?.price;
  const ap=lastResponse?.alpaca_paper||alpacaPaperState;
+ const ds=lastResponse?.deepseek||deepseekState;
+ const rost=ds?.roster||{};
+ const m1=rost.stage_0_jev_router||'deepseek:deepseek-chat';
+ const m2=rost.phase_1_scout_recon||'deepseek:deepseek-chat';
+ const m3=rost.trader_price_structure||'deepseek:deepseek-reasoner';
+ const m4=rost.trader_theta_mean_reversion||'deepseek:deepseek-chat';
+ const m5=rost.phase_3_risk_auditor||'deepseek:deepseek-reasoner';
+ const m6=rost.phase_4_fleet_dispatcher||'deepseek:deepseek-chat';
  const rows=[
-  ['01 stage_0_jev_router · typesafe:jev-router-v1','Screens incoming '+sName+' headlines and filters adversarial prompt injections.'],
-  ['02 phase_1_scout_recon · deepseek-v4.1-flash',sName+' latest observed quote: '+(px!=null?money(px):'waiting for quote')+' · checks bar liquidity floor.'],
-  ['03 trader_price_structure · codex:gpt-5.4','Evaluates directional equity & call/put rules on completed bars.'],
-  ['04 trader_theta_mean_reversion · kimi-k2.7-code','Evaluates cash-secured mean-reversion candidates.'],
-  ['05 phase_3_risk_auditor · codex:gpt-5.4','Enforces loss-stop collar and live_orders=false execution gate.'],
-  ['06 phase_4_fleet_dispatcher · kimi-k2.7-code','Alpaca paper state: '+(ap.state||'not_connected')+' · live_orders=false.']
+  ['01 stage_0_jev_router · '+m1,'Screens incoming '+sName+' headlines and filters adversarial prompt injections.'],
+  ['02 phase_1_scout_recon · '+m2,sName+' latest observed quote: '+(px!=null?money(px):'waiting for quote')+' · checks bar liquidity floor.'],
+  ['03 trader_price_structure · '+m3,'Evaluates directional equity & call/put rules on completed '+sName+' bars.'],
+  ['04 trader_theta_mean_reversion · '+m4,'Evaluates cash-secured mean-reversion & theta candidates on '+sName+'.'],
+  ['05 phase_3_risk_auditor · '+m5,'Enforces loss-stop collar and live_orders=false execution gate.'],
+  ['06 phase_4_fleet_dispatcher · '+m6,'Alpaca paper state: '+(ap.state||'not_connected')+(ap.equity_usd!=null?' ('+money(ap.equity_usd)+')':'')+' · live_orders=false.']
  ];
  for(const [hd,bd] of rows){
   const r=mk('div','tv-agent-row');
@@ -561,6 +720,7 @@ function renderTvAgentStream(sym,company){
 let selectedSymbol=null,lastShadow=null,lastNewsKey=null,lastResponse=null;
 updatePaperTopButton();
 renderTvLiveCommand();
+renderTvUniverseBar();
 renderLivePaperAccountDesk();
 renderTvDailyReview();
 renderTvAgentStream('SPY',null);
@@ -569,9 +729,13 @@ if($('tv-symbol-input')){
  $('tv-symbol-input').onchange=e=>{
   const val=String(e.target.value||'').trim().toUpperCase();
   if(!val)return;
-  selectedSymbol=val;
-  if($('follow-scanner'))$('follow-scanner').checked=false;
-  if(lastResponse)render(lastResponse);
+  lookupSymbolLive(val);
+ };
+}
+if($('tv-symbol-go')){
+ $('tv-symbol-go').onclick=()=>{
+  const val=String($('tv-symbol-input')?.value||'').trim().toUpperCase();
+  if(val)lookupSymbolLive(val);
  };
 }
 const svgNode=(name,attributes={},label)=>{const node=document.createElementNS?document.createElementNS('http://www.w3.org/2000/svg',name):document.createElement(name);for(const key of Object.keys(attributes))node.setAttribute(key,String(attributes[key]));if(label!=null)node.textContent=label;return node};
@@ -601,12 +765,18 @@ function drawChart(company){
  svg.append(svgNode('text',{x:25,y:304,fill:'#8b9bb0','font-size':11},when(rows[0].bar_close_at||rows[0].at)),svgNode('text',{x:815,y:304,fill:'#8b9bb0','font-size':11,'text-anchor':'end'},when(rows[rows.length-1].bar_close_at||rows[rows.length-1].at)));
 }
 function renderScan(raw,paper){
- const companies=raw?.companies||[];$('shadow-scan').hidden=paper||!companies.length;if(paper||!companies.length)return raw;
- lastShadow=raw;const active=raw.scanner?.active_symbol;
+ const baseCompanies=raw?.companies||[];
+ const extra=[];
+ for(const [sym,comp] of customLoadedCompanies.entries()){
+  if(!baseCompanies.some(c=>c.symbol===sym))extra.push(comp);
+ }
+ const companies=[...baseCompanies,...extra];
+ $('shadow-scan').hidden=paper||!companies.length;if(paper||!companies.length)return raw;
+ lastShadow=raw;const active=raw?.scanner?.active_symbol;
  if(!companies.some(c=>c.symbol===selectedSymbol))selectedSymbol=(companies.find(c=>c.symbol==='AAPL')||companies[0]).symbol;
  if($('follow-scanner').checked&&active)selectedSymbol=active;
- text('scanner-state',active?'SCANNING '+active+' · LIVE 1M BARS':'LIVE SCAN / '+when(raw.scanner?.last_scanned_at));
- const portfolio=raw.portfolio||{};text('portfolio-summary','Total virtual equity '+money(portfolio.virtual_equity)+' / allocated '+money(portfolio.initial_cash)+' across '+companies.length+' companies.');
+ text('scanner-state',active?'SCANNING '+active+' · LIVE 1M BARS':'LIVE SCAN / '+when(raw?.scanner?.last_scanned_at));
+ const portfolio=raw?.portfolio||{};text('portfolio-summary','Total virtual equity '+money(portfolio.virtual_equity)+' / allocated '+money(portfolio.initial_cash)+' across '+companies.length+' companies.');
  const focusedSymbol=document.activeElement?.getAttribute?.('data-company');const box=$('companies');box.replaceChildren();for(const c of companies){const button=document.createElement('button');button.type='button';button.className='company'+(c.symbol===selectedSymbol?' selected':'')+(c.symbol===active?' scanning':'');button.setAttribute('aria-pressed',String(c.symbol===selectedSymbol));button.setAttribute('data-company',c.symbol);
  const title=document.createElement('strong');title.textContent=c.symbol;const price=document.createElement('small');price.textContent=money(c.quote?.price)+' · '+(c.quote?Math.max(0,Math.round((Date.now()-Date.parse(c.quote.quote_at))/1000))+'s ago':'waiting for quote');
  const signal=(c.decisions||[]).slice(-1)[0],label=document.createElement('small');label.className=signal?.side||'';label.textContent=signal?'LAST '+signal.side.toUpperCase()+' · '+when(signal.decision_at):stateLabel(c.state)+' · no signal';
@@ -616,6 +786,7 @@ function renderScan(raw,paper){
  text('signal-summary',signal?(signalStale?'LAST RECORDED / ':'')+signal.side.toUpperCase()+' · '+signal.reason+' · '+when(signal.decision_at):'No new signal yet. '+stateLabel(current.state)+'. Waiting for a new completed regular-session bar.');
  text('chart-freshness','Quote observed '+when(current.quote?.quote_at)+' / '+current.feed_status+' · last candle '+when(current.last_bar_at)+' · checked '+when(current.last_checked_at)+'. Chart changes only when actual data arrives.');
  renderTvLiveCommand();
+ renderTvUniverseBar();
  renderLivePaperAccountDesk();
  renderTvDailyReview();
  renderTvAgentStream(current.symbol,current);
@@ -632,7 +803,7 @@ function newsList(data,symbol){const key=(symbol||'')+'|'+(data?.observed_at||'u
  items.sort((a,b)=>(Date.parse(b.published_at)||0)-(Date.parse(a.published_at)||0));for(const item of items.slice(0,25)){let url;try{url=new URL(item.url)}catch{continue}if(url.protocol!=='https:')continue;const div=document.createElement('div');div.className='news-item';const a=document.createElement('a');a.textContent=item.title;a.href=url.href;a.target='_blank';a.rel='noopener noreferrer';const time=document.createElement('small');time.textContent=sourceName(item.source)+' · published '+when(item.published_at);div.append(a,time);box.append(div)}if(!items.length){const empty=document.createElement('p');empty.textContent='Sources returned no company headlines. No articles have been fabricated.';box.append(empty)}}
 function render(d){
  const paper=d?.runner?.mode==='paper';
- lastResponse=d;if(d.alpaca_paper){Object.assign(alpacaPaperState,d.alpaca_paper);updatePaperTopButton()}renderTvLiveCommand();renderLivePaperAccountDesk();const s=d.settings||{},a=renderScan(d.activity,paper);const stale=a&&Date.now()-Date.parse(a.observed_at)>45000&&d.runner.state==='running';
+ lastResponse=d;if(d.alpaca_paper){Object.assign(alpacaPaperState,d.alpaca_paper)}if(d.deepseek){Object.assign(deepseekState,d.deepseek);if(d.deepseek.roster)Object.assign(sssfModelOverrides,d.deepseek.roster)}updatePaperTopButton();renderTvLiveCommand();renderTvUniverseBar();renderLivePaperAccountDesk();const s=d.settings||{},a=renderScan(d.activity,paper);const stale=a&&Date.now()-Date.parse(a.observed_at)>45000&&d.runner.state==='running';
 text('overview-equity',money(d.activity?.portfolio?.virtual_equity??d.activity?.account?.equity));text('overview-companies',d.activity?.companies?.length??(d.activity?1:0));text('overview-signal',(a?.decisions||[]).slice(-1)[0]?.side?.toUpperCase()||'Waiting');text('mode',paper?'Alpaca paper account':'Yahoo market data · virtual trades');text('health',(d.observer==='active_writer'?'Market observer connected':stateLabel(d.runner.state))+' · '+(stale?'Last observation is old':stateLabel(a?.state))+' · Updated '+when(a?.observed_at||d.observed_at));
 text('strategy',(a?.symbol||s.symbol||'—')+' / '+(a?.timeframe||s.timeframe||'—')+' / '+(a?.family||s.family||'').replaceAll('_',' '));text('price',money(paper?a?.price:a?.quote?.price));text('equity-label',paper?'PAPER ACCOUNT EQUITY':'SELECTED SYMBOL VIRTUAL EQUITY');text('equity',money(paper?a?.account?.equity:(a?.virtual_equity||d.activity?.portfolio?.virtual_equity)));text('pnl-label',paper?'STRATEGY PRICE P&L':'VIRTUAL REALIZED P&L');text('pnl',money(paper?a?.performance?.strategy_price_pnl_usd:a?.virtual_realized_pnl));text('message',a?.state==='bar_revision_paused'?'Shadow trades paused because Yahoo revised a previously observed candle. The live price feed is still running.':a?.message||a?.last_error||'Start a test with sh tets start when you want live observations.');text('feed',paper?(a?.feed||'Broker connection required'):a?.feed_note);text('activity',JSON.stringify(a||{state:'waiting_for_runner_data'},null,2));text('checks',JSON.stringify(d.connections||{state:'not_checked'},null,2));renderMarket(d,a);
 const settings=$('settings');settings.replaceChildren();for(const [label,value] of [['STRATEGY',s.family?.replaceAll('_',' ')],['SYMBOL / BARS',(s.symbol||'—')+' / '+(s.timeframe||'—')],['ALLOCATED CAPITAL',money(s.capital_usd)],['MAX ENTRY',money(s.order_budget_usd)],['NEW-ENTRY LOSS STOP',money(s.loss_stop_usd)]]){const item=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value||'—';item.append(dt,dd);settings.append(item)}
@@ -643,7 +814,7 @@ let terminalData=null,modelBusy=false;
 const roleNames={stage_0_jev_router:'Catalyst router',phase_1_scout_recon:'Market scout',trader_price_structure:'Price & momentum',trader_theta_mean_reversion:'Options & mean reversion',phase_3_risk_auditor:'Risk reviewer',phase_4_fleet_dispatcher:'Fleet coordinator'};
 function dataTable(id,headings,rows){const box=$(id);box.replaceChildren();if(!rows.length){box.textContent='No saved rows available.';return}const table=document.createElement('table'),head=document.createElement('tr');for(const title of headings){const th=document.createElement('th');th.textContent=title;head.append(th)}table.append(head);for(const row of rows){const tr=document.createElement('tr');for(const value of row){const td=document.createElement('td');td.textContent=value==null?'—':String(value);tr.append(td)}table.append(tr)}box.append(table)}
 function renderTerminal(d){
- terminalData=d;if(d.alpaca_paper){Object.assign(alpacaPaperState,d.alpaca_paper);updatePaperTopButton()}const r=d.research||{},l=d.library||{};
+ terminalData=d;if(d.alpaca_paper){Object.assign(alpacaPaperState,d.alpaca_paper)}if(d.deepseek){Object.assign(deepseekState,d.deepseek);if(d.deepseek.roster)Object.assign(sssfModelOverrides,d.deepseek.roster)}updatePaperTopButton();const r=d.research||{},l=d.library||{};
  text('research-state',r.state==='saved_simulation'?'SAVED SIMULATION':'NO SAVED RUN');text('research-basis',(r.symbol?r.symbol+' · ':'')+(r.data_basis||r.message||'Results unavailable.'));
  text('research-pnl',money(r.net_pnl));$('research-pnl').className=Number(r.net_pnl)<0?'negative':r.net_pnl!=null?'positive':'';
  text('research-accounts',r.state==='saved_simulation'?r.accounts?.length:0);text('research-time',r.created_at?when(r.created_at):'Not recorded');
