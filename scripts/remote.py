@@ -58,28 +58,7 @@ def free_port_8765():
 
 def configure_deepseek_agents_and_market():
     print("[1/4] Assigning all 6 ADW agents to DeepSeek (deepseek-chat + deepseek-reasoner)...")
-    options_short_engine.configure_sticky_models(
-        {
-            "mode": "per_agent",
-            "assignments": {
-                "stage_0_jev_router": "deepseek:deepseek-chat",
-                "phase_1_scout_recon": "deepseek:deepseek-chat",
-                "trader_price_structure": "deepseek:deepseek-reasoner",
-                "trader_theta_mean_reversion": "deepseek:deepseek-reasoner",
-                "phase_3_risk_auditor": "deepseek:deepseek-reasoner",
-                "phase_4_fleet_dispatcher": "deepseek:deepseek-chat",
-            },
-        }
-    )
-    prof = onboarding.load_profile() or onboarding.defaults()
-    prof["ai"] = {
-        **(prof.get("ai") or {}),
-        "provider": "deepseek",
-        "model": "deepseek-chat",
-        "consent": True,
-        "daily_call_limit": 100,
-    }
-    onboarding.save_profile(prof)
+    terminal_state.save_deepseek({"apply_all_agents": True})
 
     print("[2/4] Expanding active market universe & warming up live US stock quotes/candles...")
     cfg = runner.read(runner.CONFIG) if runner.CONFIG.exists() else {"mode": "shadow"}
