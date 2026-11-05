@@ -376,8 +376,8 @@ def start(seconds, open_browser=True):
                 url=f'http://127.0.0.1:{port}'
                 ap=terminal_state.alpaca_paper()
                 ap_state=ap.get('state','not_connected')
-                eq_str=f"${ap['equity_usd']:,.2f}" if ap.get('equity_usd') is not None else 'not connected'
-                cash_str=f"${ap['cash_usd']:,.2f}" if ap.get('cash_usd') is not None else 'not connected'
+                eq_str=f"${float(ap['equity_usd']):,.2f}" if ap.get('equity_usd') is not None else 'not connected'
+                cash_str=f"${float(ap['cash_usd']):,.2f}" if ap.get('cash_usd') is not None else 'not connected'
                 print(f'Tets {mode}: {url} (or {url}/status)\nLogs: {STATE}/algo.log\nCtrl-C stops this test run.',flush=True)
                 print(f'Alpaca Paper ({ap.get("endpoint","https://paper-api.alpaca.markets")}): state={ap_state} · equity={eq_str} · cash={cash_str}',flush=True)
                 if open_browser: _open_url(url)
