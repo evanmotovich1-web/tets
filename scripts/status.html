@@ -771,7 +771,8 @@ function renderScan(raw,paper){
   if(!baseCompanies.some(c=>c.symbol===sym))extra.push(comp);
  }
  const companies=[...baseCompanies,...extra];
- $('shadow-scan').hidden=paper||!companies.length;if(paper||!companies.length)return raw;
+ const hideScan=(paper&&!customLoadedCompanies.size)||!companies.length;
+ $('shadow-scan').hidden=hideScan;if(hideScan)return raw;
  lastShadow=raw;const active=raw?.scanner?.active_symbol;
  if(!companies.some(c=>c.symbol===selectedSymbol))selectedSymbol=(companies.find(c=>c.symbol==='AAPL')||companies[0]).symbol;
  if($('follow-scanner').checked&&active)selectedSymbol=active;

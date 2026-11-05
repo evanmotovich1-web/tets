@@ -64,10 +64,11 @@ def configure_deepseek_agents_and_market():
     cfg = runner.read(runner.CONFIG) if runner.CONFIG.exists() else {"mode": "shadow"}
     current = cfg.get("watchlist") or ["SPY", "QQQ", "NVDA", "AAPL", "MSFT"]
     merged = list(dict.fromkeys(list(current) + DEFAULT_EXPANDED_SYMBOLS))[:12]
+    has_paper_creds = (ROOT / "desk" / "runtime" / ".state" / "paper" / "credentials.json").is_file()
     shadow.save(
         runner.CONFIG,
         {
-            "mode": cfg.get("mode", "shadow"),
+            "mode": "paper" if has_paper_creds else "shadow",
             "watchlist": merged[:5],
             "universe_watchlist": merged,
             "news_sources": [
