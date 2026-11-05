@@ -58,7 +58,38 @@ def free_port_8765():
 
 def configure_deepseek_agents_and_market():
     print("[1/4] Assigning all 6 ADW agents to DeepSeek (deepseek-chat + deepseek-reasoner)...")
-    terminal_state.save_deepseek({"apply_all_agents": True})
+    ds_key = os.environ.get("DEEPSEEK_API_KEY", "").strip()
+    if not ds_key:
+        for env_cand in (Path.home() / ".hermes" / ".env", Path.home() / ".env"):
+            if env_cand.is_file():
+                try:
+                    m = re.search(r"\b(sk-[A-Za-z0-9]{20,48})\b", env_cand.read_text(errors="ignore"))
+                    if m and not m.group(1).startswith(("sk-ant", "sk-proj", "sk-or-")):
+                        ds_key = m.group(1)
+                        break
+                except Exception:
+                    pass
+    terminal_state.save_deepseek({"api_key": ds_key, "apply_all_agents": True})
+
+    # Also auto-discover saved Alpaca Paper credentials if not yet in this checkout
+    local_cred = ROOT / "desk" / "runtime" / ".state" / "paper" / "credentials.json"
+    if not local_cred.is_file():
+        for cand_cred in (
+            Path.home() / "code" / "algo" / "desk" / "runtime" / ".state" / "paper" / "credentials.json",
+            Path.home() / "evan-algo" / "desk" / "runtime" / ".state" / "paper" / "credentials.json",
+            Path.home() / "code" / "tets" / "desk" / "runtime" / ".state" / "paper" / "credentials.json",
+        ):
+            if cand_cred.is_file():
+                try:
+                    import json as _json
+                    raw_c = _json.loads(cand_cred.read_text())
+                    if raw_c.get("api_key") and raw_c.get("secret_key"):
+                        terminal_state.save_alpaca_paper(
+                            {"api_key": raw_c["api_key"], "secret_key": raw_c["secret_key"], "mode": "paper"}
+                        )
+                        break
+                except Exception:
+                    pass
 
     print("[2/4] Expanding active market universe & warming up live US stock quotes/candles...")
     cfg = runner.read(runner.CONFIG) if runner.CONFIG.exists() else {"mode": "shadow"}

@@ -261,7 +261,7 @@ def save_deepseek(value):
         if api_key:
             if len(api_key) > 200 or any(ord(c) < 33 for c in api_key):
                 raise ValueError('Invalid DeepSeek API key format')
-            engine.save_provider_key('deepseek', api_key, keys_path=STATE / 'harness2/provider_keys.json')
+            engine.save_provider_connection('deepseek', api_key, keys_path=STATE / 'harness2/provider_keys.json')
             # Also sync to Hermes Agent ~/.hermes/.env if present
             try:
                 hermes_dir = Path.home() / '.hermes'
