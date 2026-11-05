@@ -66,6 +66,7 @@ fi
 printf '\n==> [7/8] Initializing Harness² 6-Agent ADW, Saved Backtest Replay & Hermes Agent + CLI symlinks...\n'
 "$SHADOW_PY" "$ALGO_ROOT/scripts/replay_workbench.py" >/dev/null 2>&1 || true
 "$SHADOW_PY" "$ALGO_ROOT/scripts/harness2_evolve.py" visual >/dev/null 2>&1 || true
+"$SHADOW_PY" "$ALGO_ROOT/scripts/remote.py" --init >/dev/null 2>&1 || true
 mkdir -p "$HOME/.local/bin" 2>/dev/null || true
 if [ -d "$HOME/.local/bin" ]; then
   ln -sf "$ALGO_ROOT/algo" "$HOME/.local/bin/algo" 2>/dev/null || true

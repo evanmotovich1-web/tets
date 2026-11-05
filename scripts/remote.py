@@ -180,6 +180,9 @@ def main():
     if cmd == "--dry-run":
         print("DRY RUN OK:", len(market_universe.STOCK_DIRECTORY), "stocks in directory")
         return
+    if cmd == "--init":
+        configure_deepseek_agents_and_market()
+        return
     if cmd == "open-deepseek":
         open_url("https://platform.deepseek.com/api_keys")
         return

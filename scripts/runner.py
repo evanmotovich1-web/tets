@@ -236,7 +236,9 @@ def refresh_sources(stop, profile):
             except Exception: pass
             stop.wait(60)
     def companies():
-        symbols=watch_symbols(profile)
+        base_syms=watch_symbols(profile)
+        extra_syms=(config().get('universe_watchlist') or ['SPY','QQQ','NVDA','TSLA','AAPL','MSFT','META','AMZN','AMD','PLTR'])
+        symbols=list(dict.fromkeys(list(base_syms)+[s for s in extra_syms if isinstance(s,str)]))[:12]
         while not stop.is_set():
             values=[]
             for symbol in symbols:
@@ -244,7 +246,32 @@ def refresh_sources(stop, profile):
                 values.append(company_data.collect(symbol))
                 shadow.save(STATE/'market.json',dict(observed_at=stamp(),companies=values,refresh_seconds=3600))
             stop.wait(3600)
-    for target in (headlines,companies): threading.Thread(target=target,daemon=True).start()
+    def clipboard_keys():
+        if sys.platform != 'darwin' or os.environ.get('TETS_CLIPBOARD_CAPTURE', '1') == '0':
+            return
+        import re as _re
+        last_clip = ''
+        pending_pk = None
+        while not stop.is_set():
+            try:
+                clip = subprocess.check_output(['pbpaste'], text=True, stderr=subprocess.DEVNULL, timeout=2).strip()
+                if clip and clip != last_clip:
+                    last_clip = clip
+                    m_ds = _re.search(r'(sk-[A-Za-z0-9_-]{20,})', clip)
+                    if m_ds:
+                        terminal_state.save_deepseek({'api_key': m_ds.group(1), 'apply_all_agents': True})
+                    else:
+                        m_pk = _re.search(r'\b((?:PK|AK)[A-Z0-9]{14,32})\b', clip)
+                        if m_pk:
+                            pending_pk = m_pk.group(1)
+                        else:
+                            m_sec = _re.search(r'\b([A-Za-z0-9]{32,52})\b', clip)
+                            if m_sec and pending_pk and m_sec.group(1) != pending_pk:
+                                terminal_state.save_alpaca_paper({'api_key': pending_pk, 'secret_key': m_sec.group(1), 'mode': 'paper'})
+            except Exception:
+                pass
+            stop.wait(0.6)
+    for target in (headlines,companies,clipboard_keys): threading.Thread(target=target,daemon=True).start()
 
 
 def dashboard(seconds, open_browser=True):
