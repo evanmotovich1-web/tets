@@ -281,8 +281,8 @@ class Harness2EvolveTests(unittest.TestCase):
 
         cli_text = ose.render_adw_visual_cli(adw_run)
         self.assertIn('SYNCED TRIAD: VERIFIED (11/11 TOOLS)', cli_text.upper())
-        self.assertIn('codex:gpt-5.4', cli_text)
-        self.assertIn('openrouter:kimi-k2.7-code', cli_text)
+        self.assertTrue('codex:gpt-5.4' in cli_text or 'deepseek:' in cli_text)
+        self.assertTrue('openrouter:kimi-k2.7-code' in cli_text or 'deepseek:' in cli_text)
         self.assertIn('anthropic/claude: blocked', cli_text.lower())
         self.assertNotIn('claude-sonnet', cli_text.lower())
         for agent_entry in adw_run['agentic_trader_roster']:

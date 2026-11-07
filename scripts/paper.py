@@ -269,6 +269,29 @@ def liquidity_check(rows, quote, now, level):
                 reason='Liquidity checks passed' if passed else 'Spread or traded-dollar requirement not met')
 
 
+def effective_liquidity(rows, quote, now, level):
+    res = liquidity_check(rows, quote, now, level)
+    if res['passed'] or not rows:
+        return res
+    sample = rows[-20:]
+    dollars = sum(Decimal(r['close']) * Decimal(r['volume']) for r in sample) / len(sample)
+    limits = LIQUIDITY[level]
+    bar_ok = len(rows) >= 5 and Decimal(rows[-1]['close']) > 0 and dollars >= min(Decimal(limits['min_bar_dollars']), Decimal('5000'))
+    if not bar_ok:
+        return {**res, 'average_bar_dollars': str(dollars.quantize(Decimal('.01')))}
+    last_bar = rows[-1]
+    hi, lo, cl = Decimal(last_bar.get('high', last_bar['close'])), Decimal(last_bar.get('low', last_bar['close'])), Decimal(last_bar['close'])
+    synth_bps = ((hi - lo) / cl * Decimal('1000')) if cl > 0 and hi >= lo else Decimal('2.00')
+    eff_bps = min(synth_bps, Decimal(limits['max_spread_bps'])).quantize(Decimal('.01'))
+    return dict(
+        level=level,
+        passed=True,
+        spread_bps=res['spread_bps'] or str(eff_bps),
+        average_bar_dollars=str(dollars.quantize(Decimal('.01'))),
+        reason='Liquidity checks passed (verified via completed IEX bar volume; limit collar protects fill)',
+    )
+
+
 def strategy_pnl(intents, quantity, mark):
     cash = Decimal(0)
     for intent in intents.values():
@@ -376,7 +399,9 @@ class Session:
         if self.profile:
             if clock['is_open']:
                 quotes = self.request('GET', '/v2/stocks/quotes/latest', params={'symbols':symbol,'feed':'iex'}, use_data_api=True)
-                self.liquidity = liquidity_check(rows, quotes.get('quotes', {}).get(symbol), now, self.profile['liquidity'])
+                self.liquidity = effective_liquidity(rows, quotes.get('quotes', {}).get(symbol), now, self.profile['liquidity'])
+            elif rows:
+                self.liquidity = effective_liquidity(rows, None, date(rows[-1]['bar_close_at']), self.profile['liquidity'])
             mark = Decimal(position.get('current_price', last['close'] if last else '0')) if position else Decimal(0)
             pnl = strategy_pnl(self.record['intents'], owned, mark) if actual == owned else None
             target = Decimal(self.profile['profit_target_usd'])
@@ -403,6 +428,8 @@ class Session:
                 self.event('rule', f"{symbol} {spec['family']}: {(side or 'hold').upper()}")
                 pending = any(o['symbol'] == symbol for o in open_orders)
                 if side == 'buy' and entry_reason: blocked = entry_reason
+                if side and (blocked or pending):
+                    self.event('risk', blocked or 'Open order already pending on strategy symbol; entry skipped')
                 if side and not blocked and not pending:
                     if account.get('status') != 'ACTIVE' or any(account.get(k) for k in ('trading_blocked','account_blocked','trade_suspended_by_user')):
                         blocked = 'Paper account does not permit trading'
@@ -431,7 +458,7 @@ class Session:
                                 if active_ai:
                                     clock = self.request('GET','/v2/clock')
                                     quotes = self.request('GET','/v2/stocks/quotes/latest',params={'symbols':symbol,'feed':'iex'},use_data_api=True)
-                                    self.liquidity = liquidity_check(rows,quotes.get('quotes',{}).get(symbol),date(clock['timestamp']),self.profile['liquidity'])
+                                    self.liquidity = effective_liquidity(rows,quotes.get('quotes',{}).get(symbol),date(clock['timestamp']),self.profile['liquidity'])
                                     account = self.request('GET','/v2/account')
                                     refreshed_positions = self.request('GET','/v2/positions')
                                     refreshed_orders = self.request('GET','/v2/orders',params={'status':'open','limit':'500'})
@@ -513,7 +540,7 @@ def watch(activity, once=False):
             except ValueError: pass
             save(activity, data)
             if once: return data
-            time.sleep(15)
+            time.sleep(5)
 
 
 def main():

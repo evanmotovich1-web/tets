@@ -103,6 +103,15 @@ class OnboardingTests(unittest.TestCase):
             self.assertFalse(paper.liquidity_check(rows,{**quote,**changed},now,'high')['passed'])
         self.assertFalse(paper.liquidity_check([dict(close='500',volume='1')]*20,quote,now,'high')['passed'])
 
+    def test_effective_liquidity_allows_paper_order_when_iex_quote_is_stale_or_stub_with_valid_bar_volume(self):
+        now=paper.date(self.helper.clock['timestamp'])
+        rows=[dict(high='501',low='499',close='500',volume='1000')]*20
+        stale_stub=dict(bp='712.63',ap='764.24',t=(now-timedelta(seconds=45)).isoformat())
+        eff=paper.effective_liquidity(rows,stale_stub,now,'balanced')
+        self.assertTrue(eff['passed'])
+        self.assertEqual(eff['average_bar_dollars'],'500000.00')
+        self.assertFalse(paper.effective_liquidity([dict(close='500',volume='1')]*20,stale_stub,now,'balanced')['passed'])
+
     def test_ai_veto_cannot_submit_and_is_persisted_as_real_activity(self):
         self.profile['ai'].update(provider='local',model='test-model',consent=True)
         s=self.session();s.observe();self.advance()

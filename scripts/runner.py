@@ -134,7 +134,7 @@ def connect():
 
 def watch_symbols(profile=None):
     profile=profile or onboarding.load_profile() or onboarding.defaults()
-    return shadow.watchlist(os.environ.get('TETS_SYMBOLS',config().get('watchlist',[profile['symbol']])),profile['symbol']) if config()['mode']=='shadow' else [profile['symbol']]
+    return shadow.watchlist(os.environ.get('TETS_SYMBOLS',config().get('watchlist',[profile['symbol'],'QQQ','NVDA','AAPL','MSFT'])),profile['symbol'])
 
 
 def collect_news():
@@ -234,7 +234,7 @@ def refresh_sources(stop, profile):
         while not stop.is_set():
             try: collect_news()
             except Exception: pass
-            stop.wait(60)
+            stop.wait(15)
     def companies():
         base_syms=watch_symbols(profile)
         extra_syms=(config().get('universe_watchlist') or ['SPY','QQQ','NVDA','TSLA','AAPL','MSFT','META','AMZN','AMD','PLTR'])
@@ -371,6 +371,11 @@ def start(seconds, open_browser=True):
         try:
             with (STATE/'algo.log').open('w') as log:
                 child=subprocess.Popen(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+                if sys.platform == 'darwin' and seconds >= 60 and Path('/usr/bin/caffeinate').is_file():
+                    try:
+                        subprocess.Popen(['/usr/bin/caffeinate', '-is', '-w', str(child.pid)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    except OSError:
+                        pass
                 shadow.save(STATE/'runner.json',dict(state='running',mode=mode,pid=os.getpid(),child_pid=child.pid,
                             started_at=stamp(),run_dir=str(run_dir),url=f'http://127.0.0.1:{port}',live_orders=False))
                 url=f'http://127.0.0.1:{port}'
